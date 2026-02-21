@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invalidation Tracker — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Tracker-specific styles only ── */
+    .spike-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 9px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      border: 1px solid var(--border-hi);
+      background: transparent;
+      color: var(--text-mid);
+      transition: all 0.15s;
+    }
+    .spike-btn:hover { background: rgba(255,255,255,0.04); }
+    .spike-btn.is-no  { border-color: var(--green); color: var(--green); background: rgba(74,222,128,0.08); }
+    .spike-btn.is-yes { border-color: var(--red);   color: var(--red);   background: rgba(248,113,113,0.08); }
+
+    .checklist { display: flex; flex-direction: column; gap: 10px; }
+    .check-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 16px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .check-item.urgent { border-color: rgba(249,115,22,0.4); }
+    .check-icon { color: var(--blue); font-family: var(--mono); font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+    .check-icon.urgent-icon { color: var(--orange); }
+    .check-title  { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .check-detail { font-size: 12px; color: var(--text-mid); line-height: 1.55; }
+
+    .spread-table { display: flex; flex-direction: column; gap: 6px; }
+    .spread-row {
+      display: grid; grid-template-columns: 72px 1fr 1fr;
+      gap: 8px; align-items: center;
+      padding: 7px 12px; border-radius: 7px;
+      background: var(--bg2); border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .spread-row.is-active { border-color: rgba(249,115,22,0.5); background: rgba(249,115,22,0.05); }
+    .spread-range { font-family: var(--mono); font-weight: 700; }
+    .spread-label { font-weight: 600; }
+    .spread-note  { color: var(--text-dim); font-size: 11px; }
+
+    .kill-row {
+      display: grid; grid-template-columns: 32px 1fr auto;
+      gap: 14px; align-items: center;
+      padding: 12px 16px; border-radius: 9px;
+      background: var(--bg2); border: 1px solid var(--border);
+      margin-bottom: 8px;
+      transition: border-color 0.15s;
+      cursor: default;
+    }
+    .kill-row:hover { border-color: var(--border-hi); }
+    .kill-icon  { font-size: 18px; text-align: center; }
+    .kill-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .kill-desc  { font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+    .kill-status{ font-family: var(--mono); font-size: 10px; font-weight: 700; white-space: nowrap; }
+
+    .timeline-win {
+      display: grid; grid-template-columns: 90px 1fr;
+      gap: 16px; padding: 14px 18px;
+      border-radius: 9px; border: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .timeline-win.is-active { border-color: var(--orange); background: rgba(249,115,22,0.04); }
+    .timeline-win.is-past   { opacity: 0.45; }
+    .tw-day    { font-family: var(--mono); font-weight: 700; font-size: 13px; }
+    .tw-date   { font-family: var(--mono); color: var(--text-dim); font-size: 11px; margin-top: 2px; }
+    .tw-status { font-family: var(--mono); font-size: 10px; margin-top: 4px; }
+    .tw-title  { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .tw-action { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .tw-watch  { font-size: 11px; color: var(--text-mid); line-height: 1.55; }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <header class="page-header">
+        <div class="page-eyebrow">weekly session</div>
+        <h1 class="page-title">Thesis Invalidation Tracker</h1>
+        <p class="page-subtitle">One question drives everything: has a SOFR spike occurred? Toggle below — the page reconfigures to show you exactly what to watch and when.</p>
+      </header>
+
+      <!-- ── MASTER SWITCH ── -->
+      <div class="card" style="margin-bottom:14px; border-color: var(--border-hi);">
+        <div class="card-eyebrow">master status — update each session</div>
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+          <div>
+            <div style="font-size:13px; color:var(--text-mid); margin-bottom:10px;">
+              Has a SOFR spike (&gt;25bp above Fed Funds) been confirmed?
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button class="spike-btn is-no" id="btn-no"  onclick="setSpike(false)">✗ Not yet — monitoring</button>
+              <button class="spike-btn"        id="btn-yes" onclick="setSpike(true)" >✓ YES — spike confirmed</button>
+            </div>
+          </div>
+          <div id="date-wrap" style="display:none;">
+            <div style="font-size:11px; color:var(--text-mid); margin-bottom:6px;">Spike date (Day 0):</div>
+            <input type="date" id="spike-date" onchange="renderTimeline()"
+              style="background:var(--bg); border:1px solid var(--border-hi); color:var(--text);
+                     padding:7px 12px; border-radius:6px; font-family:var(--mono); font-size:12px;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MONITORING MODE ══ -->
+      <div id="view-monitoring">
+        <div class="grid-2" style="margin-bottom:14px;">
+
+          <div class="card">
+            <div class="card-eyebrow">check this week</div>
+            <div class="checklist">
+              <div class="check-item">
+                <span class="check-icon">→</span>
+                <div>
+                  <div class="check-title">SOFR vs Fed Funds spread</div>
+                  <div class="check-detail">Published daily at 8am ET. FRED: SOFR + EFFR. Alert threshold: &gt;15bp.</div>
+                  <a href="https://fred.stlouisfed.org/graph/?g=1cYYu" target="_blank" class="source-link">Open FRED chart →</a>
+                </div>
+              </div>
+              <div class="check-item">
+                <span class="check-icon">→</span>
+                <div>
+                  <div class="check-title">RRP balance (RRPONTSYD)</div>
+                  <div class="check-detail">Currently ~$28B — at maximum tightness. Watch direction. Rising sharply = risk-off flight to safety.</div>
+                  <a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank" class="source-link">FRED RRP →</a>
+                </div>
+              </div>
+              <div class="check-item">
+                <span class="check-icon">→</span>
+                <div>
+                  <div class="check-title">Thursday H.4.1 — WALCL</div>
+                  <div class="check-detail">Fed balance sheet. Every Thursday 4:30pm ET. Rising = expansion starting. Flat = not yet.</div>
+                  <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank" class="source-link">FRED WALCL →</a>
+                </div>
+              </div>
+              <div class="check-item">
+                <span class="check-icon">→</span>
+                <div>
+                  <div class="check-title">Core PCE (monthly)</div>
+                  <div class="check-detail">Last Friday of month. FRED: PCEPILFE. Red zone: above 3.5% for 3+ months → Fed constrained.</div>
+                  <a href="https://fred.stlouisfed.org/series/PCEPILFE" target="_blank" class="source-link">FRED Core PCE →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-eyebrow">sofr spread — trigger ladder</div>
+            <div class="spread-table">
+              <div class="spread-row"><span class="spread-range" style="color:var(--green)">&lt; 5bp</span><span class="spread-label" style="color:var(--green)">Normal</span><span class="spread-note">No action</span></div>
+              <div class="spread-row"><span class="spread-range" style="color:#a3e635">5–15bp</span><span class="spread-label" style="color:#a3e635">Watch</span><span class="spread-note">Quarter-end noise possible</span></div>
+              <div class="spread-row"><span class="spread-range" style="color:var(--yellow)">15–25bp</span><span class="spread-label" style="color:var(--yellow)">Prepare</span><span class="spread-note">Accelerate TWAP</span></div>
+              <div class="spread-row is-active"><span class="spread-range" style="color:var(--orange)">&gt; 25bp</span><span class="spread-label" style="color:var(--orange)">CHUNK BUY ⚡</span><span class="spread-note">Primary trigger — toggle above</span></div>
+              <div class="spread-row"><span class="spread-range" style="color:var(--red)">&gt; 50bp</span><span class="spread-label" style="color:var(--red)">ALL-IN 🚨</span><span class="spread-note">90-day clock starts</span></div>
+            </div>
+            <div style="margin-top:14px; padding:12px 14px; background:var(--bg2); border-radius:8px; border:1px solid var(--border);">
+              <div style="font-size:9px; color:var(--text-dim); letter-spacing:1px; margin-bottom:6px;">2019 PRECEDENT</div>
+              <div style="font-size:12px; color:var(--text-mid); line-height:1.65;">Sept 16 2019: SOFR hit 10% (800bp above Fed Funds). Fed injected $75B within 24 hours, announced $60B/month T-bill purchases. BTC: $8,200 at crisis → $69,000 ATH 26 months later.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kill switches -->
+        <div class="card">
+          <div class="card-eyebrow">kill switches — current status</div>
+          <div id="kill-switch-list"></div>
+        </div>
+      </div>
+
+      <!-- ══ SPIKE ACTIVE MODE ══ -->
+      <div id="view-spike" style="display:none;">
+
+        <div class="card" style="border-color:rgba(248,113,113,0.5); background:rgba(248,113,113,0.03); margin-bottom:14px;">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+            <span style="font-size:28px;">🚨</span>
+            <div>
+              <div style="font-family:var(--mono); color:var(--red); font-weight:700; font-size:14px; margin-bottom:4px;">SOFR SPIKE CONFIRMED — CLOCK RUNNING</div>
+              <div style="color:var(--text-mid); font-size:13px;">Thesis active. Your only job: confirm WALCL is expanding week-over-week. Everything else is noise.</div>
+            </div>
+          </div>
+          <div id="timeline-windows" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:14px;">
+          <div class="card">
+            <div class="card-eyebrow">this week's checklist</div>
+            <div id="week-checklist" class="checklist"></div>
+          </div>
+          <div class="card" style="border-color: rgba(56,189,248,0.3);">
+            <div class="card-eyebrow">the one rule</div>
+            <div style="font-size:13px; line-height:1.85; color:var(--text-mid);">
+              Every Thursday at 4:30pm ET — open FRED WALCL.
+              <br><br>
+              <span style="color:var(--green); font-weight:700;">Rising for 4+ consecutive weeks</span><br>
+              → Sustained expansion. Thesis intact. Do nothing.
+              <br><br>
+              <span style="color:var(--red); font-weight:700;">Flat or falling for 2 consecutive weeks</span><br>
+              → Sterilized injection. Mechanism broke. Re-evaluate.
+              <br><br>
+              <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank" class="source-link">Open WALCL on FRED →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-eyebrow">kill switches — monitor during hold</div>
+          <div id="kill-switch-list-spike"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/nav.js" data-root="./"></script>
+<script>
+// ── KILL SWITCHES ─────────────────────────────────────────────────────────
+const SWITCHES = [
+  { icon:'⏱', label:'A — Time Kill Switch', statusLabel:'DEFINE', statusColor:'var(--text-dim)',
+    desc:'BTC not at 1.5× entry by [your date] after WALCL expansion → reduce 50%, reassess. Answer not yet set.' },
+  { icon:'🏦', label:'B — Mechanism Failure ⭐ CORNERSTONE', statusLabel:'MONITORING', statusColor:'var(--blue)',
+    desc:'WALCL flat/falling for 4 consecutive Thursday H.4.1 readings after Fed injection = sterilized injection, not QE. Thesis broken at the critical link.' },
+  { icon:'📈', label:'C — Inflation Ceiling', statusLabel:'WATCH', statusColor:'var(--yellow)',
+    desc:'Core PCE (FRED: PCEPILFE) above 3.5% for 3+ months → Fed structurally constrained → reduce position 50%. Current: ~2.8% — below threshold.' },
+  { icon:'💸', label:'D — Solvency Floor', statusLabel:'DEFINE', statusColor:'var(--text-dim)',
+    desc:'At what BTC price can you no longer service $833/month from income? Set before deploying. [Answer not yet recorded]' },
+  { icon:'🌍', label:'E — Black Swan', statusLabel:'DEFINE', statusColor:'var(--text-dim)',
+    desc:'USDT depeg / BTC ETF suspended / Treasury dysfunction → 100% exit, no analysis. [Write your events]' },
+  { icon:'📉', label:'F — Mag7 Buyback Shift', statusLabel:'MONITORING', statusColor:'var(--purple)',
+    desc:'If 4+ of 7 Mag7 companies show paused/reduced buybacks while CapEx rises → structural rotation confirmed. Check 10-Q filings quarterly.' },
+];
+
+function renderKillSwitches(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = SWITCHES.map(sw => `
+    <div class="kill-row">
+      <div class="kill-icon">${sw.icon}</div>
+      <div>
+        <div class="kill-label">${sw.label}</div>
+        <div class="kill-desc">${sw.desc}</div>
+      </div>
+      <div class="kill-status" style="color:${sw.statusColor}">${sw.statusLabel}</div>
+    </div>
+  `).join('');
+}
+
+renderKillSwitches('kill-switch-list');
+renderKillSwitches('kill-switch-list-spike');
+
+// ── SPIKE TOGGLE ──────────────────────────────────────────────────────────
+let spikeActive = false;
+
+function setSpike(val) {
+  spikeActive = val;
+  document.getElementById('btn-no').className  = 'spike-btn' + (val ? '' : ' is-no');
+  document.getElementById('btn-yes').className = 'spike-btn' + (val ? ' is-yes' : '');
+  document.getElementById('date-wrap').style.display    = val ? 'block' : 'none';
+  document.getElementById('view-monitoring').style.display = val ? 'none' : 'block';
+  document.getElementById('view-spike').style.display      = val ? 'block' : 'none';
+  if (val) {
+    if (!document.getElementById('spike-date').value) {
+      document.getElementById('spike-date').value = new Date().toISOString().split('T')[0];
+    }
+    renderTimeline();
+  }
+}
+
+// ── TIMELINE ──────────────────────────────────────────────────────────────
+const WINDOWS = [
+  { start: 0,  end: 2,   color: 'var(--red)',
+    title: 'Day 0–2: SOFR Spike + Fed Response',
+    action: 'Execute chunk buy (L3/L4 deployment). Mark today as Day 0.',
+    watch: 'Confirm Fed emergency injection announced within 24–48hrs. Watch NY Fed press releases.' },
+  { start: 2,  end: 14,  color: 'var(--orange)',
+    title: 'Day 2–14: WALCL Watch Window ⭐',
+    action: 'Check FRED WALCL every Thursday 4:30pm ET. Is it higher than last week?',
+    watch: '4 rising weeks = sustained QE. 2 flat/falling weeks = sterilized injection = thesis at risk. This is your cornerstone check.' },
+  { start: 14, end: 45,  color: 'var(--yellow)',
+    title: 'Day 14–45: The Hard Part',
+    action: 'BTC will likely drop 20–40%. This is expected from crisis fear. DO NOTHING.',
+    watch: 'Only check WALCL on Thursdays. If still rising → hold. Selling here is the mistake.' },
+  { start: 45, end: 75,  color: '#a3e635',
+    title: 'Day 45–75: M2 Rising',
+    action: 'Check FRED M2SL monthly. Look for acceleration vs prior month.',
+    watch: 'M2 growth confirms transmission is working. Risk-on sentiment begins returning.' },
+  { start: 90, end: 120, color: 'var(--blue)',
+    title: 'Day 90–120: BTC Response Window',
+    action: 'Main move window (r=0.94 historical correlation). Watch MVRV Z-Score for exit signals.',
+    watch: 'MVRV Z-Score above 4 → prepare exit tiers. Above 6 → begin selling per exit plan.' },
+];
+
+function addDays(base, n) {
+  const d = new Date(base); d.setDate(d.getDate() + n); return d;
+}
+function fmtDate(d) { return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }); }
+function daysAway(d) {
+  const diff = Math.round((d - new Date()) / 86400000);
+  if (diff < -1) return `${Math.abs(diff)}d ago`;
+  if (diff <= 0) return 'TODAY';
+  return `in ${diff}d`;
+}
+
+function renderTimeline() {
+  const dateStr = document.getElementById('spike-date').value;
+  if (!dateStr) return;
+  const d0 = new Date(dateStr);
+  const now = new Date();
+
+  // Timeline windows
+  const tlEl = document.getElementById('timeline-windows');
+  tlEl.innerHTML = WINDOWS.map(w => {
+    const s = addDays(d0, w.start);
+    const e = addDays(d0, w.end);
+    const isPast   = now > e;
+    const isActive = now >= s && now <= e;
+    let cls = 'timeline-win';
+    if (isActive) cls += ' is-active';
+    if (isPast)   cls += ' is-past';
+    const statusStr = isActive ? '▶ ACTIVE NOW' : isPast ? '✓ PAST' : daysAway(s);
+    return `
+      <div class="${cls}">
+        <div>
+          <div class="tw-day" style="color:${w.color}">D+${w.start}</div>
+          <div class="tw-date">${fmtDate(s)}–${fmtDate(e)}</div>
+          <div class="tw-status" style="color:${isActive ? w.color : 'var(--text-dim)'}">${statusStr}</div>
+        </div>
+        <div>
+          <div class="tw-title" style="color:${isActive ? w.color : 'var(--text)'}">${w.title}</div>
+          <div class="tw-action" style="color:${w.color}">→ ${w.action}</div>
+          <div class="tw-watch">${w.watch}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // This week checklist
+  const daysSince = Math.round((now - d0) / 86400000);
+  const items = [];
+  if (daysSince <= 14) {
+    items.push({ urgent:true,  text:'Check WALCL on FRED — is it higher than last Thursday?', href:'https://fred.stlouisfed.org/series/WALCL' });
+    items.push({ urgent:true,  text:'Watch Fed language: "temporary" (bad) vs "ongoing/extended" (good)' });
+  }
+  if (daysSince <= 45) {
+    items.push({ urgent:false, text:'SOFR spread — has it normalized below 10bp?', href:'https://fred.stlouisfed.org/graph/?g=1cYYu' });
+  }
+  items.push({ urgent:false, text:'Core PCE — last reading vs 3.5% threshold', href:'https://fred.stlouisfed.org/series/PCEPILFE' });
+  if (daysSince >= 45) {
+    items.push({ urgent:false, text:'M2SL — is monthly growth rate accelerating?', href:'https://fred.stlouisfed.org/series/M2SL' });
+  }
+
+  document.getElementById('week-checklist').innerHTML = items.map(it => `
+    <div class="check-item${it.urgent ? ' urgent' : ''}">
+      <span class="check-icon${it.urgent ? ' urgent-icon' : ''}">${it.urgent ? '!' : '→'}</span>
+      <div>
+        <div class="check-detail" style="${it.urgent ? 'color:var(--text); font-weight:600' : ''}">${it.text}</div>
+        ${it.href ? `<a href="${it.href}" target="_blank" class="source-link">Open FRED →</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
