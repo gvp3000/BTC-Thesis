@@ -1,0 +1,53 @@
+{
+  "sections": [
+    {
+      "label": "Cockpit",
+      "pages": [
+        { "id": "dashboard", "title": "Dashboard", "file": "dashboard.html", "badge": "HOME", "badgeColor": "yellow" },
+        { "id": "positions", "title": "My Positions", "file": "portfolio/greg.html" },
+        { "id": "family", "title": "Family Accounts", "file": "portfolio/family.html" },
+        { "id": "risk-mgmt", "title": "Risk Management", "file": "portfolio/risk.html" }
+      ]
+    },
+    {
+      "label": "Thesis",
+      "pages": [
+        { "id": "thesis-overview", "title": "Overview", "file": "thesis/index.html" },
+        { "id": "short-term", "title": "2026 Catalyst Stack", "file": "thesis/short-term.html", "badge": "ACTIVE", "badgeColor": "yellow" },
+        { "id": "long-term", "title": "Decade Thesis", "file": "thesis/long-term.html" },
+        { "id": "btc-debt", "title": "BTC:Debt Correlation", "file": "thesis/btc-debt.html" },
+        { "id": "btc-m2", "title": "BTC:M2 Supply", "file": "thesis/btc-m2.html" },
+        { "id": "btc-gold", "title": "BTC:Gold Parity", "file": "thesis/btc-gold.html" },
+        { "id": "debasement", "title": "Dollar Debasement", "file": "thesis/debasement.html" },
+        { "id": "halving", "title": "Supply & Halvings", "file": "thesis/halving.html" },
+        { "id": "institutional", "title": "Institutional", "file": "thesis/institutional.html" }
+      ]
+    },
+    {
+      "label": "Trading",
+      "pages": [
+        { "id": "trading-overview", "title": "Overview", "file": "trading/index.html" },
+        { "id": "market-structure", "title": "Market Structure", "file": "trading/structure.html" },
+        { "id": "elliott", "title": "Elliott Wave", "file": "trading/elliott.html" },
+        { "id": "rr-calc", "title": "Risk:Reward Calc", "file": "trading/rr.html" },
+        { "id": "trading-research", "title": "Trading Research", "file": "trading/research.html" },
+        { "id": "methods", "title": "Methods Compendium", "file": "trading/methods.html" },
+        { "id": "trader-tracker", "title": "Trader Tracker", "file": "trading/traders.html" },
+        { "id": "trade-log", "title": "Trade Log", "file": "trading/log.html" },
+        { "id": "weekly-log", "title": "Weekly Log", "file": "trading/weekly.html" }
+      ]
+    },
+    {
+      "label": "Research",
+      "pages": [
+        { "id": "liquidity", "title": "Liquidity Framework", "file": "research/liquidity.html" },
+        { "id": "catalysts", "title": "Geo Catalysts", "file": "research/catalysts.html" },
+        { "id": "invalidation", "title": "Kill Switches", "file": "research/invalidation.html" },
+        { "id": "nuclear", "title": "Nuclear Thesis", "file": "research/nuclear.html" },
+        { "id": "sentiment", "title": "Sentiment", "file": "research/sentiment.html" },
+        { "id": "wealth-transfer", "title": "Wealth Transfer", "file": "research/wealth-transfer.html" },
+        { "id": "links", "title": "Research Links", "file": "research/links.html" }
+      ]
+    }
+  ]
+}

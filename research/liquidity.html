@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Liquidity Framework — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css"/>
+</head>
+<body>
+<div class="layout">
+  <nav class="nav"></nav>
+  <main class="main">
+    <div class="wrap">
+      <div class="pg-label">Research</div>
+      <h1 class="pg-title">Liquidity Framework</h1>
+      <div class="pg-sub">The mechanism chain from SOFR stress to BTC price response.</div>
+
+      <div class="plan">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="plan-label">Content Plan</div>
+          <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#ef4444;color:#fff;">P0</span>
+        </div>
+        <div class="plan-body">
+          <strong>What goes here:</strong> The full mechanism chain: RRP drainage → SOFR spike → Fed injection → WALCL expansion → M2 growth → BTC response (90-day lag). Alert ladder with specific thresholds: normal → mild → stress → trigger → crisis.<br/><br/>
+          <strong>Current status:</strong> RRP at $28B (functionally zero — precondition met). SOFR spread ~2bp (calm, but no buffer). WALCL ~$6.87T (flat, reinvestment mode). Core PCE ~2.8% (Fed has moderate room).<br/><br/>
+          <strong>Source files:</strong> <em>liquidity_thesis_v01.docx</em>, <em>fed_balance_sheet_tracker.jsx</em>, <em>rrp_monitor.jsx</em>, <em>fed_wave_tracker_v2.jsx</em>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

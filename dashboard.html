@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+<div class="layout">
+  <nav class="nav"></nav>
+
+  <main class="main">
+    <div class="wrap">
+      <div class="pg-label">cockpit</div>
+      <h1 class="pg-title">Weekly Dashboard</h1>
+      <div class="pg-meta">Week of <span>Feb 21, 2026</span> &nbsp;·&nbsp; Thesis status: <span style="color:var(--yellow);">MONITORING — No triggers fired</span> &nbsp;·&nbsp; Update this manually each week</div>
+
+      <!-- ══ LIQUIDITY SIGNALS ══ -->
+      <div class="sh">
+        <span class="sh-title">Liquidity Signals</span>
+        <span class="sh-line"></span>
+        <a class="sh-link" href="research/liquidity.html">full framework →</a>
+      </div>
+
+      <div class="g3" style="margin-bottom:12px;">
+        <!-- SOFR -->
+        <div class="metric">
+          <div class="metric-top">
+            <div class="metric-label">SOFR Spread<br/>vs Fed Funds Rate</div>
+            <span class="pill p-ok">NORMAL</span>
+          </div>
+          <div class="metric-val" style="color:var(--green);">~2 bp</div>
+          <div class="metric-sub">Fed Funds: 4.25–4.50% &nbsp;·&nbsp; SOFR: ~4.30%</div>
+          <div class="metric-trend"><strong>Trend: Stable</strong> — no stress in overnight lending markets</div>
+          <div class="metric-body">
+            SOFR (Secured Overnight Financing Rate) is the rate banks charge each other to borrow cash overnight. The spread between SOFR and the Fed Funds rate is your early-warning signal for banking system stress.
+            <br/><br/>
+            <strong>Why it matters:</strong> When this spread exceeds 25bp, banks are running short on reserves — the same condition that triggered the 2019 repo crisis, when the Fed had to inject $75B within 24 hours. That forced injection is what starts your thesis clock.
+            <br/><br/>
+            <strong>Current context:</strong> At ~2bp the market is calm. But with RRP near zero, there is almost no buffer left. A large Treasury auction or quarter-end funding crunch could push this into stress territory without warning. Check weekly.
+          </div>
+          <a class="mlink" href="research/liquidity.html">Alert ladder: normal → mild → stress → trigger → crisis →</a>
+        </div>
+
+        <!-- RRP -->
+        <div class="metric" style="border-color:rgba(249,115,22,0.35);">
+          <div class="metric-top">
+            <div class="metric-label">Fed RRP Balance<br/>Reverse Repo Facility</div>
+            <span class="pill p-crit">CRITICAL</span>
+          </div>
+          <div class="metric-val" style="color:var(--orange);">$28B</div>
+          <div class="metric-sub">Down 99% from $2,554B peak (Dec 2022)</div>
+          <div class="metric-trend"><strong>Trend: Near zero</strong> — approaching the floor, drainage almost complete</div>
+          <div class="metric-body">
+            The RRP facility is a parking lot for excess cash in the financial system. Money market funds and banks park cash here when they have nowhere better to put it. As this drains to zero, it means excess reserves have been fully absorbed — the system is at maximum tightness.
+            <br/><br/>
+            <strong>Why critical:</strong> This is not a warning — this is the precondition already met. At $28B we are functionally at zero. In 2019, the repo market seized when a similar condition hit without warning. The SOFR spike is not an if, it is a when.
+            <br/><br/>
+            <strong>Zero-date projections:</strong> Bull case June 2026. Base case Sept 2026. May floor permanently at $10–20B.
+          </div>
+          <a class="mlink" href="research/liquidity.html">RRP drain mechanics — four causes ranked by probability →</a>
+        </div>
+
+        <!-- WALCL -->
+        <div class="metric">
+          <div class="metric-top">
+            <div class="metric-label">WALCL<br/>Fed Balance Sheet Total Assets</div>
+            <span class="pill p-dim">FLAT — WATCHING</span>
+          </div>
+          <div class="metric-val" style="color:var(--text-mid);">~$6.87T</div>
+          <div class="metric-sub">Reinvestment mode · QT ended Dec 1, 2025</div>
+          <div class="metric-trend"><strong>Trend: Flat</strong> — replacing maturing bonds, not expanding</div>
+          <div class="metric-body">
+            WALCL (Weekly Assets: Federal Reserve Total Assets, published Thursdays 4:30pm ET via H.4.1) is the Fed's balance sheet size. When this number rises sustainably, the Fed is creating new money — this drives M2 growth, which drives BTC with a 90-day lag (r=0.94).
+            <br/><br/>
+            <strong>Why flat matters now:</strong> QT officially ended Dec 1, 2025. The Fed is now in reinvestment mode — rolling over maturing bonds but not adding new ones. Flat is better than shrinking. The thesis requires <em>expansion</em> of +$150B/quarter to activate.
+            <br/><br/>
+            <strong>The 4-week test:</strong> After a SOFR spike forces Fed action, check H.4.1 four consecutive Thursdays. All four rising = sustained QE = thesis intact. Flat after week 2 = sterilized injection = <strong>Kill Switch B triggered.</strong>
+          </div>
+          <a class="mlink" href="https://fred.stlouisfed.org/series/WALCL" target="_blank">FRED: WALCL — check every Thursday 4:30pm ET →</a>
+        </div>
+      </div>
+
+      <!-- 90-DAY LAG BAR -->
+      <div class="stat-bar" style="margin-bottom:10px;">
+        <div>
+          <div class="sb-label">90-Day BTC Response Window</div>
+          <div class="sb-val" style="color:var(--text-dim);">Awaiting trigger</div>
+        </div>
+        <div class="sb-divider"></div>
+        <div class="sb-body">
+          Once WALCL shows 4 consecutive weeks of expansion, start the clock. BTC:M2 correlation (r=0.94) shows BTC responds to liquidity injections with a <strong>70–107 day lag</strong>, centered around 90 days. We are inside the general window from Oct–Dec 2025 QT end, but WALCL has not yet confirmed sustained expansion. When the trigger date is set, this becomes a live countdown.
+        </div>
+        <a href="thesis/btc-m2.html" style="font-family:var(--mono);font-size:10px;color:var(--blue);white-space:nowrap;">M2 correlation research →</a>
+      </div>
+
+      <!-- CORE PCE BAR -->
+      <div class="stat-bar">
+        <div>
+          <div class="sb-label">Core PCE — Inflation Ceiling</div>
+          <div class="sb-val" style="color:var(--yellow);">~2.8%</div>
+        </div>
+        <div class="sb-divider"></div>
+        <div class="sb-body">
+          The Fed's actual inflation target (published monthly by BEA, FRED: PCEPILFE). <strong>Current ~2.8% = Fed has moderate room to expand.</strong> Above 3.5% for 3+ months = structurally blocked — they can only inject the minimum to stop overnight markets from breaking, not sustain QE. <strong style="color:var(--yellow);">Key catalyst: China tariff deal or Ukraine peace removes ~0.7pp, dropping PCE toward 2.1% and giving the Fed full operational liberty.</strong>
+        </div>
+        <a href="research/catalysts.html" style="font-family:var(--mono);font-size:10px;color:var(--blue);white-space:nowrap;">Geo catalyst PCE impact →</a>
+      </div>
+
+      <!-- ══ KILL SWITCHES ══ -->
+      <div class="sh">
+        <span class="sh-title">Kill Switch Status</span>
+        <span class="sh-line"></span>
+        <a class="sh-link" href="research/invalidation.html">full logic & thresholds →</a>
+      </div>
+
+      <div class="ks-wrap">
+        <div class="ks-header">
+          <div class="ks-title">6 switches — review weekly, update when conditions change</div>
+          <span class="pill p-ok">All Clear</span>
+        </div>
+
+        <div class="ks">
+          <div class="ks-top"><span class="dot d-dim"></span><span class="ks-key">A</span><span class="ks-name">Time Kill Switch</span><span class="pill p-dim" style="font-size:9px;padding:2px 7px;">DATE NOT SET</span></div>
+          <div class="ks-body">After WALCL begins sustained expansion, BTC must reach <strong>1.5× your entry price within 18 months</strong>. If it doesn't move on schedule, the correlation is breaking down or the liquidity is not transmitting into crypto — reduce position 50% and reassess the mechanism. This prevents you from holding indefinitely on a thesis that has quietly stopped working.</div>
+          <div class="ks-trigger">⚡ Trigger: <span>Set date = WALCL expansion start + 18 months. Not yet active — WALCL not expanding.</span></div>
+        </div>
+
+        <div class="ks" style="border-color:rgba(74,222,128,0.2);">
+          <div class="ks-top"><span class="dot d-g"></span><span class="ks-key">B</span><span class="ks-name">Mechanism Failure — WALCL 4-Week Test</span><span class="pill p-ok" style="font-size:9px;padding:2px 7px;">INTACT</span></div>
+          <div class="ks-body">The cornerstone kill switch. The thesis depends on the Fed responding to a SOFR crisis with <strong>sustained QE</strong>, not just a temporary sterilized injection. After any Fed injection event, check H.4.1 (Thursdays 4:30pm ET) for four consecutive weeks.
+            <br/><br/>
+            <strong>Type 1 — Sterilized (kills thesis):</strong> WALCL rises 1–2 weeks then flattens. Fed plugged the hole with overnight repo but didn't expand the balance sheet. M2 doesn't grow. BTC correlation doesn't activate.
+            <br/><br/>
+            <strong>Type 2 — Sustained QE (thesis intact):</strong> WALCL rises all 4 consecutive weeks. Fed is creating money at scale. M2 follows in 30–45 days. BTC follows in 90 days.</div>
+          <div class="ks-trigger">⚡ Kill trigger: <span>WALCL fails net expansion over 4 consecutive Thursday H.4.1 readings after confirmed Fed injection</span></div>
+          <a class="ks-lnk" href="research/invalidation.html">Full Type 1 vs Type 2 distinction →</a>
+        </div>
+
+        <div class="ks" style="border-color:rgba(74,222,128,0.2);">
+          <div class="ks-top"><span class="dot d-g"></span><span class="ks-key">C</span><span class="ks-name">Inflation Ceiling — Core PCE</span><span class="pill p-ok" style="font-size:9px;padding:2px 7px;">~2.8% — OK</span></div>
+          <div class="ks-body">The Fed's dual mandate (employment + price stability) constrains aggressive balance sheet expansion when inflation is elevated. <strong>Below 2.5%</strong>: full freedom to expand. <strong>2.5–3.0%</strong>: moderate room (current). <strong>3.0–3.5%</strong>: constrained, expect smaller response. <strong>Above 3.5% for 3+ months</strong>: structurally blocked — reduce position 50%.
+            <br/><br/>
+            Why 3.5% specifically: historically the Fed has tolerated expansion between 2.5–3.0% (2010–2014, early 2020–2021). Above 3.5% sustained, Congressional and political pressure makes full QE nearly untenable. They'd do the minimum — not the thesis.
+            <br/><br/>
+            Check FRED: PCEPILFE, published last Friday of each month by BEA.</div>
+          <div class="ks-trigger">⚡ Kill trigger: <span>Core PCE above 3.5% for 3 consecutive monthly readings → reduce 50%</span></div>
+          <a class="ks-lnk" href="https://fred.stlouisfed.org/series/PCEPILFE" target="_blank">FRED: PCEPILFE (Core PCE) →</a>
+        </div>
+
+        <div class="ks">
+          <div class="ks-top"><span class="dot d-dim"></span><span class="ks-key">D</span><span class="ks-name">Solvency Floor — Loan Servicing</span><span class="pill p-dim" style="font-size:9px;padding:2px 7px;">NEEDS DEFINITION</span></div>
+          <div class="ks-body">You have an <strong>$833/month obligation for 60 months</strong> regardless of what BTC does. This kill switch is not a thesis call — it's a cash flow call. You need to define: (1) Can you cover $833/month from salary alone if positions drop to $10K? (2) For how many months? (3) Is there an emergency reserve? (4) What if you change jobs — most 401k loan plans require full repayment within 60 days of employment change.
+            <br/><br/>
+            Determine this floor now, before a drawdown puts you in emotional decision-making mode.</div>
+          <div class="ks-trigger">⚡ Kill trigger: <span>Position value falls below defined floor AND income cannot cover $833/mo → sell enough to service loan</span></div>
+        </div>
+
+        <div class="ks">
+          <div class="ks-top"><span class="dot d-dim"></span><span class="ks-key">E</span><span class="ks-name">Black Swan — Pre-Committed Exits</span><span class="pill p-dim" style="font-size:9px;padding:2px 7px;">DEFINE EVENTS</span></div>
+          <div class="ks-body">Catastrophic events that are thesis-irrelevant but require immediate 100% exit before you can think clearly. Define these now so there is zero deliberation when one happens. <strong>Candidates:</strong>
+            <br/>• USDT or USDC depeg below $0.90 — systemic stablecoin collapse
+            <br/>• Spot Bitcoin ETF regulatory suspension by SEC
+            <br/>• DXY collapses &gt;20% in under 30 days — paradoxically may hurt BTC short-term
+            <br/>• Bitcoin network-level critical vulnerability discovered
+            <br/><br/>
+            These are not thesis-based decisions. They are pre-committed circuit breakers.</div>
+          <div class="ks-trigger">⚡ Kill trigger: <span>Any pre-defined black swan event → 100% exit, no deliberation</span></div>
+        </div>
+
+        <div class="ks" style="border-color:rgba(74,222,128,0.2);">
+          <div class="ks-top"><span class="dot d-g"></span><span class="ks-key">F</span><span class="ks-name">Mag7 Buyback Shift — Rotation Confirmation</span><span class="pill p-ok" style="font-size:9px;padding:2px 7px;">MONITORING</span></div>
+          <div class="ks-body">The $650B CapEx thesis assumes Mag7 companies redirect buyback capital toward AI infrastructure. When 4+ of 7 show paused/suspended buybacks alongside rising investment-grade bond issuance, structural support for Mag7 prices erodes → capital rotates to small caps and risk assets including BTC.
+            <br/><br/>
+            This is a <strong>confirmation signal</strong> (more thesis upside), not a kill switch — but if AI ROI disappoints and CapEx gets cut, the $650B multiplier disappears. Track per-company in 10-Q filings quarterly.</div>
+          <div class="ks-trigger">⚡ Confirmation: <span>4+ of AAPL, MSFT, GOOGL, META, AMZN, NVDA, TSLA showing PAUSED buybacks + rising IG bond issuance</span></div>
+          <a class="ks-lnk" href="thesis/short-term.html">Mag7 CapEx thesis →</a>
+        </div>
+      </div>
+
+      <!-- ══ PORTFOLIO + JOURNAL ══ -->
+      <div class="sh">
+        <span class="sh-title">Portfolio & Notes</span>
+        <span class="sh-line"></span>
+      </div>
+
+      <div class="g2" style="margin-bottom:14px;">
+        <div class="metric" style="padding:20px 22px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="metric-label">Portfolio Snapshot</div>
+            <a href="portfolio/greg.html" style="font-family:var(--mono);font-size:10px;color:var(--blue);">full detail →</a>
+          </div>
+          <div class="port-row"><span class="port-l">Total deployed</span><span class="port-v" style="color:var(--blue);">$50,000</span></div>
+          <div class="port-row"><span class="port-l">Current value</span><span class="port-v" style="color:var(--text-dim);">— add positions</span></div>
+          <div class="port-row"><span class="port-l">Unrealized P&amp;L</span><span class="port-v" style="color:var(--text-dim);">—</span></div>
+          <div class="port-row"><span class="port-l">Loan balance</span><span class="port-v">$50,000</span></div>
+          <div class="port-row"><span class="port-l">Monthly obligation</span><span class="port-v" style="color:var(--yellow);">$833 / mo</span></div>
+          <div class="port-row"><span class="port-l">Months remaining</span><span class="port-v">60</span></div>
+          <div class="port-row"><span class="port-l">Distance to exit tier 1</span><span class="port-v" style="color:var(--text-dim);">— set entry price</span></div>
+          <div style="margin-top:12px;padding:10px 12px;background:var(--bg2);border-radius:6px;font-size:12px;color:var(--text-dim);line-height:1.65;border:1px solid var(--border);">
+            ⚠ Kill switch D not yet defined. Before next drawdown: determine the price level that forces a loan-servicing sale regardless of thesis conviction.
+          </div>
+        </div>
+
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-bottom:14px;">Thoughts & Working Notes</div>
+          <div class="j-entry">
+            <div class="j-date">2026-02-21</div>
+            <div class="j-text">Rebuilt site architecture from scratch. Four-layer structure confirmed: Cockpit → Thesis → Trading → Research. Kill switches B and C are defined and clear. A, D, E need real numbers — especially D (solvency floor) before the next BTC dip. Need to enter actual positions in portfolio page. CRV/CVX section must be built out — separate page with price targets, market structure, and exit logic specific to those positions.</div>
+            <div class="j-tags">
+              <span class="jtag">site-build</span><span class="jtag">kill-switches</span><span class="jtag">CRV/CVX</span><span class="jtag">solvency-floor</span>
+            </div>
+          </div>
+          <div class="j-entry">
+            <div class="j-date">← add entries above, newest first, date-stamped</div>
+            <div class="j-text" style="color:var(--text-dim);">Write what changed this week. What you're second-guessing. Open questions. Things to research. What you want to build. Keep it honest — this is the working document, not a performance log.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ BUILD QUEUE ══ -->
+      <div class="sh">
+        <span class="sh-title">Site Build Queue</span>
+        <span class="sh-line"></span>
+      </div>
+
+      <div class="bq">
+        <div class="bq-row">
+          <span class="bq-n">01</span>
+          <div style="flex:1;"><div class="bq-title">Portfolio page — enter real positions</div><div class="bq-sub">BTC, ETH, CRV, CVX cost basis and quantity. Define exit tiers with actual price levels. Solvency floor calculation.</div></div>
+          <span class="bq-badge" style="color:var(--red);border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.1);">URGENT</span>
+        </div>
+        <div class="bq-row">
+          <span class="bq-n">02</span>
+          <div style="flex:1;"><div class="bq-title">Kill switch D — define solvency floor</div><div class="bq-sub">Model income vs. $833/month. What price forces a sale? Emergency reserve check. Employment change scenario.</div></div>
+          <span class="bq-badge" style="color:var(--red);border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.1);">URGENT</span>
+        </div>
+        <div class="bq-row">
+          <span class="bq-n">03</span>
+          <div style="flex:1;"><div class="bq-title">CRV / CVX dedicated section</div><div class="bq-sub">Market structure, on-chain concentration data (actual 12–14% individual vs. reported 73%), price targets $1/$3/$6, exit plan.</div></div>
+          <span class="bq-badge" style="color:var(--yellow);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.1);">NEXT</span>
+        </div>
+        <div class="bq-row">
+          <span class="bq-n">04</span>
+          <div style="flex:1;"><div class="bq-title">2026 Trade thesis page — written conviction</div><div class="bq-sub">K-shape → Warsh Fed → OBBBA → CapEx. Probability table. Entry and exit logic. Liquidity flywheel diagram.</div></div>
+          <span class="bq-badge" style="color:var(--blue);border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.1);">QUEUED</span>
+        </div>
+        <div class="bq-row">
+          <span class="bq-n">05</span>
+          <div style="flex:1;"><div class="bq-title">BTC:Debt + BTC:M2 chart pages</div><div class="bq-sub">Live chart overlays. Fair value implied by debt model. 90-day lag countdown timer. Source data links.</div></div>
+          <span class="bq-badge" style="color:var(--blue);border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.1);">QUEUED</span>
+        </div>
+        <div class="bq-row">
+          <span class="bq-n">06</span>
+          <div style="flex:1;"><div class="bq-title">Trading — Elliott Wave structure page</div><div class="bq-sub">Current BTC and ETH counts, key levels, price memory zones. Chart upload with commentary.</div></div>
+          <span class="bq-badge" style="color:var(--text-dim);border-color:var(--border);background:rgba(255,255,255,0.03);">LATER</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="./assets/nav.js"></script>
+</body>
+</html>
