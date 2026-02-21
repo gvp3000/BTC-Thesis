@@ -5,964 +5,587 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 Trade Thesis — BTC Thesis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* ── PAGE-SPECIFIC STYLES ── */
+    :root {
+      --bg:        #111318;
+      --surface:   #181c24;
+      --border:    #232832;
+      --text:      #c8cdd6;
+      --text-soft: #8a92a1;
+      --text-faint:#4d5566;
+      --heading:   #e4e8ef;
+      --accent:    #6ba3f7;
+      --green:     #5ec489;
+      --yellow:    #e2b747;
+      --red:       #cf6363;
+      --serif:     'Source Serif 4', Georgia, serif;
+      --sans:      'DM Sans', system-ui, sans-serif;
+      --mono:      'Space Mono', monospace;
+    }
 
-    /* Argument section numbering */
-    .arg-number {
-      font-family: var(--mono);
-      font-size: 42px;
-      font-weight: 700;
-      color: var(--border-hi);
-      line-height: 1;
-      margin-bottom: 2px;
-      user-select: none;
-    }
-    .arg-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-    .arg-body {
-      color: var(--text-mid);
-      font-size: 13.5px;
-      line-height: 1.85;
-    }
-    .arg-body strong { color: var(--text); font-weight: 500; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Evidence boxes */
-    .evidence {
-      margin-top: 14px;
+    body {
       background: var(--bg);
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-      border-left: 3px solid var(--border-hi);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.85;
+      -webkit-font-smoothing: antialiased;
     }
-    .evidence.confirmed { border-left-color: var(--green); }
-    .evidence.probable   { border-left-color: var(--yellow); }
-    .evidence.uncertain  { border-left-color: var(--orange); }
-    .evidence.risk       { border-left-color: var(--red); }
 
-    .evidence-label {
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ═══════════════════════════════════
+       SITE HEADER
+       ═══════════════════════════════════ */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(17, 19, 24, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .site-brand {
       font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: 1.5px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--heading);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .site-brand span { color: var(--accent); }
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .site-nav a {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-faint);
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+      text-decoration: none;
+    }
+    .site-nav a:hover {
+      color: var(--text-soft);
+      background: rgba(255,255,255,0.04);
+      text-decoration: none;
+    }
+    .site-nav a.active {
+      color: var(--accent);
+      background: rgba(107,163,247,0.08);
+    }
+
+    /* ═══════════════════════════════════
+       PAGE
+       ═══════════════════════════════════ */
+    .page {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 72px 28px 140px;
+    }
+
+    /* ═══════════════════════════════════
+       TYPOGRAPHY
+       ═══════════════════════════════════ */
+    .page-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--text-faint);
       text-transform: uppercase;
-      margin-bottom: 6px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .lead {
+      font-size: 20px;
+      color: var(--text-soft);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .dateline {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-faint);
+      margin-bottom: 0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
     }
-    .evidence-label.confirmed { color: var(--green); }
-    .evidence-label.probable  { color: var(--yellow); }
-    .evidence-label.uncertain { color: var(--orange); }
-    .evidence-label.risk      { color: var(--red); }
-
-    .evidence p {
-      color: var(--text-dim);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-    .evidence p strong { color: var(--text-mid); }
-
-    /* The thesis statement */
-    .thesis-statement {
-      background: linear-gradient(135deg, rgba(56,189,248,0.06), rgba(167,139,250,0.06));
-      border: 1px solid rgba(56,189,248,0.2);
-      border-radius: var(--radius);
-      padding: 28px 28px;
-    }
-    .thesis-statement blockquote {
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--text);
-      line-height: 1.7;
-      font-style: italic;
-      margin: 0;
-    }
-
-    /* Chain diagram */
-    .chain {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-    .chain-link {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 0;
-    }
-    .chain-pipe {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .chain-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      border: 2px solid;
-    }
-    .chain-line {
-      width: 2px;
-      flex: 1;
-      min-height: 20px;
-    }
-    .chain-content {
-      padding: 0 0 24px 0;
-    }
-    .chain-name {
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .chain-desc {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
-    .chain-timing {
-      font-family: var(--mono);
-      font-size: 10px;
-      margin-top: 5px;
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 3px;
-      background: rgba(255,255,255,0.03);
-    }
-
-    /* Metric rows */
-    .metric-row {
-      display: grid;
-      grid-template-columns: 140px 1fr 160px 140px;
-      gap: 16px;
-      align-items: start;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .metric-row:last-child { border-bottom: none; }
-    .metric-name {
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .metric-source {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--text-dim);
-      margin-top: 3px;
-    }
-    .metric-what {
-      font-size: 12px;
-      color: var(--text-mid);
-      line-height: 1.65;
-    }
-    .metric-signal {
-      font-size: 11px;
-      line-height: 1.5;
-    }
-    .metric-freq {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-    }
-
-    /* Kill switch table */
-    .kill-row {
-      display: grid;
-      grid-template-columns: 44px 1fr 1fr 1fr;
-      gap: 14px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-      align-items: start;
-    }
-    .kill-row:last-child { border-bottom: none; }
-    .kill-icon {
-      font-size: 22px;
-      text-align: center;
-      line-height: 1;
-      padding-top: 2px;
-    }
-    .kill-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-    .kill-desc {
-      font-size: 12px;
-      color: var(--text-dim);
-      line-height: 1.6;
-    }
-    .kill-action {
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    /* Section dividers */
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 40px 0 36px;
-    }
-
-    /* Callout */
-    .callout {
-      border-radius: var(--radius-sm);
-      padding: 16px 18px;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-    .callout.blue {
-      background: rgba(56,189,248,0.06);
-      border: 1px solid rgba(56,189,248,0.15);
-      color: rgba(56,189,248,0.85);
-    }
-    .callout.yellow {
-      background: rgba(251,191,36,0.06);
-      border: 1px solid rgba(251,191,36,0.15);
-      color: rgba(251,191,36,0.85);
-    }
-    .callout.red {
-      background: rgba(248,113,113,0.06);
-      border: 1px solid rgba(248,113,113,0.15);
-      color: rgba(248,113,113,0.85);
-    }
-    .callout.green {
-      background: rgba(74,222,128,0.06);
-      border: 1px solid rgba(74,222,128,0.15);
-      color: rgba(74,222,128,0.85);
-    }
-
-    /* Updated timestamp */
-    .updated {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .updated::before {
-      content: '';
-      display: inline-block;
-      width: 6px; height: 6px;
+    .dateline-dot {
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--green);
     }
 
-    /* Responsive metric rows */
-    @media (max-width: 900px) {
-      .metric-row { grid-template-columns: 1fr; gap: 6px; }
-      .kill-row { grid-template-columns: 32px 1fr; }
-      .kill-row > :nth-child(3),
-      .kill-row > :nth-child(4) { grid-column: 2; }
+    h2 {
+      font-family: var(--sans);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 20px;
     }
 
-    /* Current reading badges */
-    .current-reading {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 3px 8px;
+    h3 {
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    strong { color: var(--heading); font-weight: 600; }
+
+    .section-break {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 56px 0 52px;
+    }
+
+    /* ═══════════════════════════════════
+       THESIS STATEMENT
+       ═══════════════════════════════════ */
+    .thesis-statement {
+      margin: 40px 0 36px;
+      padding: 32px;
+      background: var(--surface);
+      border-left: 3px solid var(--accent);
       border-radius: 4px;
-      background: rgba(255,255,255,0.04);
-      color: var(--text-mid);
-      margin-top: 6px;
+      font-size: 19px;
+      line-height: 1.8;
     }
 
-    /* Inline header anchors */
-    h2.section-heading {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 24px;
+    /* ═══════════════════════════════════
+       REASONS — clean numbered list
+       ═══════════════════════════════════ */
+    .reason-item {
+      margin-bottom: 36px;
     }
-    h2.section-heading span {
-      color: var(--text-dim);
-    }
+    .reason-item:last-child { margin-bottom: 0; }
 
-    /* Confidence bar */
-    .confidence-bar {
+    .reason-title {
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 8px;
       display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: 10px;
-      margin-top: 10px;
     }
-    .confidence-track {
-      flex: 1;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
+    .reason-title .num {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-faint);
+      min-width: 22px;
     }
-    .confidence-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.3s ease;
+
+    .reason-item p {
+      font-size: 16px;
+      color: var(--text-soft);
+      line-height: 1.8;
+      margin-bottom: 8px;
+      padding-left: 32px;
     }
+
     .confidence-label {
+      display: inline-block;
       font-family: var(--mono);
       font-size: 10px;
-      white-space: nowrap;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-left: 32px;
+    }
+    .confidence-label.confirmed { background: rgba(94,196,137,0.1); color: var(--green); }
+    .confidence-label.probable  { background: rgba(226,183,71,0.1); color: var(--yellow); }
+    .confidence-label.uncertain { background: rgba(214,138,75,0.08); color: #d68a4b; }
+
+    /* ═══════════════════════════════════
+       METRICS — clean reference list
+       ═══════════════════════════════════ */
+    .metric-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .metric-item:first-child { padding-top: 0; }
+    .metric-item:last-child { border-bottom: none; }
+
+    .metric-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .metric-item p {
+      font-size: 16px;
+      color: var(--text-soft);
+      line-height: 1.75;
+      margin-bottom: 6px;
+    }
+    .metric-item p:last-child { margin-bottom: 0; }
+    .metric-source {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+    .metric-source a { color: var(--accent); opacity: 0.7; }
+    .metric-source a:hover { opacity: 1; }
+
+    /* ═══════════════════════════════════
+       CALLOUTS
+       ═══════════════════════════════════ */
+    .callout {
+      margin: 28px 0;
+      padding: 22px 26px;
+      border-radius: 6px;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .callout-blue {
+      background: rgba(107,163,247,0.06);
+      border: 1px solid rgba(107,163,247,0.12);
+      color: rgba(107,163,247,0.85);
+    }
+    .callout-yellow {
+      background: rgba(226,183,71,0.05);
+      border: 1px solid rgba(226,183,71,0.12);
+      color: rgba(226,183,71,0.85);
+    }
+
+    /* ═══════════════════════════════════
+       KILL SWITCHES
+       ═══════════════════════════════════ */
+    .kill-item {
+      margin-bottom: 24px;
+    }
+    .kill-item:last-child { margin-bottom: 0; }
+    .kill-item strong {
+      color: var(--heading);
+      font-weight: 600;
+    }
+    .kill-item p {
+      font-size: 16px;
+      color: var(--text-soft);
+      line-height: 1.75;
+      margin-bottom: 4px;
+    }
+    .kill-action {
+      font-size: 14px;
+      color: var(--red);
+      font-weight: 500;
+      font-family: var(--sans);
+    }
+
+    /* ═══════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════ */
+    .page-footer {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-faint);
+      line-height: 1.8;
+    }
+    .page-footer a { color: var(--accent); opacity: 0.7; }
+    .page-footer a:hover { opacity: 1; }
+
+    /* ═══════════════════════════════════
+       OPEN QUESTIONS LIST
+       ═══════════════════════════════════ */
+    .open-list {
+      font-size: 16px;
+      color: var(--text-soft);
+      line-height: 2;
+    }
+    .open-list .q-num {
+      color: var(--yellow);
+      font-family: var(--mono);
+      font-size: 13px;
+      margin-right: 6px;
+    }
+
+    /* ═══════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════ */
+    @media (max-width: 680px) {
+      .page { padding: 48px 20px 100px; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 21px; }
+      body { font-size: 17px; }
+      .lead { font-size: 18px; }
+      .thesis-statement { font-size: 17px; padding: 24px; }
+      .site-header-inner { padding: 0 20px; }
+      .site-nav a { padding: 6px 10px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
-<div class="site-layout">
-  <nav class="site-nav" id="site-nav"></nav>
 
-  <main class="site-main">
-    <div class="page-wrap">
+<!-- ═══════════════ SITE HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-brand" href="../index.html">BTC <span>THESIS</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="../tracker.html">Tracker</a>
+      <a href="../catalysts.html">Catalysts</a>
+      <a href="2026-trade.html" class="active">2026 Trade</a>
+    </nav>
+  </div>
+</header>
 
-      <!-- ═══════════════════════ PAGE HEADER ═══════════════════════ -->
-      <header class="page-header">
-        <div class="page-eyebrow">THE LIQUIDITY PLAY</div>
-        <h1 class="page-title">2026 Trade Thesis</h1>
-        <p class="page-subtitle">
-          Why monetary expansion is structurally likely in 2026, how to track it in real time, and the specific conditions that kill the trade. This is a living document — updated as evidence changes.
-        </p>
-        <div style="margin-top: 14px; display: flex; gap: 16px; align-items: center;">
-          <span class="updated">Last updated: February 21, 2026</span>
-          <span class="badge yellow">BUILDING CONVICTION</span>
-        </div>
-      </header>
+<!-- ═══════════════ PAGE ═══════════════ -->
+<main class="page">
 
-      <div class="stack">
+  <p class="page-label">Thesis · Living Document</p>
+  <h1>2026 Trade Thesis</h1>
+  <p class="lead">
+    Why I believe monetary expansion is structurally likely before November 2026, what I'm watching to confirm it, and the conditions that kill the trade.
+  </p>
+  <p class="dateline">
+    <span class="dateline-dot"></span>
+    Updated February 21, 2026
+  </p>
 
-        <!-- ═══════════════════════ THE THESIS ═══════════════════════ -->
-        <div class="thesis-statement">
-          <div class="card-eyebrow" style="color: var(--blue); margin-bottom: 12px;">THE THESIS IN 10 SECONDS</div>
-          <blockquote>
-            Structural forces — RRP depletion, fiscal deficits, political midterm pressure, and a dovish Fed transition — converge in 2026 to produce monetary expansion. BTC, as a fixed-supply asset with 91% correlation to money supply growth, is positioned to capture the upside of that expansion with a ~90-day lag.
-          </blockquote>
-          <div style="margin-top: 14px; font-size: 12px; color: var(--text-dim);">
-            The specific <em>mechanism</em> of expansion doesn't matter. What matters is that the <strong style="color: var(--text-mid);">incentive structure</strong> for expansion is overwhelming and the <strong style="color: var(--text-mid);">constraints against it</strong> are weakening.
-          </div>
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <hr class="section-break">
 
-        <!-- ═══════════════════════ SECTION 1: WHY ═══════════════════════ -->
-        <hr class="section-divider" />
-        <h2 class="section-heading" id="why"><span>SECTION 1 ──</span> WHY I EXPECT MONETARY EXPANSION</h2>
+  <h2>The argument</h2>
 
-        <div class="callout blue">
-          <strong>How to read this section:</strong> Each argument is independent. The thesis doesn't require all of them to fire — it requires <em>enough</em> of them to produce net expansion. They are ordered from most mechanical (least human choice required) to most political (most dependent on decisions). The strength of the thesis is that the forces are <em>convergent</em>: multiple independent drivers pushing in the same direction simultaneously.
-        </div>
+  <div class="thesis-statement">
+    For seven independent reasons, I expect net monetary expansion in the United States over the next ten months. Bitcoin, as a fixed-supply asset with 91% historical correlation to money supply growth, captures that expansion with a roughly 90-day lag. The thesis doesn't require all seven forces to fire — just enough to produce net expansion within the window.
+  </div>
 
-        <!-- ARG 1: QT ENDED -->
-        <div class="card" id="arg-qt">
-          <div class="arg-number">01</div>
-          <div class="arg-title">Quantitative tightening is over. The baseline is no longer contracting.</div>
-          <div class="arg-body">
-            The Fed officially ended QT on <strong>December 1, 2025</strong>. For the past two years, the Fed was actively draining ~$95 billion per month by letting maturing securities roll off the balance sheet. That drain has stopped. The Fed is now reinvesting 100% of maturing proceeds.
-            <br><br>
-            This doesn't mean expansion has started — it means the <strong>headwind has been removed</strong>. The balance sheet is now flat at ~$6.6 trillion. Every other force described below now pushes against zero resistance instead of fighting a $95B/month current.
-            <br><br>
-            Think of it as a dam: QT was water flowing out. The drain is now closed. Every new input (fiscal spending, rate cuts, TGA drawdowns) now <em>accumulates</em> instead of being offset.
-          </div>
-          <div class="evidence confirmed">
-            <div class="evidence-label confirmed"><span class="dot green"></span> CONFIRMED — THIS HAS ALREADY HAPPENED</div>
-            <p>
-              <strong>WALCL flat since Dec 2025.</strong> Fed H.4.1 releases show total assets stabilized at ~$6.6T. QT2 officially ended per FOMC statement. No ambiguity — this is settled fact.
-            </p>
-          </div>
-        </div>
+  <p>
+    The specific mechanism — rate cuts, balance sheet expansion, fiscal spending, or all three — matters less than the structural reality: the <strong>incentive to expand is overwhelming</strong> and the <strong>constraints against it are weakening</strong>.
+  </p>
 
-        <!-- ARG 2: RRP DEPLETED -->
-        <div class="card" id="arg-rrp">
-          <div class="arg-number">02</div>
-          <div class="arg-title">The Reverse Repo facility is depleted. The Fed's liquidity buffer is gone.</div>
-          <div class="arg-body">
-            The RRP facility held <strong>$2.5 trillion</strong> at its peak in 2023. It was the Fed's shock absorber — excess cash parked safely overnight by money market funds. As of early 2026, it's near zero.
-            <br><br>
-            <strong>Why this matters mechanically:</strong> When money market funds had $2.5T in RRP, the system had a massive cushion. If overnight rates spiked, cash could flow out of RRP and back into the market to stabilize things. That cushion is now gone. The next time the overnight funding market tightens, there is no buffer. The Fed has to respond directly.
-            <br><br>
-            <strong>This is the most mechanical signal in the thesis.</strong> It requires no political decision, no vote, no announcement. When SOFR breaks above the Fed Funds ceiling, the Fed <em>must</em> inject liquidity to maintain rate control — because rate control <em>is</em> the Fed's primary job. The only question is timing: does it happen this quarter or next?
-          </div>
-          <div class="evidence confirmed">
-            <div class="evidence-label confirmed"><span class="dot green"></span> CONFIRMED — OBSERVABLE ON FRED DAILY</div>
-            <p>
-              <strong>RRP balance near zero.</strong> Down from $2.5T peak. FRED RRPONTSYD shows facility nearly drained. The structural constraint is in place — no longer speculative.
-            </p>
-          </div>
-          <div class="evidence probable" style="margin-top: 8px;">
-            <div class="evidence-label probable"><span class="dot yellow" style="box-shadow: none;"></span> PROBABLE — SOFR SPIKE TIMING</div>
-            <p>
-              SOFR is currently running at <strong>~3.65–3.73%</strong> against a Fed Funds ceiling of <strong>3.75%</strong>. Normal spread is ±5bp. A quarter-end squeeze or an unexpected funding demand could push SOFR above the ceiling at any point. Historical analog: September 2019 — SOFR went from normal to 10% in one day when a similar reserve scarcity condition existed.
-            </p>
-          </div>
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <hr class="section-break">
 
-        <!-- ARG 3: RATE CUTS PROJECTED -->
-        <div class="card" id="arg-rates">
-          <div class="arg-number">03</div>
-          <div class="arg-title">FOMC members are projecting three more rate cuts in 2026.</div>
-          <div class="arg-body">
-            The Fed already cut rates three times in 2025 (September–December), bringing the target range to <strong>3.50–3.75%</strong>. Multiple FOMC members have included three additional cuts in their 2026 Summary of Economic Projections.
-            <br><br>
-            <strong>Why rate cuts = monetary expansion:</strong> Lower rates → cheaper borrowing → bank lending expands → credit creation → M2 grows. Each 25bp cut adds roughly $40 billion in credit creation capacity as the cost of borrowing drops for businesses and consumers. Three cuts = ~$120B in new credit capacity, before any Fed balance sheet action.
-            <br><br>
-            Vice Chair Bowman's January 2026 speech is instructive: she noted that <strong>underlying core PCE (excluding tariff effects) is tracking close to 2%</strong>, and that labor market fragility — not inflation — is the greater risk. Her SEP includes three cuts for 2026. The question is pacing, not direction.
-          </div>
-          <div class="evidence probable">
-            <div class="evidence-label probable"><span class="dot yellow" style="box-shadow: none;"></span> PROBABLE — FOMC DOT PLOT SUPPORTS, BUT NOT GUARANTEED</div>
-            <p>
-              <strong>Bowman (Jan 2026):</strong> "My Summary of Economic Projections includes three cuts for this year." She described current policy as "moderately restrictive" and cited labor market fragility as the primary risk. But noted the debate is between front-loading cuts vs. gradual pacing — both paths lead to lower rates, the question is speed.
-              <br><br>
-              <strong>Constraint:</strong> Tariff effects are keeping headline core PCE at ~3%. If tariff escalation pushes this higher, the Fed's room to cut narrows. This is the primary risk to the rate cut path.
-            </p>
-          </div>
-        </div>
+  <h2>Seven reasons to expect expansion</h2>
 
-        <!-- ARG 4: WARSH FED TRANSITION -->
-        <div class="card" id="arg-warsh">
-          <div class="arg-number">04</div>
-          <div class="arg-title">The Warsh Fed transition creates a dovish pivot point at mid-year.</div>
-          <div class="arg-body">
-            Kevin Warsh was nominated as Fed Chair on <strong>January 30, 2026</strong>. Powell's term expires May 15. If confirmed, Warsh's first FOMC meeting as chair would be approximately <strong>June 2026</strong>.
-            <br><br>
-            Warsh was historically hawkish — he resigned from the Fed in 2011 over loose policy. But his public positioning has shifted dramatically during the nomination process. Renaissance Macro Research notes his current dovishness "stems from convenience." He has signaled belief that AI-driven productivity gains allow faster growth without inflation, which would justify lower rates.
-            <br><br>
-            <strong>The structural point:</strong> Stephen Miran, already confirmed as a Fed governor, has been pushing for rate cuts since joining. Warsh + Miran would create a <em>dovish majority bloc</em> on the FOMC. The market is currently pricing only 2 cuts in 2026 — if Warsh surprises dovish on his first statement, risk assets could reprice rapidly.
-          </div>
-          <div class="evidence uncertain">
-            <div class="evidence-label uncertain"><span class="dot orange"></span> UNCERTAIN — STRONG CIRCUMSTANTIAL, NOT PROVEN</div>
-            <p>
-              <strong>For:</strong> Trump has explicitly demanded lower rates since 2018. Warsh knows what's expected. Miran already pushing cuts from inside. Historical pattern of presidents engineering compliant Feds.
-              <br><br>
-              <strong>Against:</strong> Warsh may prioritize legacy over pandering. Tillis blocking confirmation until DOJ Powell probe resolved — timing risk. Fed chair doesn't dictate alone; 12-member FOMC votes. Bond market may punish aggressive cuts with higher long yields.
-              <br><br>
-              <strong>Net assessment:</strong> Directionally dovish is likely. The magnitude is uncertain. The thesis does not require Warsh to be aggressively dovish — it requires the combination of all forces to produce net expansion.
-            </p>
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">01</span> QT ended — the headwind is gone</div>
+    <p>
+      The Fed ended quantitative tightening on December 1, 2025, stopping a two-year drain of ~$95B/month. The balance sheet is now flat at ~$6.6T. This alone isn't expansion, but it means every force below pushes against <strong>zero resistance</strong> instead of fighting a strong current.
+    </p>
+    <span class="confidence-label confirmed">Confirmed</span>
+  </div>
 
-        <!-- ARG 5: POLITICAL PRESSURE -->
-        <div class="card" id="arg-midterms">
-          <div class="arg-number">05</div>
-          <div class="arg-title">Midterm election pressure creates a structural incentive for loose conditions.</div>
-          <div class="arg-body">
-            <strong>November 2026 midterm elections</strong> are the hard deadline. Historical pattern: presidents engineer loose monetary and fiscal conditions 12–18 months before midterms to boost economic sentiment.
-            <br><br>
-            The current situation amplifies this: the US economy is <strong>K-shaped</strong> — asset owners are doing well while wage earners face affordability pressure from high interest rates, elevated housing costs, and tariff-driven price increases. This is precisely the voter pain profile that forces political action.
-            <br><br>
-            <strong>The key insight:</strong> The K-shaped economy doesn't just create misery — it creates political incentives that produce the exact liquidity conditions for a risk-asset expansion. The cure for the K-shape (fiscal stimulus, rate cuts, spending) <em>is</em> the catalyst for BTC.
-          </div>
-          <div class="evidence probable">
-            <div class="evidence-label probable"><span class="dot yellow" style="box-shadow: none;"></span> PROBABLE — HISTORICAL PRECEDENT + CURRENT INCENTIVES</div>
-            <p>
-              <strong>Historical:</strong> Nixon-Burns 1972 is the clearest analog — an administration engineering loose conditions pre-election. The incentive is bipartisan and structural, not unique to any administration.
-              <br><br>
-              <strong>Current:</strong> Consumer confidence declining. Affordability a top voter concern. Trump's approval linked to economic sentiment. The political math points one direction: looser.
-            </p>
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">02</span> The Fed's liquidity buffer is depleted</div>
+    <p>
+      The Reverse Repo Facility — which held $2.5T at peak — is near zero. This is the most mechanical signal in the thesis. With no buffer, the next time overnight funding tightens, the Fed must inject directly. No vote required. The 2019 repo crisis happened under the same conditions.
+    </p>
+    <span class="confidence-label confirmed">Confirmed</span>
+  </div>
 
-        <!-- ARG 6: FISCAL SPENDING -->
-        <div class="card" id="arg-fiscal">
-          <div class="arg-number">06</div>
-          <div class="arg-title">Massive fiscal spending is already legislated and rolling into the economy.</div>
-          <div class="arg-body">
-            The <strong>One Big Beautiful Bill Act (OBBBA)</strong>, signed July 4, 2025, authorized $135–140B in consumer stimulus with provisions rolling into effect throughout 2026. This adds ~$2.8 trillion to the deficit over 10 years.
-            <br><br>
-            On top of this, the CBO projects a <strong>$1.9–2.1 trillion deficit</strong> for FY2026. Treasury must issue bonds to fund this gap. More Treasury issuance = more liquidity the system needs to absorb = pressure on the Fed to accommodate.
-            <br><br>
-            The debt ceiling is suspended through January 1, 2027 (an OBBBA provision), removing any constraint on Treasury borrowing in the meantime. This is a fiscal fire hose with no shutoff valve until 2027.
-          </div>
-          <div class="evidence confirmed">
-            <div class="evidence-label confirmed"><span class="dot green"></span> CONFIRMED — LEGISLATION PASSED, SPENDING AUTHORIZED</div>
-            <p>
-              <strong>OBBBA:</strong> Signed into law. Tax refunds ~$65B higher in 2026. Consumer stimulus rolling out. IRS refund data trackable weekly.
-              <br><br>
-              <strong>Deficit:</strong> CBO baseline projection public. Monthly Treasury statements confirm trajectory. Debt ceiling suspended — no constraint.
-            </p>
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">03</span> FOMC projects three more rate cuts this year</div>
+    <p>
+      After three cuts in 2025, Fed Funds sit at 3.50–3.75%. Vice Chair Bowman's January speech included three more in her projections, citing labor market fragility. Each 25bp cut creates ~$40B in credit capacity. Three cuts = ~$120B flowing through the banking system.
+    </p>
+    <span class="confidence-label probable">Probable</span>
+  </div>
 
-        <!-- ARG 7: AI CAPEX -->
-        <div class="card" id="arg-capex">
-          <div class="arg-number">07</div>
-          <div class="arg-title">~$750B in AI CapEx is flowing through the real economy.</div>
-          <div class="arg-body">
-            The hyperscalers (Microsoft, Google, Amazon, Meta) committed to roughly <strong>$750B in combined capital expenditure</strong> for AI infrastructure. This spending flows into the real economy: data center construction, chip manufacturing, energy infrastructure, real estate, and supply chains.
-            <br><br>
-            Unlike financial asset purchases, CapEx has a <strong>multiplier effect</strong> — each dollar spent creates income for workers and suppliers who then spend it again. Even if only 20–30% flows into financial assets, that's $150–225B of additional demand for risk assets.
-          </div>
-          <div class="evidence uncertain">
-            <div class="evidence-label uncertain"><span class="dot orange"></span> UNCERTAIN — COMMITTED BUT NOT YET FULLY DEPLOYED</div>
-            <p>
-              <strong>Risk:</strong> If AI ROI disappoints in H2 2026, hyperscalers could pull back on CapEx commitments. If 2+ announce >25% reductions, this pillar weakens significantly. Monitor quarterly earnings calls.
-            </p>
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">04</span> Massive fiscal spending is already law</div>
+    <p>
+      The One Big Beautiful Bill Act authorized $135–140B in stimulus rolling into 2026, with the CBO projecting a $1.9–2.1T deficit for the year. The debt ceiling is suspended through January 2027. This money doesn't need new legislation — it's already authorized and flowing.
+    </p>
+    <span class="confidence-label confirmed">Confirmed</span>
+  </div>
 
-        <!-- ARG 8: GLOBAL M2 -->
-        <div class="card" id="arg-global">
-          <div class="arg-number">08</div>
-          <div class="arg-title">Global liquidity is at all-time highs and expanding.</div>
-          <div class="arg-body">
-            Global M2 money supply has surpassed <strong>$111 trillion</strong>. The ECB is cutting rates. The BOJ remains accommodative. China is stimulating. BTC is a global asset that responds to global liquidity — not just US conditions.
-            <br><br>
-            If the dollar weakens relative to other currencies (plausible given rate cuts + fiscal expansion), international demand for BTC as a hard asset increases. Dollar weakening is both a <em>result</em> of the expansion thesis and an <em>accelerant</em> for BTC specifically.
-          </div>
-          <div class="evidence probable">
-            <div class="evidence-label probable"><span class="dot yellow" style="box-shadow: none;"></span> PROBABLE — GLOBAL TREND ALREADY UNDERWAY</div>
-            <p>
-              Global M2 at ATH is confirmed. ECB cuts confirmed. Dollar trajectory uncertain — depends on relative policy rates. Net assessment: global liquidity is a tailwind, not a driver.
-            </p>
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">05</span> Midterm elections force loose conditions</div>
+    <p>
+      November 2026 is the deadline. Presidents historically engineer loose monetary conditions 12–18 months before midterms. The K-shaped economy — asset owners thriving, wage earners squeezed — amplifies the incentive. The political cure for that pain <em>is</em> the expansion catalyst.
+    </p>
+    <span class="confidence-label probable">Probable</span>
+  </div>
 
-        <!-- CONVERGENCE -->
-        <div class="card" style="border-color: rgba(56,189,248,0.2);">
-          <div class="card-eyebrow" style="color: var(--blue);">THE CONVERGENCE ARGUMENT</div>
-          <div class="arg-body">
-            No single force above is sufficient on its own. The thesis is that they are <strong>convergent and reinforcing</strong>:
-            <br><br>
-            <strong style="color: var(--green);">QT ended</strong> removes the headwind →
-            <strong style="color: var(--green);">RRP depletion</strong> forces Fed to accommodate →
-            <strong style="color: var(--yellow);">Rate cuts</strong> cheapen credit →
-            <strong style="color: var(--yellow);">Fiscal spending</strong> injects directly →
-            <strong style="color: var(--orange);">Warsh</strong> amplifies the dovish tilt →
-            <strong style="color: var(--yellow);">Midterm pressure</strong> ensures politicians don't reverse course →
-            <strong style="color: var(--orange);">CapEx</strong> adds a real-economy multiplier →
-            <strong style="color: var(--yellow);">Global M2</strong> provides a worldwide tailwind
-            <br><br>
-            <strong style="color: var(--text);">The question is not whether expansion happens. The question is whether it happens <em>fast enough</em> and <em>large enough</em> to move BTC within the trade's time horizon, and whether inflation constrains the Fed's response scale.</strong>
-          </div>
-          <div class="confidence-bar">
-            <span class="confidence-label" style="color: var(--text-dim);">Conviction</span>
-            <div class="confidence-track">
-              <div class="confidence-fill" style="width: 70%; background: linear-gradient(90deg, var(--yellow), var(--green));"></div>
-            </div>
-            <span class="confidence-label" style="color: var(--yellow);">70%</span>
-          </div>
-          <div style="margin-top: 8px; font-size: 11px; color: var(--text-dim);">
-            Expansion direction: high confidence. Magnitude and timing: moderate. This number should update as evidence changes.
-          </div>
-        </div>
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">06</span> The Warsh Fed transition tilts dovish at mid-year</div>
+    <p>
+      Kevin Warsh was nominated as Fed Chair on January 30, 2026 — first meeting as chair would be ~June. Stephen Miran is already pushing for cuts from inside. The thesis doesn't require Warsh to be aggressively dovish. He's an amplifier, not the engine.
+    </p>
+    <span class="confidence-label uncertain">Uncertain</span>
+  </div>
 
+  <div class="reason-item">
+    <div class="reason-title"><span class="num">07</span> AI CapEx and global liquidity provide tailwinds</div>
+    <p>
+      ~$750B in hyperscaler AI spending multiplies through the real economy. Global M2 has surpassed $111T. The ECB is cutting, China is stimulating. BTC is a global asset. These are tailwinds, not drivers — but they push the same direction.
+    </p>
+    <span class="confidence-label uncertain">Uncertain</span>
+  </div>
 
-        <!-- ═══════════════════════ SECTION 2: HOW TO TRACK ═══════════════════════ -->
-        <hr class="section-divider" />
-        <h2 class="section-heading" id="track"><span>SECTION 2 ──</span> HOW TO TRACK MONETARY EXPANSION</h2>
+  <p style="margin-top: 40px;">
+    Three confirmed, two probable, two uncertain — all pushing the same direction at the same time. The question isn't <em>whether</em> expansion happens, but whether it's fast enough and large enough within the window.
+  </p>
 
-        <div class="callout blue">
-          <strong>The mechanism chain:</strong> Every metric below maps to a specific link in the chain: SOFR spike → Fed injects → WALCL rises → M2 grows → BTC responds (~90-day lag). Know which link you're monitoring and what you expect to see.
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <hr class="section-break">
 
-        <!-- The Chain Visualization -->
-        <div class="card">
-          <div class="card-eyebrow">THE MECHANISM CHAIN</div>
-          <div class="chain">
+  <h2>Key metrics to track</h2>
 
-            <div class="chain-link">
-              <div class="chain-pipe">
-                <div class="chain-dot" style="border-color: var(--red); background: rgba(248,113,113,0.2);"></div>
-                <div class="chain-line" style="background: linear-gradient(var(--red), var(--orange));"></div>
-              </div>
-              <div class="chain-content">
-                <div class="chain-name" style="color: var(--red);">SOFR Spike &gt;25bp above ceiling</div>
-                <div class="chain-desc">Overnight funding rate breaks above the Fed Funds target range. The Fed has publicly lost control of its primary policy tool. This is the <em>trigger event</em>.</div>
-                <div class="chain-timing" style="color: var(--red);">Detection: Daily, 8:00am ET via NY Fed</div>
-              </div>
-            </div>
+  <p>
+    Every metric maps to one link in a mechanism chain: <strong>SOFR spikes → Fed injects → WALCL rises → M2 grows → BTC responds (~90 days).</strong> If any link fails, the chain breaks there.
+  </p>
 
-            <div class="chain-link">
-              <div class="chain-pipe">
-                <div class="chain-dot" style="border-color: var(--orange); background: rgba(249,115,22,0.2);"></div>
-                <div class="chain-line" style="background: linear-gradient(var(--orange), var(--yellow));"></div>
-              </div>
-              <div class="chain-content">
-                <div class="chain-name" style="color: var(--orange);">Fed Emergency Injection (24–48 hrs)</div>
-                <div class="chain-desc">Fed announces repo operations to restore rate control. This is non-negotiable — they cannot allow overnight rate failure. The critical question is whether this is a sterilized one-time fix or the start of sustained expansion.</div>
-                <div class="chain-timing" style="color: var(--orange);">Detection: NY Fed open market operations desk announcements</div>
-              </div>
-            </div>
+  <h3>Weekly — Thursdays after 4:30pm ET</h3>
 
-            <div class="chain-link">
-              <div class="chain-pipe">
-                <div class="chain-dot" style="border-color: var(--yellow); background: rgba(251,191,36,0.2);"></div>
-                <div class="chain-line" style="background: linear-gradient(var(--yellow), var(--green));"></div>
-              </div>
-              <div class="chain-content">
-                <div class="chain-name" style="color: var(--yellow);">WALCL Rising on Consecutive H.4.1 Releases (7–28 days)</div>
-                <div class="chain-desc">Fed balance sheet shows sustained expansion — not just a one-week repo blip. <strong>4 consecutive weekly rises = sustained expansion confirmed.</strong> 1–2 weeks then flat = sterilized injection (thesis at risk).</div>
-                <div class="chain-timing" style="color: var(--yellow);">Detection: Every Thursday, 4:30pm ET via FRED WALCL</div>
-              </div>
-            </div>
+  <div class="metric-item">
+    <div class="metric-name">WALCL — Fed Total Assets</div>
+    <p>
+      The single most important number. Rising 4+ consecutive weeks after a Fed injection = sustained expansion confirmed. Rising 1–2 weeks then flat = sterilized injection, chain broke.
+    </p>
+    <p>Currently ~$6.6T, flat since QT ended.</p>
+    <div class="metric-source"><a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">→ FRED WALCL</a></div>
+  </div>
 
-            <div class="chain-link">
-              <div class="chain-pipe">
-                <div class="chain-dot" style="border-color: var(--green); background: rgba(74,222,128,0.2);"></div>
-                <div class="chain-line" style="background: linear-gradient(var(--green), var(--blue));"></div>
-              </div>
-              <div class="chain-content">
-                <div class="chain-name" style="color: var(--green);">M2 Growth Accelerates (30–45 days)</div>
-                <div class="chain-desc">Bank lending expands as excess reserves enter the banking system. M2 money supply begins growing faster than the prior trend. This is the <em>transmission</em> from Fed actions to the real economy.</div>
-                <div class="chain-timing" style="color: var(--green);">Detection: Monthly via FRED M2SL (4–6 week lag in data publication)</div>
-              </div>
-            </div>
+  <div class="metric-item">
+    <div class="metric-name">SOFR — Overnight Funding Rate</div>
+    <p>
+      The trigger signal. Sustained spike >25bp above the Fed Funds ceiling = the Fed has lost rate control, forcing immediate injection. Currently in normal range at ~3.65–3.73%.
+    </p>
+    <div class="metric-source"><a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank">→ NY Fed SOFR</a></div>
+  </div>
 
-            <div class="chain-link">
-              <div class="chain-pipe">
-                <div class="chain-dot" style="border-color: var(--blue); background: rgba(56,189,248,0.2);"></div>
-                <div class="chain-line" style="background: transparent;"></div>
-              </div>
-              <div class="chain-content">
-                <div class="chain-name" style="color: var(--blue);">BTC Responds (70–107 day lag, r=0.94)</div>
-                <div class="chain-desc">Historical correlation between M2 growth and BTC price movement activates. This is the <em>payoff window</em>. The lag is well-documented and consistent across prior cycles.</div>
-                <div class="chain-timing" style="color: var(--blue);">Detection: Price action + MVRV Z-Score + institutional flow data</div>
-              </div>
-            </div>
+  <div class="metric-item">
+    <div class="metric-name">RRP — Liquidity Buffer</div>
+    <p>
+      How much cushion exists before a SOFR spike becomes unavoidable. Near zero = maximum tightness.
+    </p>
+    <div class="metric-source"><a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank">→ FRED RRPONTSYD</a></div>
+  </div>
 
-          </div>
-        </div>
+  <div class="metric-item">
+    <div class="metric-name">TGA — Treasury Spending Account</div>
+    <p>
+      When Treasury spends this balance down, it injects money into banking directly — stealth QE. OBBBA spending flows through here.
+    </p>
+    <div class="metric-source"><a href="https://fred.stlouisfed.org/series/WTREGEN" target="_blank">→ FRED WTREGEN</a></div>
+  </div>
 
-        <!-- Core Weekly Metrics -->
-        <div class="card">
-          <div class="card-eyebrow">CORE MONITORING — WEEKLY CHECK (EVERY THURSDAY)</div>
-          <p style="color: var(--text-dim); font-size: 12px; margin-bottom: 16px; line-height: 1.7;">
-            These are the metrics that determine whether the thesis is alive. Check every Thursday after 4:30pm ET when the Fed publishes H.4.1.
-          </p>
+  <h3>Monthly — Expansion confirmation</h3>
 
-          <div class="metric-row" style="border-bottom-color: var(--border); padding-top: 0;">
-            <div>
-              <div class="metric-name">WALCL</div>
-              <div class="metric-source">FRED WALCL</div>
-              <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank" class="source-link">→ FRED</a>
-            </div>
-            <div class="metric-what">Fed Total Assets. <strong>The single most important number.</strong> Flat = QT over, no expansion yet. Rising = expansion confirmed. Falling = something is wrong.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--green);"><strong>Bullish:</strong> +$150B over 3 months</div>
-              <div class="metric-signal" style="color: var(--yellow); margin-top: 3px;"><strong>Neutral:</strong> Flat ±$50B</div>
-              <div class="metric-signal" style="color: var(--red); margin-top: 3px;"><strong>Bearish:</strong> Declining</div>
-            </div>
-            <div>
-              <div class="metric-freq">Every Thu 4:30pm ET</div>
-              <div class="current-reading">~$6.6T <span class="dot dim" style="width: 5px; height: 5px;"></span> Flat</div>
-            </div>
-          </div>
+  <div class="metric-item">
+    <div class="metric-name">M2 — Money Supply</div>
+    <p>
+      The transmission signal. If WALCL is rising but M2 isn't, banks aren't lending — the chain is broken. M2 acceleration is the prerequisite for the ~90-day BTC lag. Currently ~$22.3T, at all-time highs with slow growth.
+    </p>
+    <div class="metric-source"><a href="https://fred.stlouisfed.org/series/M2SL" target="_blank">→ FRED M2SL</a></div>
+  </div>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-name">SOFR</div>
-              <div class="metric-source">NY Fed</div>
-              <a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" class="source-link">→ NY Fed</a>
-            </div>
-            <div class="metric-what">Overnight funding rate. Tells you how stressed the plumbing is. Normal = within ±5bp of target midpoint. The <em>trigger</em> signal for the entire chain.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--red);"><strong>Trigger:</strong> >25bp above ceiling</div>
-              <div class="metric-signal" style="color: var(--yellow); margin-top: 3px;"><strong>Watch:</strong> Persistent 10-15bp above mid</div>
-              <div class="metric-signal" style="color: var(--green); margin-top: 3px;"><strong>Normal:</strong> Within ±5bp of mid</div>
-            </div>
-            <div>
-              <div class="metric-freq">Daily 8:00am ET</div>
-              <div class="current-reading">~3.65–3.73% <span class="dot dim" style="width: 5px; height: 5px;"></span> Normal</div>
-            </div>
-          </div>
+  <div class="metric-item">
+    <div class="metric-name">Core PCE — Inflation Ceiling</div>
+    <p>
+      Determines how much room the Fed has to expand. Below 2.5% = full room. Above 3.5% for 3+ months = the Fed is structurally blocked. This is the most likely failure mode. Currently ~3% headline, but underlying ex-tariffs closer to 2% per Bowman's January assessment.
+    </p>
+    <div class="metric-source"><a href="https://fred.stlouisfed.org/series/PCEPILFE" target="_blank">→ FRED PCEPILFE</a></div>
+  </div>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-name">RRP Balance</div>
-              <div class="metric-source">FRED RRPONTSYD</div>
-              <a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank" class="source-link">→ FRED</a>
-            </div>
-            <div class="metric-what">Reverse Repo facility balance. Measures how much buffer the system has. Near zero = maximum tightness, SOFR spike risk elevated.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--red);"><strong>Critical:</strong> &lt;$10B (trigger imminent)</div>
-              <div class="metric-signal" style="color: var(--yellow); margin-top: 3px;"><strong>Warning:</strong> &lt;$50B</div>
-              <div class="metric-signal" style="color: var(--green); margin-top: 3px;"><strong>Buffered:</strong> >$100B</div>
-            </div>
-            <div>
-              <div class="metric-freq">Daily</div>
-              <div class="current-reading">Near zero <span class="dot yellow" style="width: 5px; height: 5px; box-shadow: none;"></span> Warning</div>
-            </div>
-          </div>
+  <div class="callout callout-blue">
+    <strong>Weekly workflow (15 min, Thursdays):</strong> Check WALCL, SOFR, RRP after 4:30pm. Monthly, check core PCE on the last Friday. If nothing's changed, close the tab.
+  </div>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-name">TGA Balance</div>
-              <div class="metric-source">FRED WTREGEN</div>
-              <a href="https://fred.stlouisfed.org/series/WTREGEN" target="_blank" class="source-link">→ FRED</a>
-            </div>
-            <div class="metric-what">Treasury General Account. When Treasury spends down this account, it injects money directly into the banking system. Large drawdowns = stealth QE. OBBBA refunds flow through here.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--green);"><strong>Bullish:</strong> Large drops ($50B+/month)</div>
-              <div class="metric-signal" style="color: var(--text-dim); margin-top: 3px;"><strong>Note:</strong> TGA replenishment (build-up) temporarily drains liquidity</div>
-            </div>
-            <div>
-              <div class="metric-freq">Every Thu</div>
-            </div>
-          </div>
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <hr class="section-break">
 
-        <!-- Monthly Metrics -->
-        <div class="card">
-          <div class="card-eyebrow">EXPANSION CONFIRMATION — MONTHLY CHECK</div>
-          <p style="color: var(--text-dim); font-size: 12px; margin-bottom: 16px; line-height: 1.7;">
-            These metrics confirm whether the chain is transmitting. They lag the weekly signals by 30–60 days.
-          </p>
+  <h2>What kills the thesis</h2>
 
-          <div class="metric-row" style="padding-top: 0;">
-            <div>
-              <div class="metric-name">M2 Money Supply</div>
-              <div class="metric-source">FRED M2SL</div>
-              <a href="https://fred.stlouisfed.org/series/M2SL" target="_blank" class="source-link">→ FRED</a>
-            </div>
-            <div class="metric-what"><strong>The transmission signal.</strong> If WALCL is rising but M2 isn't, the Fed is injecting but banks aren't lending — the chain is broken at this link. M2 acceleration is the prerequisite for the 90-day BTC lag.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--green);"><strong>Bullish:</strong> YoY growth accelerating</div>
-              <div class="metric-signal" style="color: var(--red); margin-top: 3px;"><strong>Broken:</strong> WALCL rising, M2 flat</div>
-            </div>
-            <div>
-              <div class="metric-freq">Monthly (4–6 wk lag)</div>
-              <div class="current-reading">~$22.3T <span class="dot dim" style="width: 5px; height: 5px;"></span> ATH, slow growth</div>
-            </div>
-          </div>
+  <p>
+    A thesis without invalidation conditions is a religion. These rules were written while calm. Refer to them when you're not. Full interactive checklist on the <a href="../tracker.html">Invalidation Tracker →</a>
+  </p>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-name">Core PCE</div>
-              <div class="metric-source">FRED PCEPILFE</div>
-              <a href="https://fred.stlouisfed.org/series/PCEPILFE" target="_blank" class="source-link">→ FRED</a>
-            </div>
-            <div class="metric-what"><strong>The inflation ceiling.</strong> This is what the Fed actually targets — not CPI. Determines how much room the Fed has to expand. The most likely failure mode in 2026 is inflation staying elevated enough to constrain Fed response.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--green);">&lt;2.5%: Full room → thesis max strength</div>
-              <div class="metric-signal" style="color: var(--yellow); margin-top: 3px;">2.5–3.0%: Moderate room → thesis works, muted</div>
-              <div class="metric-signal" style="color: var(--orange); margin-top: 3px;">3.0–3.5%: Constrained → reduce upside targets</div>
-              <div class="metric-signal" style="color: var(--red); margin-top: 3px;">&gt;3.5% for 3+ months: Blocked → thesis at risk</div>
-            </div>
-            <div>
-              <div class="metric-freq">Monthly, last Friday</div>
-              <div class="current-reading">~3% headline <span class="dot orange" style="width: 5px; height: 5px;"></span> Constrained</div>
-              <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Underlying ex-tariffs: ~2%</div>
-            </div>
-          </div>
+  <div class="kill-item">
+    <p><strong>Inflation ceiling.</strong> Core PCE above 3.5% for 3+ consecutive months. The Fed can't expand aggressively while inflation is running hot — they'll inject the minimum and stop.</p>
+    <div class="kill-action">→ Reduce position 50%, lower targets</div>
+  </div>
 
-          <div class="metric-row">
-            <div>
-              <div class="metric-name">CME FedWatch</div>
-              <div class="metric-source">CME Group</div>
-              <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="source-link">→ CME</a>
-            </div>
-            <div class="metric-what">Market-implied rate cut probabilities. Shows what the bond market expects. When this shifts toward more cuts, risk assets reprice before the actual cuts happen.</div>
-            <div>
-              <div class="metric-signal" style="color: var(--green);"><strong>Bullish:</strong> &gt;60% odds of next cut</div>
-              <div class="metric-signal" style="color: var(--red); margin-top: 3px;"><strong>Bearish:</strong> Pricing rate hikes</div>
-            </div>
-            <div>
-              <div class="metric-freq">Real-time</div>
-            </div>
-          </div>
-        </div>
+  <div class="kill-item">
+    <p><strong>Sterilized injection.</strong> WALCL flat or falling over 4+ weeks after a confirmed Fed injection. The Fed fixed the immediate problem but didn't follow with sustained expansion. Chain broke.</p>
+    <div class="kill-action">→ Re-evaluate, reduce if other forces insufficient</div>
+  </div>
 
-        <!-- Weekly Workflow -->
-        <div class="card" style="border-color: rgba(74,222,128,0.15);">
-          <div class="card-eyebrow" style="color: var(--green);">YOUR WEEKLY WORKFLOW — 15 MINUTES EVERY THURSDAY</div>
-          <div style="font-size: 13px; color: var(--text-mid); line-height: 1.9;">
-            <strong style="color: var(--text);">1.</strong> After 4:30pm ET Thursday, check FRED WALCL. <em>Is it rising, flat, or falling?</em><br>
-            <strong style="color: var(--text);">2.</strong> Check SOFR from the week. <em>Any readings above 3.80%? Any quarter-end spikes?</em><br>
-            <strong style="color: var(--text);">3.</strong> Check RRP balance. <em>Still near zero? Or has it rebuilt?</em><br>
-            <strong style="color: var(--text);">4.</strong> Monthly: When core PCE publishes (last Friday), check the number. <em>Still below 3.5%?</em><br>
-            <strong style="color: var(--text);">5.</strong> Update the "current reading" notes on this page. <em>Has anything changed the thesis?</em>
-          </div>
-          <div style="margin-top: 14px; font-size: 11px; color: var(--text-dim);">
-            If nothing has changed, close the tab and go live your life. The thesis either fires or it doesn't — watching daily changes nothing. The only action items come from the kill switches below.
-          </div>
-        </div>
+  <div class="kill-item">
+    <p><strong>Time horizon.</strong> Catalysts haven't materialized by your defined deadline. The 2026 trade has a finite window — even if the long-term debt thesis survives, this trade is dead.</p>
+    <div class="kill-action">→ Define your date, define your action</div>
+  </div>
 
+  <div class="kill-item">
+    <p><strong>Black swans.</strong> Stablecoin collapse (USDT/USDC under $0.90), spot BTC ETF suspension, US sovereign credit event, or critical Bitcoin network vulnerability.</p>
+    <div class="kill-action">→ 100% exit, sell first, analyze later</div>
+  </div>
 
-        <!-- ═══════════════════════ SECTION 3: INVALIDATION ═══════════════════════ -->
-        <hr class="section-divider" />
-        <h2 class="section-heading" id="invalidation"><span>SECTION 3 ──</span> HOW TO INVALIDATE THE THESIS</h2>
+  <div class="kill-item">
+    <p><strong>Solvency floor.</strong> If income can't cover obligations while the position is underwater, you're a forced seller at the worst possible time.</p>
+    <div class="kill-action">→ Confirm you can survive position going to zero</div>
+  </div>
 
-        <div class="callout red">
-          <strong>A thesis without defined invalidation conditions is a religion, not a trade.</strong> These kill switches exist so that when you're emotional, scared, or euphoric, you have pre-committed rules. You defined them now, while calm. Refer to them when you're not.
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <hr class="section-break">
 
-        <!-- Kill Switch 1: Inflation Ceiling -->
-        <div class="card" id="kill-inflation">
-          <div class="card-eyebrow" style="color: var(--red);">KILL SWITCH 1 — INFLATION CEILING</div>
-          <div class="arg-title">Core PCE above 3.5% for 3+ consecutive months</div>
-          <div class="arg-body">
-            <strong>Why this kills the thesis:</strong> When inflation is running hot, the Fed cannot expand aggressively — even if forced to inject by a SOFR spike. They inject the <em>minimum necessary</em> to restore order, then stop. The transmission from WALCL → M2 gets blocked because the Fed won't flood the banking system with excess reserves while inflation is elevated.
-            <br><br>
-            <strong>The tariff connection:</strong> This is why tariff escalation is the primary <em>headwind</em> to the thesis — not because tariffs change the RRP mechanism, but because they keep core PCE elevated, which keeps the inflation ceiling in place. Conversely, tariff removal, a China deal, or commodity price disinflation would <em>lift</em> this ceiling and move the thesis to maximum strength.
-            <br><br>
-            <strong>Current status:</strong> Headline core PCE is running at ~3%, partially driven by tariff effects. Underlying trend (ex-tariffs) is closer to 2% per Bowman's January assessment. The Fed is watching this distinction carefully. If tariff effects fade as expected, the ceiling lifts naturally.
-          </div>
-          <div class="evidence risk">
-            <div class="evidence-label risk"><span class="dot red"></span> THIS IS THE MOST LIKELY FAILURE MODE IN 2026</div>
-            <p>
-              <strong>Action if triggered:</strong> Reduce position by 50%. Lower BTC upside targets. The thesis isn't dead — the expansion still happens — but at a muted scale that may not move BTC enough within the trade's time horizon.
-              <br><br>
-              <strong>Action if core PCE drops below 2.5%:</strong> Inflation ceiling lifts. Fed has full room. Thesis moves to maximum strength. Consider increasing position.
-            </p>
-          </div>
-        </div>
+  <h2>Open questions</h2>
 
-        <!-- Kill Switch 2: Sterilized Injection -->
-        <div class="card" id="kill-sterilized">
-          <div class="card-eyebrow" style="color: var(--orange);">KILL SWITCH 2 — STERILIZED INJECTION</div>
-          <div class="arg-title">WALCL fails to show net expansion over 4 weeks after a Fed injection event</div>
-          <div class="arg-body">
-            <strong>The critical distinction:</strong> There are two types of Fed response to a SOFR spike.
-            <br><br>
-            <strong style="color: var(--red);">Type 1 — Emergency repo ops (sterilized):</strong> Fed injects $75–150B via overnight facilities to stop the spike. WALCL ticks up for 1–2 weeks, then flattens as the repos mature and aren't replaced. The Fed is acting as a circuit breaker, not a stimulus provider. <em>This does NOT activate the thesis.</em>
-            <br><br>
-            <strong style="color: var(--green);">Type 2 — Sustained expansion (your thesis):</strong> Fed announces ongoing asset purchases or new facilities that permanently expand reserves. WALCL rises for 4+ consecutive weeks. <em>This activates the thesis.</em>
-            <br><br>
-            <strong>How to distinguish in real time:</strong> After a SOFR spike, watch H.4.1 for 4 consecutive Thursdays. If WALCL rises all 4 → sustained. If it rises 1–2 then flattens → sterilized. Also watch Fed language: "temporary" and "these operations will not be renewed" = sterilized. "Ongoing" and "as needed for an extended period" = sustained.
-          </div>
-          <div class="evidence risk">
-            <div class="evidence-label risk"><span class="dot red"></span> REQUIRES REAL-TIME JUDGMENT — CAN'T PRE-COMMIT FULLY</div>
-            <p>
-              <strong>Action if sterilized:</strong> Do not panic sell. Reassess. The sterilized injection means the Fed is maintaining rate control but not expanding. The other forces (fiscal, rate cuts, global M2) still apply. But the <em>mechanism chain</em> for the largest move has broken at this link. Reduce expectations for BTC magnitude.
-            </p>
-          </div>
-        </div>
+  <p>These need answers before deploying additional capital.</p>
 
-        <!-- Kill Switch 3: Time -->
-        <div class="card" id="kill-time">
-          <div class="card-eyebrow" style="color: var(--yellow);">KILL SWITCH 3 — TIME HORIZON</div>
-          <div class="arg-title">When "delayed" becomes "dead"</div>
-          <div class="arg-body">
-            The 2026 trade has a finite time horizon. It is not a multi-year hold. If the catalysts haven't materialized by a defined date, the thesis is dead for the trade window — even if the long-term debt correlation remains intact.
-            <br><br>
-            <strong>The calendar:</strong> Midterms are November 2026. Political incentive to stimulate exists now through October 2026. If expansion hasn't begun by October 2026, the political catalyst window has closed and won't reopen until the next election cycle.
-          </div>
-          <div class="callout yellow" style="margin-top: 12px;">
-            <strong>ANSWER REQUIRED:</strong> Define the specific date after which you consider the 2026 trade dead. Suggested: if BTC hasn't reached 1.5× your entry price by [your date], what do you do? This is the question you must answer before deploying additional capital.
-          </div>
-        </div>
+  <div class="open-list">
+    <p><span class="q-num">1</span> When does "delayed" become "dead"?</p>
+    <p><span class="q-num">2</span> What's the solvency floor — minimum price before forced selling?</p>
+    <p><span class="q-num">3</span> At what core PCE reading do you reduce? At what do you exit?</p>
+    <p><span class="q-num">4</span> What if Warsh confirmation is blocked indefinitely?</p>
+    <p><span class="q-num">5</span> Which earnings calls signal an AI CapEx cliff?</p>
+  </div>
 
-        <!-- Kill Switch 4: Black Swans -->
-        <div class="card" id="kill-swan">
-          <div class="card-eyebrow" style="color: var(--red);">KILL SWITCH 4 — BLACK SWAN EXITS</div>
-          <div class="arg-title">Events that trigger 100% exit, no analysis, no delay</div>
-          <div class="arg-body">
-            Some events fall outside the thesis framework entirely. Pre-committing to exit protects against paralysis and post-hoc rationalization. If any of these occur, sell first, analyze later.
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px;">
-            <div class="stat-block">
-              <div class="stat-label" style="color: var(--red);">Stablecoin collapse</div>
-              <div style="font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 4px;">
-                USDT or USDC depegs below $0.90. Contagion to all crypto. Liquidity evaporates across the entire market regardless of macro.
-              </div>
-            </div>
-            <div class="stat-block">
-              <div class="stat-label" style="color: var(--red);">Spot BTC ETF suspension</div>
-              <div style="font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 4px;">
-                SEC/CFTC formally suspends trading in BTC ETFs. Removes the institutional on-ramp that has been the primary bid since Jan 2024.
-              </div>
-            </div>
-            <div class="stat-block">
-              <div class="stat-label" style="color: var(--red);">US sovereign credit event</div>
-              <div style="font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 4px;">
-                DXY collapses &gt;20% in under 30 days + Treasury market dysfunction. All risk assets liquidate for margin. BTC may recover but initial move is violent down.
-              </div>
-            </div>
-            <div class="stat-block">
-              <div class="stat-label" style="color: var(--red);">Bitcoin network attack</div>
-              <div style="font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: 4px;">
-                Critical vulnerability or successful 51% attack. Different from price action — this is a fundamental failure of the asset itself.
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- ══════════════════════════════════════ -->
+  <div class="page-footer">
+    This is a living document. Update it as evidence changes.
+    <br><br>
+    <a href="../tracker.html">Invalidation Tracker</a> &nbsp;·&nbsp;
+    <a href="../catalysts.html">Geo Catalysts</a> &nbsp;·&nbsp;
+    <a href="core.html">Core Thesis</a>
+  </div>
 
-        <!-- Kill Switch 5: Solvency -->
-        <div class="card" id="kill-solvency">
-          <div class="card-eyebrow" style="color: var(--purple);">KILL SWITCH 5 — SOLVENCY FLOOR</div>
-          <div class="arg-title">At what price are you a forced seller regardless of thesis?</div>
-          <div class="arg-body">
-            The thesis can be 100% correct and still destroy you if you can't survive the drawdown. If the position drops 70% and income cannot cover your obligations, you face forced liquidation at exactly the worst time.
-            <br><br>
-            <strong>This is how retail investors get destroyed</strong> — not from bad analysis, but from liquidity pressure before the thesis resolves.
-          </div>
-          <div class="callout yellow" style="margin-top: 12px;">
-            <strong>ANSWER REQUIRED:</strong> Can you service all obligations from salary alone if the position is worth $0? For how many months? Do you have a 6-month cash reserve independent of this position? If you cannot answer "yes" to all three, you are overexposed. Size down until you can.
-          </div>
-        </div>
+</main>
 
-        <!-- Summary Table -->
-        <div class="card" style="border-color: rgba(248,113,113,0.15);">
-          <div class="card-eyebrow" style="color: var(--red);">KILL SWITCH SUMMARY — PRINT THIS</div>
-          <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
-              <thead>
-                <tr style="border-bottom: 1px solid var(--border);">
-                  <th style="text-align: left; padding: 8px 12px; color: var(--text-dim); font-family: var(--mono); font-size: 9px; letter-spacing: 1px;">SWITCH</th>
-                  <th style="text-align: left; padding: 8px 12px; color: var(--text-dim); font-family: var(--mono); font-size: 9px; letter-spacing: 1px;">CONDITION</th>
-                  <th style="text-align: left; padding: 8px 12px; color: var(--text-dim); font-family: var(--mono); font-size: 9px; letter-spacing: 1px;">ACTION</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom: 1px solid var(--border);">
-                  <td style="padding: 10px 12px; color: var(--red); white-space: nowrap;">📈 Inflation</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Core PCE &gt;3.5% for 3+ months</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Reduce 50%, lower targets</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                  <td style="padding: 10px 12px; color: var(--orange); white-space: nowrap;">🏦 Mechanism</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">WALCL flat 4+ weeks post-injection</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Re-evaluate, possible reduce</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                  <td style="padding: 10px 12px; color: var(--yellow); white-space: nowrap;">⏱ Time</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">BTC not at 1.5× entry by [your date]</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Reduce 50%, reassess</td>
-                </tr>
-                <tr style="border-bottom: 1px solid var(--border);">
-                  <td style="padding: 10px 12px; color: var(--red); white-space: nowrap;">🌍 Black Swan</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Stablecoin collapse / ETF suspension / network attack</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">100% exit, no analysis</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px 12px; color: var(--purple); white-space: nowrap;">💸 Solvency</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Position below floor + income can't cover obligations</td>
-                  <td style="padding: 10px 12px; color: var(--text-mid);">Sell to service, not more</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Final note -->
-        <div class="card" style="border-color: var(--border);">
-          <div class="card-eyebrow" style="color: var(--text-dim);">OPEN QUESTIONS — TO BE RESOLVED</div>
-          <div style="font-size: 13px; color: var(--text-mid); line-height: 1.9;">
-            <strong style="color: var(--yellow);">1.</strong> Define your specific time kill switch date. When does "delayed" become "dead"?<br>
-            <strong style="color: var(--yellow);">2.</strong> Define your solvency floor. What's the minimum BTC price at which you're forced to sell from income constraint?<br>
-            <strong style="color: var(--yellow);">3.</strong> What is your core PCE monitoring action plan? At what reading do you reduce?<br>
-            <strong style="color: var(--yellow);">4.</strong> Warsh confirmation — what happens if Tillis blocks it indefinitely? How does this change the thesis?<br>
-            <strong style="color: var(--yellow);">5.</strong> What is your CapEx cliff monitoring plan? Which earnings calls matter most?
-          </div>
-          <div style="margin-top: 14px; font-size: 11px; color: var(--text-dim);">
-            These questions don't need to be answered today. But they need to be answered before any additional capital is deployed. Update this page as you resolve them.
-          </div>
-        </div>
-
-      </div>
-      <!-- END STACK -->
-
-    </div>
-  </main>
-</div>
-
-<script src="../assets/nav.js" data-root="../"></script>
 </body>
 </html>
