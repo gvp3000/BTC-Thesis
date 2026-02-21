@@ -1,39 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Thesis Overview — BTC Thesis</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BTC Thesis</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --bg2: #0e1118;
+      --card: #131720;
+      --border: #1a1f2a;
+      --border-hi: #252c3a;
+      --text: #c2c9d6;
+      --text-mid: #6b7a8d;
+      --text-dim: #556270;
+      --text-faint: #2a3340;
+      --heading: #dde3ed;
+      --accent: #4a8fd4;
+      --accent-dim: rgba(74,143,212,0.10);
+      --green: #3fa86e;
+      --green-dim: rgba(63,168,110,0.10);
+      --yellow: #c49a2a;
+      --yellow-dim: rgba(196,154,42,0.10);
+      --red: #c45454;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ═══════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════ */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ═══════════════════════════════════
+       HEADER / NAV
+    ═══════════════════════════════════ */
+    .site-header {
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .site-brand {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: -0.5px;
+    }
+    .site-brand span { color: var(--accent); }
+    .site-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-mid);
+      letter-spacing: 0.3px;
+    }
+
+    /* ═══════════════════════════════════
+       HERO / THESIS SECTION
+    ═══════════════════════════════════ */
+    .thesis-hero {
+      padding: 52px 0 44px;
+    }
+    .thesis-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    .thesis-claim {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--heading);
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      max-width: 580px;
+      margin-bottom: 16px;
+    }
+    .thesis-evidence {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      max-width: 540px;
+      margin-bottom: 20px;
+    }
+    .thesis-version {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .version-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--green);
+      background: var(--green-dim);
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+    }
+    .version-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .version-link:hover { opacity: 1; }
+
+    /* ═══════════════════════════════════
+       DIVIDER
+    ═══════════════════════════════════ */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════
+       GRID: RESEARCH AREAS
+    ═══════════════════════════════════ */
+    .grid-section {
+      padding: 36px 0 40px;
+    }
+    .grid-label {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+    .research-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .grid-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      min-height: 100px;
+    }
+    .grid-card:hover {
+      border-color: var(--border-hi);
+      background: #161c28;
+    }
+    .grid-card.active {
+      border-left: 2px solid var(--accent);
+    }
+
+    .card-status {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .status-active { color: var(--accent); }
+    .status-live { color: var(--yellow); }
+    .status-research { color: var(--text-mid); }
+    .status-draft { color: var(--text-dim); }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .card-date {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 10px;
+    }
+
+    /* ═══════════════════════════════════
+       EVOLUTION TIMELINE
+    ═══════════════════════════════════ */
+    .timeline-section {
+      padding: 40px 0 80px;
+    }
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .timeline-label {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .timeline-hint {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-mid);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .tl-entry {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .tl-entry:last-child { margin-bottom: 0; }
+
+    .tl-dot {
+      position: absolute;
+      left: -28px;
+      top: 4px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
+    .tl-dot.current { background: var(--accent); }
+    .tl-dot.update { background: var(--green); }
+    .tl-dot.research { background: var(--text-mid); }
+    .tl-dot.past { background: var(--text-dim); }
+
+    .tl-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+    .tl-date.current { color: var(--accent); }
+    .tl-date.update { color: var(--green); }
+    .tl-date.research { color: var(--text-mid); }
+    .tl-date.past { color: var(--text-dim); }
+
+    .tl-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 4px;
+    }
+    .tl-title a {
+      transition: color 0.2s;
+    }
+    .tl-title a:hover {
+      color: var(--accent);
+    }
+    .tl-body {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.65;
+      max-width: 520px;
+    }
+    .tl-tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+    .tl-tag.thesis { background: var(--accent-dim); color: var(--accent); }
+    .tl-tag.data { background: var(--green-dim); color: var(--green); }
+    .tl-tag.position { background: var(--yellow-dim); color: var(--yellow); }
+    .tl-tag.site { background: rgba(107,122,141,0.12); color: var(--text-mid); }
+
+    /* ═══════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════ */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* ═══════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════ */
+    @media (max-width: 640px) {
+      .page { padding: 0 20px; }
+      .thesis-claim { font-size: 22px; }
+      .research-grid { grid-template-columns: 1fr; }
+      .site-meta { display: none; }
+      .timeline-hint { display: none; }
+    }
+  </style>
 </head>
 <body>
-<div class="layout">
-  <nav class="nav"></nav>
-  <main class="main">
-    <div class="wrap">
-      <div class="pg-label">Thesis</div>
-      <h1 class="pg-title">Thesis Overview</h1>
-      <div class="pg-sub">Executive summary connecting every thesis page into one logical chain.</div>
 
-      <div class="plan">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-          <div class="plan-label">Content Plan</div>
-          <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#f59e0b;color:#000;">P1</span>
+<div class="page">
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="site-header">
+    <div class="site-brand">BTC <span>THESIS</span></div>
+    <div class="site-meta">Personal investment research · Not financial advice</div>
+  </header>
+
+  <!-- ═══════════════ THESIS HERO ═══════════════ -->
+  <section class="thesis-hero">
+    <div class="thesis-label">Investment Thesis</div>
+    <h1 class="thesis-claim">Bitcoin systematically prices in monetary debasement. The correlation strengthens over time.</h1>
+    <p class="thesis-evidence">
+      R² = 0.913 against U.S. national debt growing at 7.28% annually — a compound pattern
+      85 years in the making that appears mathematically inevitable given political constraints.
+      Everything on this site supports or challenges that claim.
+    </p>
+    <div class="thesis-version">
+      <span class="version-badge">v2 · Jan 2026</span>
+      <a href="#" class="version-link">Read full thesis →</a>
+      <a href="#evolution" class="version-link">View evolution →</a>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════ RESEARCH GRID ═══════════════ -->
+  <section class="grid-section">
+    <div class="grid-label">Active Research</div>
+    <div class="research-grid">
+
+      <a href="thesis/2026-trade.html" class="grid-card active">
+        <div class="card-status status-active">Active Thesis</div>
+        <div class="card-title">2026 Trade</div>
+        <div class="card-desc">Why I expect monetary expansion before the November 2026 midterms. 7 independent catalysts.</div>
+        <div class="card-date">Updated Feb 21, 2026</div>
+      </a>
+
+      <a href="tracker.html" class="grid-card">
+        <div class="card-status status-live">Live Monitoring</div>
+        <div class="card-title">Tracker</div>
+        <div class="card-desc">Weekly metrics — WALCL, SOFR, RRP, TGA, M2, Core PCE. Invalidation checklist and kill switches.</div>
+        <div class="card-date">Checks every Thursday</div>
+      </a>
+
+      <a href="catalysts.html" class="grid-card">
+        <div class="card-status status-live">Timeline</div>
+        <div class="card-title">Catalysts</div>
+        <div class="card-desc">FOMC dates, Warsh confirmation, OBBBA disbursement, AI earnings, geopolitical events.</div>
+        <div class="card-date">Updated weekly</div>
+      </a>
+
+      <a href="#" class="grid-card">
+        <div class="card-status status-research">Position</div>
+        <div class="card-title">CRV / CVX</div>
+        <div class="card-desc">On-chain concentration analysis. Actual individual concentration ~12-14% vs. reported 73%.</div>
+        <div class="card-date">Research in progress</div>
+      </a>
+
+      <a href="#" class="grid-card">
+        <div class="card-status status-research">Sector</div>
+        <div class="card-title">Nuclear Energy</div>
+        <div class="card-desc">Opinion shift thesis — public support 51% → 72%. URA, NLR, SMR, OKLO, CCJ positions.</div>
+        <div class="card-date">Research phase</div>
+      </a>
+
+      <a href="#" class="grid-card">
+        <div class="card-status status-draft">Strategy</div>
+        <div class="card-title">Deployment</div>
+        <div class="card-desc">BTC accumulation strategy, TWAP + crisis buying, 401(k) optimization, tax planning.</div>
+        <div class="card-date">Planned</div>
+      </a>
+
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ═══════════════ EVOLUTION TIMELINE ═══════════════ -->
+  <section class="timeline-section" id="evolution">
+    <div class="timeline-header">
+      <div class="timeline-label">Evolution</div>
+      <div class="timeline-hint">Newest first — how the thesis develops</div>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-entry">
+        <div class="tl-dot current"></div>
+        <div class="tl-date current">FEB 21, 2026</div>
+        <div class="tl-title"><a href="thesis/2026-trade.html">2026 Trade Thesis Published</a></div>
+        <div class="tl-body">
+          7 independent forces converging toward monetary expansion before November midterms.
+          QT ended, RRP depleted, rate cuts projected, OBBBA spending, midterm pressure,
+          Warsh Fed transition, and AI CapEx cycle. Tracking via WALCL → SOFR → M2 mechanism chain.
         </div>
-        <div class="plan-body">
-          <strong>What goes here:</strong> The complete argument in one page. Bitcoin as a hedge against monetary debasement → R² = 0.913 correlation with national debt → debt grows at 7.28% CAGR (85 years of consistency) → compound interest makes this mathematically inevitable → BTC prices this in with ~90-day lag to M2 expansion.<br/><br/>
-          <strong>Two-phase structure:</strong><br/>
-          • <strong>Phase A (2026 Trade):</strong> Catalyst-driven. K-shape → Warsh Fed → OBBBA → CapEx. 18-month window.<br/>
-          • <strong>Phase B (Decade Hold):</strong> Debt model driven. $280K by 2030, $650K+ by 2035. Never-sell core.<br/><br/>
-          <strong>Source files:</strong> <em>bitcoin_debt_analysis.docx</em>, <em>liquidity_thesis_v01.docx</em>, <em>theory_b_supplement.docx</em>
+        <span class="tl-tag thesis">thesis</span>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-dot update"></div>
+        <div class="tl-date update">JAN 15, 2026</div>
+        <div class="tl-title"><a href="#">Core Thesis Updated to v2</a></div>
+        <div class="tl-body">
+          Refined debt-BTC correlation from R² = 0.89 to R² = 0.913 with extended dataset.
+          Added underdamped harmonic oscillator model (ζ ≈ 0.30) — overshoots above fair value
+          followed by predictable undershoots below. Incorporated price memory analysis showing
+          100% revisit rate for every major level from $1K to $69K.
         </div>
+        <span class="tl-tag thesis">thesis</span>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-dot research"></div>
+        <div class="tl-date research">JAN 3, 2026</div>
+        <div class="tl-title"><a href="#">CRV/CVX Concentration Deep-Dive</a></div>
+        <div class="tl-body">
+          On-chain verification revealed actual individual CVX concentration at ~12-14%,
+          not the 73% reported by surface-level metrics. Demonstrates the importance of
+          blockchain-level verification over aggregated dashboards.
+        </div>
+        <span class="tl-tag data">data</span>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-dot past"></div>
+        <div class="tl-date past">DEC 2025</div>
+        <div class="tl-title"><a href="#">Core Thesis v1 — Initial Framework</a></div>
+        <div class="tl-body">
+          Established the debt-BTC correlation framework. U.S. national debt growing at 7.28%
+          annually with 85 years of consistency. Compound interest on existing debt makes the
+          pattern appear mathematically inevitable regardless of political party in power.
+          Bitcoin emerging as the market's preferred instrument for pricing this debasement.
+        </div>
+        <span class="tl-tag thesis">thesis</span>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-dot past"></div>
+        <div class="tl-date past">DEC 2025</div>
+        <div class="tl-title"><a href="#">Nuclear Energy Research Initiated</a></div>
+        <div class="tl-body">
+          U.S. public support for nuclear power shifted from 51% to 72% between 2015-2025.
+          $6.33 trillion oil and gas market represents the addressable opportunity. Identified
+          positions across ETFs (URA, NLR) and SMR pure plays (SMR, OKLO).
+        </div>
+        <span class="tl-tag position">position</span>
+      </div>
+
+      <div class="tl-entry">
+        <div class="tl-dot past"></div>
+        <div class="tl-date past">NOV 2025</div>
+        <div class="tl-title">Site Launched</div>
+        <div class="tl-body">
+          Created this site to organize investment research, track thesis development,
+          and maintain a structured decision-making process. Built to replace scattered
+          notes with a single source of truth.
+        </div>
+        <span class="tl-tag site">site</span>
       </div>
 
     </div>
-  </main>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="site-footer">
+    <div class="footer-left">Personal research · Not financial advice</div>
+    <div class="footer-right">Changelog</div>
+  </footer>
+
 </div>
-<script src="../assets/nav.js"></script>
+
 </body>
 </html>
