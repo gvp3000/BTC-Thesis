@@ -321,6 +321,103 @@
     .trend-down { color: var(--red); }
     .trend-watch { color: var(--orange); }
 
+    /* Argument timeline */
+    .arg-timeline {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .arg-timeline-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .tl-row {
+      display: flex;
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 3px;
+    }
+    .tl-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      min-width: 72px;
+      flex-shrink: 0;
+    }
+    .tl-event {
+      color: var(--text-mid);
+    }
+    .tl-event strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .arg-todo {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba(226,183,71,0.06);
+      border: 1px solid rgba(226,183,71,0.1);
+      border-radius: 5px;
+      font-size: 11px;
+      color: var(--yellow);
+      font-family: var(--mono);
+      font-weight: 600;
+    }
+    .arg-todo span {
+      color: var(--text-mid);
+      font-weight: 400;
+      font-family: var(--font);
+    }
+
+    /* How to use guide */
+    .guide-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 26px 28px;
+      margin-bottom: 36px;
+    }
+    .guide-title {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .guide-step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .guide-step:last-child { margin-bottom: 0; }
+    .guide-num {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 800;
+      color: rgba(74,143,212,0.25);
+      min-width: 28px;
+      line-height: 1.3;
+    }
+    .guide-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .guide-text strong {
+      color: var(--heading);
+      font-weight: 600;
+    }
+    .guide-text em {
+      color: var(--text-mid);
+    }
+
     /* Summary row under grid */
     .args-summary {
       font-size: 14px;
@@ -728,6 +825,9 @@
         flex-direction: column;
         gap: 8px;
       }
+      .arg-timeline[style*="grid"] {
+        grid-template-columns: 1fr !important;
+      }
     }
   </style>
 </head>
@@ -775,6 +875,46 @@
     <p class="intro-prose">
       The specific mechanism — rate cuts, balance sheet expansion, fiscal spending, or all three — matters less than the structural reality: the <strong>incentive to expand is overwhelming</strong> and the <strong>constraints against it are weakening</strong>.
     </p>
+
+    <!-- How to use this page -->
+    <div class="guide-box">
+      <div class="guide-title">How to Use This Page</div>
+
+      <div class="guide-step">
+        <span class="guide-num">1</span>
+        <div class="guide-text">
+          <strong>Understand the thesis in one sentence.</strong> The U.S. government and Federal Reserve will expand money supply before November 2026 midterms. Bitcoin, as a fixed-supply asset, captures that expansion. That's the entire bet.
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <span class="guide-num">2</span>
+        <div class="guide-text">
+          <strong>Read the chart first.</strong> The "Scoreboard" below shows Fed Net Liquidity (the money actually available in markets) vs BTC price over 11 years. When the blue line goes up, the gold line eventually follows. Your 7 arguments are reasons the blue line goes up next. <em>If you don't understand the chart, the arguments below it won't make sense.</em>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <span class="guide-num">3</span>
+        <div class="guide-text">
+          <strong>Learn the 7 arguments from top to bottom.</strong> Each card below has: what it is, why it matters, a timeline of key events, and a to-do for building a tracker. The confirmed ones are facts. The probable ones are forecasts. The uncertain ones are amplifiers. You don't need all 7 — just enough to produce net expansion.
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <span class="guide-num">4</span>
+        <div class="guide-text">
+          <strong>Check the kill conditions weekly.</strong> Scroll to Invalidation Conditions. These are the rules that override the arguments. If any kill condition fires, it doesn't matter how many arguments are confirmed — the trade is reduced or exited. Each links to deeper research explaining <em>why</em> that threshold matters.
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <span class="guide-num">5</span>
+        <div class="guide-text">
+          <strong>Use the sidebar for weekly check-ins.</strong> Thesis status, live metrics, and workflow schedule are pinned on the right. Thursday after 4:30pm ET: check WALCL, SOFR, RRP. Last Friday of the month: check Core PCE. If nothing changed, close the tab.
+        </div>
+      </div>
+    </div>
 
     <!-- Key takeaways (A-style) -->
     <div class="takeaways">
@@ -865,7 +1005,13 @@
           <span class="arg-badge badge-confirmed">Confirmed</span>
         </div>
         <div class="arg-title">QT Ended — Headwind Gone</div>
-        <div class="arg-desc">Fed ended quantitative tightening Dec 2025. Balance sheet flat at ~$6.6T. Every force below pushes against zero resistance instead of fighting a strong current.</div>
+        <div class="arg-desc">The Fed stopped shrinking its balance sheet. Every expansion force below now pushes against zero resistance instead of fighting a draining current.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">Timeline</div>
+          <div class="tl-row"><span class="tl-date">Apr 2022</span><span class="tl-event">QT begins. WALCL peaks at <strong>$8.96T</strong>. Runoff pace: $95B/mo</span></div>
+          <div class="tl-row"><span class="tl-date">Jun 2024</span><span class="tl-event">QT slowed to <strong>$60B/mo</strong>, then $25B/mo</span></div>
+          <div class="tl-row"><span class="tl-date">Dec 2025</span><span class="tl-event"><strong>QT ended.</strong> WALCL stabilized at ~$6.6T. Total reduction: ~$2.3T</span></div>
+        </div>
         <div class="arg-meta">
           <span>Updated Dec 2025</span>
           <span class="arg-trend trend-up">→ FLAT (no longer shrinking)</span>
@@ -878,7 +1024,15 @@
           <span class="arg-badge badge-confirmed">Confirmed</span>
         </div>
         <div class="arg-title">Liquidity Buffer Depleted</div>
-        <div class="arg-desc">RRP near zero after holding $2.5T at peak. Next time overnight funding tightens, the Fed must inject directly. No vote required. 2019 repo crisis conditions.</div>
+        <div class="arg-desc">The Reverse Repo Facility (RRP) was a $2.5T cash buffer. Now it's zero. Next time overnight funding tightens, the Fed must inject directly — no vote required. This is the 2019 repo crisis setup.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">Timeline</div>
+          <div class="tl-row"><span class="tl-date">Dec 2022</span><span class="tl-event">RRP peaks at <strong>$2.55T</strong> — max buffer</span></div>
+          <div class="tl-row"><span class="tl-date">2023–24</span><span class="tl-event">RRP drains <strong>$2.4T</strong> into T-bills. This offset QT — the hidden liquidity injection</span></div>
+          <div class="tl-row"><span class="tl-date">Q1 2025</span><span class="tl-event">RRP drops below <strong>$100B</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Feb 2026</span><span class="tl-event"><strong>RRP ≈ $0.</strong> Buffer fully depleted. Next stress = direct injection</span></div>
+        </div>
+        <div class="arg-todo">TODO: <span>Build RRPONTSYD tracker — auto-pull from FRED weekly. Alert if RRP rises above $50B (would signal reversal).</span></div>
         <div class="arg-meta">
           <span>Updated Feb 2026</span>
           <span class="arg-trend trend-up">↓ RRP at ~$0 (buffer gone)</span>
@@ -891,7 +1045,19 @@
           <span class="arg-badge badge-probable">Probable</span>
         </div>
         <div class="arg-title">FOMC Projects Three More Cuts</div>
-        <div class="arg-desc">Fed Funds at 3.50–3.75% after three 2025 cuts. Bowman's January speech projects three more. Each 25bp cut = ~$40B credit capacity. Three cuts = ~$120B into banking.</div>
+        <div class="arg-desc">Each 25bp cut frees ~$40B in bank lending capacity. Three cuts = ~$120B flowing into the credit system. The question is timing — inflation data gates each decision.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">2024–26 Rate Cut History</div>
+          <div class="tl-row"><span class="tl-date">Sep 2024</span><span class="tl-event">First cut: −50bp → <strong>4.75–5.00%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Nov 2024</span><span class="tl-event">Second cut: −25bp → <strong>4.50–4.75%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Dec 2024</span><span class="tl-event">Third cut: −25bp → <strong>4.25–4.50%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Mar 2025</span><span class="tl-event">Fourth cut: −25bp → <strong>4.00–4.25%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Jun 2025</span><span class="tl-event">Fifth cut: −25bp → <strong>3.75–4.00%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Sep 2025</span><span class="tl-event">Sixth cut: −25bp → <strong>3.50–3.75%</strong></span></div>
+          <div class="tl-row"><span class="tl-date">Jan 2026</span><span class="tl-event"><strong>Hold.</strong> Bowman speech projects 3 more in 2026</span></div>
+          <div class="tl-row"><span class="tl-date">Mar 2026</span><span class="tl-event" style="color:var(--yellow);">Next FOMC decision — <strong>key date</strong></span></div>
+        </div>
+        <div class="arg-todo">TODO: <span>Build FOMC date tracker with rate history chart. Log each decision + dot plot projection. Next dates: Mar 18–19, May 6–7, Jun 17–18, Jul 29–30.</span></div>
         <div class="arg-meta">
           <span>Updated Jan 2026</span>
           <span class="arg-trend trend-flat">→ ON HOLD (watching inflation)</span>
@@ -904,7 +1070,14 @@
           <span class="arg-badge badge-confirmed">Confirmed</span>
         </div>
         <div class="arg-title">Fiscal Spending Already Law</div>
-        <div class="arg-desc">OBBBA authorized $135–140B flowing into 2026. CBO projects $1.9–2.1T deficit. Debt ceiling suspended through January 2027. No new legislation needed.</div>
+        <div class="arg-desc">OBBBA authorized $135–140B flowing into 2026. CBO projects a $1.9–2.1T deficit. Debt ceiling suspended through January 2027. No new legislation required — this money is already moving.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">Timeline</div>
+          <div class="tl-row"><span class="tl-date">2025</span><span class="tl-event">OBBBA (One Big Beautiful Bill Act) signed into law</span></div>
+          <div class="tl-row"><span class="tl-date">Jan 2026</span><span class="tl-event">$135–140B authorized for FY2026 disbursement begins</span></div>
+          <div class="tl-row"><span class="tl-date">Jan 2027</span><span class="tl-event">Debt ceiling suspension expires — next potential cliff</span></div>
+        </div>
+        <div class="arg-todo">TODO: <span>Track CBO monthly budget reviews for actual vs projected spending. Monitor TGA drawdown pace as proxy for fiscal injection speed.</span></div>
         <div class="arg-meta">
           <span>Updated Jan 2026</span>
           <span class="arg-trend trend-up">↑ DEPLOYING (funds flowing)</span>
@@ -917,7 +1090,15 @@
           <span class="arg-badge badge-probable">Probable</span>
         </div>
         <div class="arg-title">Midterms Force Loose Conditions</div>
-        <div class="arg-desc">November 2026 is the deadline. K-shaped economy — asset owners thriving, wage earners squeezed — amplifies the incentive. The political cure for that pain <em>is</em> the expansion catalyst.</div>
+        <div class="arg-desc">November 2026 is the political deadline. K-shaped economy — asset owners thriving, wage earners squeezed — amplifies the incentive to ease. The political cure for that pain <em>is</em> the expansion catalyst.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">Historical Pattern</div>
+          <div class="tl-row"><span class="tl-date">2018</span><span class="tl-event">Midterm year: Fed was tightening → GOP lost 40 House seats</span></div>
+          <div class="tl-row"><span class="tl-date">2022</span><span class="tl-event">Midterm year: Inflation + rate hikes → narrow losses despite headwinds</span></div>
+          <div class="tl-row"><span class="tl-date">Feb 2026</span><span class="tl-event"><strong>9 months to Nov midterms.</strong> Approval tied to economic perception</span></div>
+          <div class="tl-row"><span class="tl-date">Nov 2026</span><span class="tl-event" style="color:var(--yellow);">Midterm election — <strong>the deadline</strong></span></div>
+        </div>
+        <div class="arg-todo">TODO: <span>Track consumer confidence + approval ratings monthly. These are the political pressure gauges. If both drop, easing pressure intensifies.</span></div>
         <div class="arg-meta">
           <span>Updated Feb 2026</span>
           <span class="arg-trend trend-watch">⏳ 9 MONTHS to midterms</span>
@@ -930,7 +1111,15 @@
           <span class="arg-badge badge-uncertain">Uncertain</span>
         </div>
         <div class="arg-title">Warsh Fed Transition</div>
-        <div class="arg-desc">Kevin Warsh nominated Jan 30, 2026. First chair meeting ~June. Stephen Miran pushing for cuts from inside. Amplifier, not the engine.</div>
+        <div class="arg-desc">New Fed chair = new policy tone. Warsh is expected dovish. Miran pushing for cuts from NEC. This is an amplifier — it doesn't cause expansion but removes resistance to it.</div>
+        <div class="arg-timeline">
+          <div class="arg-timeline-title">Timeline</div>
+          <div class="tl-row"><span class="tl-date">Jan 30, 2026</span><span class="tl-event">Kevin Warsh <strong>nominated</strong> for Fed Chair</span></div>
+          <div class="tl-row"><span class="tl-date">Q1–Q2 2026</span><span class="tl-event" style="color:var(--yellow);">Senate confirmation process — <strong>pending</strong></span></div>
+          <div class="tl-row"><span class="tl-date">~Jun 2026</span><span class="tl-event">Expected first FOMC meeting as chair (if confirmed)</span></div>
+          <div class="tl-row"><span class="tl-date">Risk</span><span class="tl-event" style="color:var(--red);">Confirmation blocked or delayed indefinitely</span></div>
+        </div>
+        <div class="arg-todo">TODO: <span>Track Senate Banking Committee hearing dates. Monitor confirmation vote count. If blocked, downgrade to "Dead" — doesn't kill thesis, just removes one amplifier.</span></div>
         <div class="arg-meta">
           <span>Updated Jan 2026</span>
           <span class="arg-trend trend-watch">⏳ PENDING (confirmation)</span>
@@ -944,6 +1133,23 @@
         </div>
         <div class="arg-title">AI CapEx + Global Liquidity Tailwinds</div>
         <div class="arg-desc">~$750B in hyperscaler AI spending multiplies through the real economy. Global M2 has surpassed $123T. ECB cutting, China stimulating. BTC is a global asset. These are tailwinds, not drivers — but they push the same direction.</div>
+        <div class="arg-timeline" style="display:grid; grid-template-columns:1fr 1fr; gap:0 24px;">
+          <div>
+            <div class="arg-timeline-title">AI CapEx Announcements</div>
+            <div class="tl-row"><span class="tl-date">Jan 2025</span><span class="tl-event">Microsoft: <strong>$80B</strong> AI spend FY25</span></div>
+            <div class="tl-row"><span class="tl-date">Feb 2025</span><span class="tl-event">Meta: <strong>$60–65B</strong> CapEx FY25</span></div>
+            <div class="tl-row"><span class="tl-date">Apr 2025</span><span class="tl-event">Google: <strong>$75B</strong> CapEx FY25</span></div>
+            <div class="tl-row"><span class="tl-date">Apr 2025</span><span class="tl-event">Amazon: <strong>$100B+</strong> CapEx FY25</span></div>
+          </div>
+          <div>
+            <div class="arg-timeline-title">Global Central Banks</div>
+            <div class="tl-row"><span class="tl-date">2024–25</span><span class="tl-event">ECB: cutting cycle underway</span></div>
+            <div class="tl-row"><span class="tl-date">2024–25</span><span class="tl-event">PBOC: stimulus + rate cuts</span></div>
+            <div class="tl-row"><span class="tl-date">Q3 2025</span><span class="tl-event">Global M2: <strong>$123T</strong> (ATH)</span></div>
+            <div class="tl-row"><span class="tl-date">Trend</span><span class="tl-event" style="color:var(--green);">Global M2 growing ~6.7% YoY</span></div>
+          </div>
+        </div>
+        <div class="arg-todo">TODO: <span>Track Big 4 earnings calls for CapEx guidance changes. Q1 earnings (Apr–May) are the next signal. Any CapEx cut = downgrade this argument. Also: build Global M2 tracker from MacroMicro data.</span></div>
         <div class="arg-meta">
           <span>Updated Feb 2026</span>
           <span class="arg-trend trend-up">↑ SPENDING (CapEx accelerating)</span>
