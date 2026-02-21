@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Dashboard — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --bg:#0d1117; --bg2:#111827; --bg3:#0a0f1a;
+  --card:#161f2e; --card2:#1a2535;
+  --border:#1e2d45; --border-hi:#2d4060;
+  --text:#e2e8f0; --text-mid:#8b9ab0; --text-dim:#3d5068; --text-faint:#1a2535;
+  --green:#4ade80; --yellow:#fbbf24; --orange:#f97316;
+  --red:#f87171; --blue:#38bdf8; --purple:#a78bfa; --teal:#2dd4bf;
+  --mono:'Space Mono',monospace; --sans:'DM Sans',sans-serif;
+  --nav-w:240px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.6;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh;}
+
+/* ── NAV ── */
+.nav{
+  width:var(--nav-w);min-width:var(--nav-w);
+  background:var(--bg2);border-right:1px solid var(--border);
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;z-index:100;
+}
+.nav-logo{
+  padding:22px 20px 18px;border-bottom:1px solid var(--border);
+  font-family:var(--mono);
+}
+.nav-logo-sub{font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:6px;}
+.nav-logo-name{font-size:17px;font-weight:700;line-height:1.1;}
+.nav-logo-name span{color:var(--blue);}
+
+.nav-section{
+  padding:16px 20px 4px;
+  font-family:var(--mono);font-size:9px;letter-spacing:2.5px;
+  color:var(--text-faint);text-transform:uppercase;
+}
+.nav-section:first-of-type{padding-top:14px;}
+
+.nav-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 20px 7px 28px;
+  font-size:12.5px;color:var(--text-dim);
+  border-left:2px solid transparent;
+  transition:all .12s;text-decoration:none;
+  white-space:nowrap;overflow:hidden;
+}
+.nav-item:hover{color:var(--text-mid);background:rgba(255,255,255,0.03);text-decoration:none;}
+.nav-item.active{color:var(--blue);border-left-color:var(--blue);background:rgba(56,189,248,0.07);}
+.nav-item.active .nav-pip{background:var(--blue);}
+.nav-pip{width:4px;height:4px;border-radius:50%;background:var(--border-hi);flex-shrink:0;}
+.nav-tag{
+  margin-left:auto;font-family:var(--mono);font-size:8px;font-weight:700;
+  padding:2px 5px;border-radius:3px;flex-shrink:0;
+}
+.tag-yellow{background:rgba(251,191,36,0.15);color:var(--yellow);}
+.tag-green{background:rgba(74,222,128,0.15);color:var(--green);}
+.tag-blue{background:rgba(56,189,248,0.15);color:var(--blue);}
+.tag-dim{background:rgba(255,255,255,0.04);color:var(--text-dim);}
+
+/* ── MAIN ── */
+.main{margin-left:var(--nav-w);flex:1;}
+.wrap{padding:40px 48px;max-width:1100px;}
+
+/* ── PAGE HEADER ── */
+.pg-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;}
+.pg-title{font-size:28px;font-weight:700;letter-spacing:-.4px;margin-bottom:6px;}
+.pg-sub{color:var(--text-mid);font-size:13.5px;line-height:1.7;max-width:640px;margin-bottom:28px;}
+.pg-meta{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:32px;}
+.pg-meta span{color:var(--text-mid);}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;}
+.card-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px;}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.col{display:flex;flex-direction:column;gap:14px;}
+
+/* ── STAT ── */
+.stat{background:var(--bg2);border-radius:7px;padding:12px 16px;border:1px solid var(--border);}
+.stat-l{font-size:9px;color:var(--text-dim);letter-spacing:.5px;text-transform:uppercase;margin-bottom:4px;}
+.stat-v{font-family:var(--mono);font-size:22px;font-weight:700;}
+.stat-n{font-size:10px;color:var(--text-dim);margin-top:3px;}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;border:1px solid;}
+.b-green{color:var(--green);border-color:rgba(74,222,128,0.3);background:rgba(74,222,128,0.07);}
+.b-yellow{color:var(--yellow);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.07);}
+.b-blue{color:var(--blue);border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.07);}
+.b-red{color:var(--red);border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.07);}
+.b-dim{color:var(--text-dim);border-color:var(--border);}
+
+/* ── PREVIEW BLOCK ── */
+.preview{
+  border:1px dashed var(--border-hi);border-radius:10px;
+  padding:28px 24px;margin-top:4px;
+}
+.preview-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;margin-bottom:10px;}
+.preview-row{
+  height:10px;background:var(--border);border-radius:3px;margin-bottom:8px;
+}
+.preview-row.short{width:45%;}
+.preview-row.med{width:70%;}
+.preview-row.full{width:100%;}
+.preview-row.accent{background:rgba(56,189,248,0.2);}
+
+/* ── MISC ── */
+.divider{border:none;border-top:1px solid var(--border);margin:22px 0;}
+.row{display:flex;align-items:center;gap:12px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--green);box-shadow:0 0 6px rgba(74,222,128,0.5);}
+.dot-yellow{background:var(--yellow);}
+.dot-red{background:var(--red);}
+.dot-dim{background:var(--text-dim);}
+
+@media(max-width:900px){
+  .nav{position:relative;width:100%;height:auto;}
+  .main{margin-left:0;}
+  .wrap{padding:24px 16px;}
+  .g2,.g3,.g4{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="nav">
+<div class="nav-logo">
+  <div class="nav-logo-sub">private research</div>
+  <div class="nav-logo-name">BTC<br/><span>THESIS</span></div>
+</div>
+<div class="nav-section">COCKPIT</div>
+<a class="nav-item active" href="./dashboard.html"><span class="nav-pip"></span>Dashboard<span class="nav-tag tag-yellow">HOME</span></a>
+<a class="nav-item" href="./portfolio/greg.html"><span class="nav-pip"></span>My Positions</a>
+<a class="nav-item" href="./portfolio/family.html"><span class="nav-pip"></span>Family Accounts</a>
+<div class="nav-section">THESIS</div>
+<a class="nav-item" href="./thesis/index.html"><span class="nav-pip"></span>Overview</a>
+<a class="nav-item" href="./thesis/short-term.html"><span class="nav-pip"></span>2026 Trade<span class="nav-tag tag-yellow">ACTIVE</span></a>
+<a class="nav-item" href="./thesis/long-term.html"><span class="nav-pip"></span>Decade Thesis</a>
+<a class="nav-item" href="./thesis/btc-debt.html"><span class="nav-pip"></span>BTC:Debt Correlation</a>
+<a class="nav-item" href="./thesis/btc-m2.html"><span class="nav-pip"></span>BTC:M2 Supply</a>
+<a class="nav-item" href="./thesis/btc-gold.html"><span class="nav-pip"></span>BTC:Gold Parity</a>
+<a class="nav-item" href="./thesis/debasement.html"><span class="nav-pip"></span>Dollar Debasement</a>
+<a class="nav-item" href="./thesis/halving.html"><span class="nav-pip"></span>Supply & Halvings</a>
+<a class="nav-item" href="./thesis/institutional.html"><span class="nav-pip"></span>Institutional</a>
+<div class="nav-section">TRADING</div>
+<a class="nav-item" href="./trading/index.html"><span class="nav-pip"></span>Overview</a>
+<a class="nav-item" href="./trading/structure.html"><span class="nav-pip"></span>Market Structure</a>
+<a class="nav-item" href="./trading/methods.html"><span class="nav-pip"></span>Methods Compendium</a>
+<a class="nav-item" href="./trading/log.html"><span class="nav-pip"></span>Trade Log</a>
+<div class="nav-section">RESEARCH</div>
+<a class="nav-item" href="./research/liquidity.html"><span class="nav-pip"></span>Liquidity Framework</a>
+<a class="nav-item" href="./research/catalysts.html"><span class="nav-pip"></span>Geo Catalysts</a>
+<a class="nav-item" href="./research/invalidation.html"><span class="nav-pip"></span>Kill Switches</a>
+<a class="nav-item" href="./research/nuclear.html"><span class="nav-pip"></span>Nuclear Thesis</a>
+<a class="nav-item" href="./research/sentiment.html"><span class="nav-pip"></span>Sentiment</a>
+<a class="nav-item" href="./research/wealth-transfer.html"><span class="nav-pip"></span>Wealth Transfer</a>
+</nav>
+<main class="main"><div class="wrap">
+
+<div class="pg-label">cockpit</div>
+<h1 class="pg-title">Weekly Dashboard</h1>
+<p class="pg-sub">Open this first. Check liquidity status, kill switches, portfolio snapshot. If nothing is red, close the tab and go live your life.</p>
+
+<div class="g4" style="margin-bottom:14px;">
+  <div class="stat">
+    <div class="stat-l">SOFR Spread</div>
+    <div class="stat-v" style="color:var(--green);">~2bp</div>
+    <div class="stat-n">Normal — no action</div>
+  </div>
+  <div class="stat">
+    <div class="stat-l">RRP Balance</div>
+    <div class="stat-v" style="color:var(--orange);">$28B</div>
+    <div class="stat-n">Critical — near zero</div>
+  </div>
+  <div class="stat">
+    <div class="stat-l">WALCL Trend</div>
+    <div class="stat-v" style="color:var(--text-mid);">Flat</div>
+    <div class="stat-n">No expansion yet</div>
+  </div>
+  <div class="stat">
+    <div class="stat-l">90-Day Window</div>
+    <div class="stat-v" style="color:var(--text-mid);">—</div>
+    <div class="stat-n">Awaiting spike</div>
+  </div>
+</div>
+
+<div class="g2" style="margin-bottom:14px;">
+  <div class="card">
+    <div class="card-label">kill switch status</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="row"><span class="dot dot-green"></span><span style="font-size:12px;color:var(--text-mid);">A — Time Kill Switch <span style="color:var(--text-dim);">[define your date]</span></span></div>
+      <div class="row"><span class="dot dot-green"></span><span style="font-size:12px;color:var(--text-mid);">B — Mechanism Failure (WALCL watch)</span></div>
+      <div class="row"><span class="dot dot-green"></span><span style="font-size:12px;color:var(--text-mid);">C — Inflation Ceiling (~2.8% PCE, below 3.5%)</span></div>
+      <div class="row"><span class="dot dot-dim"></span><span style="font-size:12px;color:var(--text-dim);">D — Solvency Floor [not yet defined]</span></div>
+      <div class="row"><span class="dot dot-dim"></span><span style="font-size:12px;color:var(--text-dim);">E — Black Swan [define events]</span></div>
+      <div class="row"><span class="dot dot-green"></span><span style="font-size:12px;color:var(--text-mid);">F — Mag7 Buyback Shift (monitoring)</span></div>
+    </div>
+    <div class="divider"></div>
+    <a href="research/invalidation.html" style="font-family:var(--mono);font-size:10px;color:var(--blue);">Full kill switch logic →</a>
+  </div>
+
+  <div class="card">
+    <div class="card-label">portfolio snapshot</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+      <div class="row" style="justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-mid);">Total value</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--text);">— build portfolio page</span>
+      </div>
+      <div class="row" style="justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-mid);">Unrealized P&L</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--text-dim);">—</span>
+      </div>
+      <div class="row" style="justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-mid);">Loan balance</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--text-dim);">$50,000</span>
+      </div>
+      <div class="row" style="justify-content:space-between;">
+        <span style="font-size:12px;color:var(--text-mid);">Distance to exit tier 1</span>
+        <span style="font-family:var(--mono);font-size:13px;color:var(--text-dim);">—</span>
+      </div>
+    </div>
+    <a href="portfolio/greg.html" style="font-family:var(--mono);font-size:10px;color:var(--blue);">Full positions →</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-label">thoughts — feb 2026</div>
+  <div style="font-size:13px;color:var(--text-mid);line-height:1.8;padding:4px 0;">
+    <span style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">2026-02-21 &nbsp;·&nbsp;</span>
+    Building site architecture. Four-layer structure: Cockpit → Thesis → Trading → Research. Priority: get portfolio page live with real numbers. Then build out 2026 trade thesis page. Elliott Wave count needs updating — need to revisit HTF structure after recent price action.
+  </div>
+  <div class="divider"></div>
+  <div style="font-size:11px;color:var(--text-dim);font-family:var(--mono);">← add new entries at the top, date-stamped</div>
+</div>
+
+</div></main>
+</div>
+</body>
+</html>
