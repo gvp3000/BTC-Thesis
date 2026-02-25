@@ -3,530 +3,845 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BTC Thesis</title>
+  <title>BTC Thesis — Research & Tracking</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #111419;
-      --bg2: #151920;
-      --card: #1a1e27;
-      --border: #242a36;
-      --border-hi: #2f3744;
-      --text: #c2c9d6;
-      --text-mid: #6b7a8d;
-      --text-dim: #556270;
-      --text-faint: #2a3340;
-      --heading: #dde3ed;
-      --accent: #4a8fd4;
-      --accent-dim: rgba(74,143,212,0.10);
-      --green: #3fa86e;
-      --green-dim: rgba(63,168,110,0.10);
-      --yellow: #c49a2a;
-      --yellow-dim: rgba(196,154,42,0.10);
-      --red: #c45454;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --bg:         #0d1117;
+      --bg2:        #111827;
+      --card:       #161f2e;
+      --border:     #1e2d45;
+      --border-hi:  #2d4060;
+      --text:       #e2e8f0;
+      --text-mid:   #8b9ab0;
+      --text-dim:   #3d5068;
+      --green:      #4ade80;
+      --yellow:     #fbbf24;
+      --orange:     #f97316;
+      --red:        #f87171;
+      --blue:       #38bdf8;
+      --purple:     #a78bfa;
+      --mono:       'Space Mono', monospace;
+      --sans:       'DM Sans', sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
       font-family: var(--sans);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       min-height: 100vh;
     }
 
-    ::selection {
-      background: var(--accent);
-      color: #fff;
+    /* ── SIDEBAR NAV ── */
+    .layout { display: flex; min-height: 100vh; }
+
+    nav {
+      width: 220px;
+      min-width: 220px;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      padding: 28px 0;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    /* ═══════════════════════════════════
-       LAYOUT
-    ═══════════════════════════════════ */
-    .page {
-      max-width: 1060px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-
-    /* ═══════════════════════════════════
-       HEADER / NAV
-    ═══════════════════════════════════ */
-    .site-header {
-      padding: 20px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .nav-logo {
+      padding: 0 20px 24px;
       border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
     }
-    .site-brand {
+    .nav-logo-sub  { font-family: var(--mono); color: var(--text-dim); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-logo-main { font-family: var(--mono); color: var(--text); font-size: 15px; font-weight: 700; margin-top: 4px; line-height: 1.2; }
+
+    .nav-section-label {
       font-family: var(--mono);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--heading);
-      letter-spacing: -0.5px;
-    }
-    .site-brand span { color: var(--accent); }
-    .site-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-mid);
-      letter-spacing: 0.3px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      padding: 12px 20px 6px;
+      text-transform: uppercase;
     }
 
-    /* ═══════════════════════════════════
-       HERO / THESIS SECTION
-    ═══════════════════════════════════ */
-    .thesis-hero {
-      padding: 52px 0 44px;
-    }
-    .thesis-label {
-      font-family: var(--mono);
-      font-size: 14px;
-      letter-spacing: 2px;
-      color: var(--text-mid);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      font-weight: 700;
-    }
-    .thesis-claim {
-      font-size: 34px;
-      font-weight: 700;
-      color: var(--heading);
-      line-height: 1.28;
-      letter-spacing: -0.5px;
-      max-width: 680px;
-      margin-bottom: 18px;
-    }
-    .thesis-evidence {
-      font-size: 16px;
-      color: var(--text-mid);
-      line-height: 1.7;
-      max-width: 620px;
-      margin-bottom: 22px;
-    }
-    .thesis-version {
+    .nav-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-    }
-    .version-badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--green);
-      background: var(--green-dim);
-      padding: 5px 12px;
-      border-radius: 4px;
-      letter-spacing: 0.3px;
-    }
-    .version-link {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--accent);
-      opacity: 0.6;
-      transition: opacity 0.2s;
-    }
-    .version-link:hover { opacity: 1; }
-
-    /* ═══════════════════════════════════
-       DIVIDER
-    ═══════════════════════════════════ */
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
-
-    /* ═══════════════════════════════════
-       GRID: RESEARCH AREAS
-    ═══════════════════════════════════ */
-    .grid-section {
-      padding: 36px 0 40px;
-    }
-    .grid-label {
-      font-family: var(--mono);
-      font-size: 14px;
-      letter-spacing: 1.5px;
-      color: var(--text-mid);
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      font-weight: 700;
-    }
-    .research-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .grid-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      transition: border-color 0.2s, background 0.2s;
+      gap: 10px;
+      padding: 9px 20px;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      min-height: 115px;
+      font-size: 13px;
+      color: var(--text-mid);
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
     }
-    .grid-card:hover {
-      border-color: var(--border-hi);
-      background: #1f2530;
+    .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+    .nav-item.active {
+      color: var(--blue);
+      border-left-color: var(--blue);
+      background: rgba(56,189,248,0.06);
     }
-    .grid-card.active {
-      border-left: 2px solid var(--accent);
+    .nav-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border-hi); flex-shrink: 0;
+    }
+    .nav-item.active .nav-dot { background: var(--blue); }
+    .nav-badge {
+      margin-left: auto;
+      font-family: var(--mono);
+      font-size: 9px;
+      background: var(--red);
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .nav-badge.green { background: var(--green); color: #000; }
+    .nav-badge.yellow { background: var(--yellow); color: #000; }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      margin-left: 220px;
+      flex: 1;
+      min-height: 100vh;
     }
 
-    .card-status {
+    .page { display: none; padding: 40px; max-width: 1100px; animation: fadeIn 0.2s ease; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom: 32px; }
+    .page-header-eyebrow {
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 1px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
       text-transform: uppercase;
       margin-bottom: 8px;
+    }
+    .page-header h1 {
+      font-size: 28px;
       font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
     }
-    .status-active { color: var(--accent); }
-    .status-live { color: var(--yellow); }
-    .status-research { color: var(--text-mid); }
-    .status-draft { color: var(--text-dim); }
-
-    .card-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--heading);
-      margin-bottom: 6px;
-    }
-    .card-desc {
-      font-size: 14px;
+    .page-header p {
+      margin-top: 10px;
       color: var(--text-mid);
-      line-height: 1.55;
-      flex: 1;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 640px;
     }
-    .card-date {
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .card-label {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 9px;
+      letter-spacing: 2px;
       color: var(--text-dim);
-      margin-top: 12px;
-    }
-
-    /* ═══════════════════════════════════
-       EVOLUTION TIMELINE
-    ═══════════════════════════════════ */
-    .timeline-section {
-      padding: 40px 0 80px;
-    }
-    .timeline-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-    .timeline-label {
-      font-family: var(--mono);
-      font-size: 14px;
-      letter-spacing: 1.5px;
-      color: var(--text-mid);
       text-transform: uppercase;
-      font-weight: 700;
-    }
-    .timeline-hint {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-mid);
+      margin-bottom: 12px;
     }
 
-    .timeline {
-      position: relative;
-      padding-left: 28px;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 6px;
-      bottom: 6px;
-      width: 1px;
-      background: var(--border);
-    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .stack { display: flex; flex-direction: column; gap: 14px; }
 
-    .tl-entry {
-      position: relative;
-      margin-bottom: 32px;
-    }
-    .tl-entry:last-child { margin-bottom: 0; }
-
-    .tl-dot {
-      position: absolute;
-      left: -28px;
-      top: 4px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      border: 2px solid var(--bg);
-    }
-    .tl-dot.current { background: var(--accent); }
-    .tl-dot.update { background: var(--green); }
-    .tl-dot.research { background: var(--text-mid); }
-    .tl-dot.past { background: var(--text-dim); }
-
-    .tl-date {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-      font-weight: 700;
-    }
-    .tl-date.current { color: var(--accent); }
-    .tl-date.update { color: var(--green); }
-    .tl-date.research { color: var(--text-mid); }
-    .tl-date.past { color: var(--text-dim); }
-
-    .tl-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--heading);
-      margin-bottom: 5px;
-    }
-    .tl-title a {
-      transition: color 0.2s;
-    }
-    .tl-title a:hover {
-      color: var(--accent);
-    }
-    .tl-body {
-      font-size: 14px;
-      color: var(--text-mid);
-      line-height: 1.65;
-      max-width: 600px;
-    }
-    .tl-tag {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 3px;
-      margin-top: 8px;
-      letter-spacing: 0.3px;
-    }
-    .tl-tag.thesis { background: var(--accent-dim); color: var(--accent); }
-    .tl-tag.data { background: var(--green-dim); color: var(--green); }
-    .tl-tag.position { background: var(--yellow-dim); color: var(--yellow); }
-    .tl-tag.site { background: rgba(107,122,141,0.12); color: var(--text-mid); }
-
-    /* ═══════════════════════════════════
-       FOOTER
-    ═══════════════════════════════════ */
-    .site-footer {
-      border-top: 1px solid var(--border);
-      padding: 20px 0 40px;
-      display: flex;
-      justify-content: space-between;
+    /* ── STATUS BADGE ── */
+    .badge {
+      display: inline-flex;
       align-items: center;
-    }
-    .footer-left {
+      gap: 5px;
       font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid;
     }
-    .footer-right {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-    }
+    .badge.green  { color: var(--green);  border-color: var(--green);  background: rgba(74,222,128,0.08); }
+    .badge.yellow { color: var(--yellow); border-color: var(--yellow); background: rgba(251,191,36,0.08); }
+    .badge.orange { color: var(--orange); border-color: var(--orange); background: rgba(249,115,22,0.08); }
+    .badge.red    { color: var(--red);    border-color: var(--red);    background: rgba(248,113,113,0.08); }
+    .badge.blue   { color: var(--blue);   border-color: var(--blue);   background: rgba(56,189,248,0.08); }
+    .badge.dim    { color: var(--text-dim); border-color: var(--border); background: transparent; }
 
-    /* ═══════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════ */
-    @media (max-width: 640px) {
-      .page { padding: 0 20px; }
-      .thesis-claim { font-size: 26px; }
-      .research-grid { grid-template-columns: 1fr; }
-      .site-meta { display: none; }
-      .timeline-hint { display: none; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .dot.green  { background: var(--green);  box-shadow: 0 0 6px var(--green); }
+    .dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+    .dot.orange { background: var(--orange); }
+    .dot.red    { background: var(--red);    box-shadow: 0 0 8px var(--red); }
+    .dot.dim    { background: var(--text-dim); }
+
+    /* ── PLACEHOLDER SECTIONS ── */
+    .placeholder {
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 60px 40px;
+      text-align: center;
+    }
+    .placeholder-icon { font-size: 32px; margin-bottom: 12px; }
+    .placeholder-title { font-family: var(--mono); color: var(--text-mid); font-size: 14px; margin-bottom: 6px; }
+    .placeholder-desc  { color: var(--text-dim); font-size: 12px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { width: 100%; height: auto; position: relative; }
+      main { margin-left: 0; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .page { padding: 20px; }
     }
   </style>
 </head>
 <body>
 
-<div class="page">
+<div class="layout">
 
-  <!-- ═══════════════ HEADER ═══════════════ -->
-  <header class="site-header">
-    <div class="site-brand">BTC <span>THESIS</span></div>
-    <div class="site-meta">Personal investment research · Not financial advice</div>
-  </header>
-
-  <!-- ═══════════════ THESIS HERO ═══════════════ -->
-  <section class="thesis-hero">
-    <div class="thesis-label">Investment Thesis</div>
-    <h1 class="thesis-claim">Bitcoin systematically prices in monetary debasement. The correlation strengthens over time.</h1>
-    <p class="thesis-evidence">
-      R² = 0.913 against U.S. national debt growing at 7.28% annually — a compound pattern
-      85 years in the making that appears mathematically inevitable given political constraints.
-      Everything on this site supports or challenges that claim.
-    </p>
-    <div class="thesis-version">
-      <span class="version-badge">v2 · Jan 2026</span>
-      <a href="#" class="version-link">Read full thesis →</a>
-      <a href="#evolution" class="version-link">View evolution →</a>
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-  <!-- ═══════════════ RESEARCH GRID ═══════════════ -->
-  <section class="grid-section">
-    <div class="grid-label">Active Research</div>
-    <div class="research-grid">
-
-      <a href="thesis/2026-trade.html" class="grid-card active">
-        <div class="card-status status-active">Active Thesis</div>
-        <div class="card-title">2026 Trade</div>
-        <div class="card-desc">Why I expect monetary expansion before the November 2026 midterms. 7 independent catalysts.</div>
-        <div class="card-date">Updated Feb 21, 2026</div>
-      </a>
-
-      <a href="tracker.html" class="grid-card">
-        <div class="card-status status-live">Live Monitoring</div>
-        <div class="card-title">Tracker</div>
-        <div class="card-desc">Weekly metrics — WALCL, SOFR, RRP, TGA, M2, Core PCE. Invalidation checklist and kill switches.</div>
-        <div class="card-date">Checks every Thursday</div>
-      </a>
-
-      <a href="catalysts.html" class="grid-card">
-        <div class="card-status status-live">Timeline</div>
-        <div class="card-title">Catalysts</div>
-        <div class="card-desc">FOMC dates, Warsh confirmation, OBBBA disbursement, AI earnings, geopolitical events.</div>
-        <div class="card-date">Updated weekly</div>
-      </a>
-
-      <a href="#" class="grid-card">
-        <div class="card-status status-research">Position</div>
-        <div class="card-title">CRV / CVX</div>
-        <div class="card-desc">On-chain concentration analysis. Actual individual concentration ~12-14% vs. reported 73%.</div>
-        <div class="card-date">Research in progress</div>
-      </a>
-
-      <a href="#" class="grid-card">
-        <div class="card-status status-research">Sector</div>
-        <div class="card-title">Nuclear Energy</div>
-        <div class="card-desc">Opinion shift thesis — public support 51% → 72%. URA, NLR, SMR, OKLO, CCJ positions.</div>
-        <div class="card-date">Research phase</div>
-      </a>
-
-      <a href="#" class="grid-card">
-        <div class="card-status status-draft">Strategy</div>
-        <div class="card-title">Deployment</div>
-        <div class="card-desc">BTC accumulation strategy, TWAP + crisis buying, 401(k) optimization, tax planning.</div>
-        <div class="card-date">Planned</div>
-      </a>
-
-    </div>
-  </section>
-
-  <hr class="section-divider">
-
-  <!-- ═══════════════ EVOLUTION TIMELINE ═══════════════ -->
-  <section class="timeline-section" id="evolution">
-    <div class="timeline-header">
-      <div class="timeline-label">Evolution</div>
-      <div class="timeline-hint">Newest first — how the thesis develops</div>
+  <!-- ─── SIDEBAR ─── -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-sub">research</div>
+      <div class="nav-logo-main">BTC<br/>THESIS</div>
     </div>
 
-    <div class="timeline">
-
-      <div class="tl-entry">
-        <div class="tl-dot current"></div>
-        <div class="tl-date current">FEB 21, 2026</div>
-        <div class="tl-title"><a href="thesis/2026-trade.html">2026 Trade Thesis Published</a></div>
-        <div class="tl-body">
-          7 independent forces converging toward monetary expansion before November midterms.
-          QT ended, RRP depleted, rate cuts projected, OBBBA spending, midterm pressure,
-          Warsh Fed transition, and AI CapEx cycle. Tracking via WALCL → SOFR → M2 mechanism chain.
-        </div>
-        <span class="tl-tag thesis">thesis</span>
-      </div>
-
-      <div class="tl-entry">
-        <div class="tl-dot update"></div>
-        <div class="tl-date update">JAN 15, 2026</div>
-        <div class="tl-title"><a href="#">Core Thesis Updated to v2</a></div>
-        <div class="tl-body">
-          Refined debt-BTC correlation from R² = 0.89 to R² = 0.913 with extended dataset.
-          Added underdamped harmonic oscillator model (ζ ≈ 0.30) — overshoots above fair value
-          followed by predictable undershoots below. Incorporated price memory analysis showing
-          100% revisit rate for every major level from $1K to $69K.
-        </div>
-        <span class="tl-tag thesis">thesis</span>
-      </div>
-
-      <div class="tl-entry">
-        <div class="tl-dot research"></div>
-        <div class="tl-date research">JAN 3, 2026</div>
-        <div class="tl-title"><a href="#">CRV/CVX Concentration Deep-Dive</a></div>
-        <div class="tl-body">
-          On-chain verification revealed actual individual CVX concentration at ~12-14%,
-          not the 73% reported by surface-level metrics. Demonstrates the importance of
-          blockchain-level verification over aggregated dashboards.
-        </div>
-        <span class="tl-tag data">data</span>
-      </div>
-
-      <div class="tl-entry">
-        <div class="tl-dot past"></div>
-        <div class="tl-date past">DEC 2025</div>
-        <div class="tl-title"><a href="#">Core Thesis v1 — Initial Framework</a></div>
-        <div class="tl-body">
-          Established the debt-BTC correlation framework. U.S. national debt growing at 7.28%
-          annually with 85 years of consistency. Compound interest on existing debt makes the
-          pattern appear mathematically inevitable regardless of political party in power.
-          Bitcoin emerging as the market's preferred instrument for pricing this debasement.
-        </div>
-        <span class="tl-tag thesis">thesis</span>
-      </div>
-
-      <div class="tl-entry">
-        <div class="tl-dot past"></div>
-        <div class="tl-date past">DEC 2025</div>
-        <div class="tl-title"><a href="#">Nuclear Energy Research Initiated</a></div>
-        <div class="tl-body">
-          U.S. public support for nuclear power shifted from 51% to 72% between 2015-2025.
-          $6.33 trillion oil and gas market represents the addressable opportunity. Identified
-          positions across ETFs (URA, NLR) and SMR pure plays (SMR, OKLO).
-        </div>
-        <span class="tl-tag position">position</span>
-      </div>
-
-      <div class="tl-entry">
-        <div class="tl-dot past"></div>
-        <div class="tl-date past">NOV 2025</div>
-        <div class="tl-title">Site Launched</div>
-        <div class="tl-body">
-          Created this site to organize investment research, track thesis development,
-          and maintain a structured decision-making process. Built to replace scattered
-          notes with a single source of truth.
-        </div>
-        <span class="tl-tag site">site</span>
-      </div>
-
+    <div class="nav-section-label">Monitor</div>
+    <div class="nav-item active" onclick="showPage('tracker')">
+      <span class="nav-dot"></span> Invalidation Tracker
+      <span class="nav-badge yellow">WATCH</span>
     </div>
-  </section>
+    <div class="nav-item" onclick="showPage('catalysts')">
+      <span class="nav-dot"></span> Geo Catalysts
+    </div>
 
-  <!-- ═══════════════ FOOTER ═══════════════ -->
-  <footer class="site-footer">
-    <div class="footer-left">Personal research · Not financial advice</div>
-    <div class="footer-right">Changelog</div>
-  </footer>
+    <div class="nav-section-label">Thesis</div>
+    <div class="nav-item" onclick="showPage('thesis')">
+      <span class="nav-dot"></span> Core Thesis
+    </div>
+    <div class="nav-item" onclick="showPage('liquidity')">
+      <span class="nav-dot"></span> Liquidity Framework
+    </div>
+    <a href="toll_road_thesis_v2.html" class="nav-item" style="text-decoration:none; color:inherit;">
+      <span class="nav-dot"></span> Toll Road (CRV/CVX)
+      <span class="nav-badge" style="background:rgba(74,222,128,0.15); color:#4ade80;">LIVE</span>
+    </a>
 
+    <div class="nav-section-label">Portfolio</div>
+    <div class="nav-item" onclick="showPage('positions')">
+      <span class="nav-dot"></span> My Positions
+      <span class="nav-badge">TODO</span>
+    </div>
+    <div class="nav-item" onclick="showPage('exits')">
+      <span class="nav-dot"></span> Exit Plan
+      <span class="nav-badge">TODO</span>
+    </div>
+    <div class="nav-item" onclick="showPage('family')">
+      <span class="nav-dot"></span> Family Accounts
+      <span class="nav-badge">TODO</span>
+    </div>
+
+    <div class="nav-section-label">Research</div>
+    <div class="nav-item" onclick="showPage('structure')">
+      <span class="nav-dot"></span> Market Structure
+      <span class="nav-badge">TODO</span>
+    </div>
+    <div class="nav-item" onclick="showPage('sentiment')">
+      <span class="nav-dot"></span> Sentiment
+      <span class="nav-badge">TODO</span>
+    </div>
+    <div class="nav-item" onclick="showPage('nuclear')">
+      <span class="nav-dot"></span> Nuclear Thesis
+      <span class="nav-badge">TODO</span>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN ─── -->
+  <main>
+
+    <!-- ════════════════ INVALIDATION TRACKER ════════════════ -->
+    <div class="page active" id="page-tracker">
+      <div class="page-header">
+        <div class="page-header-eyebrow">weekly session</div>
+        <h1>Thesis Invalidation Tracker</h1>
+        <p>One question determines everything: has a SOFR spike occurred? If yes, the timeline activates and tells you exactly what to watch and when.</p>
+      </div>
+
+      <!-- SOFR STATUS — the master switch -->
+      <div id="pre-spike-view">
+
+        <div class="card" style="border-color: #3d5068; margin-bottom: 14px;">
+          <div class="card-label">master status — updated weekly</div>
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            <div>
+              <div style="font-size:13px; color:var(--text-mid); margin-bottom:8px;">Has a SOFR spike (&gt;25bp above Fed Funds) occurred?</div>
+              <div style="display:flex; gap:10px;">
+                <button class="spike-btn active-btn" id="btn-no" onclick="setSpikeState(false)">
+                  ✗ Not yet — monitoring mode
+                </button>
+                <button class="spike-btn" id="btn-yes" onclick="setSpikeState(true)">
+                  ✓ YES — spike occurred
+                </button>
+              </div>
+            </div>
+            <div id="spike-date-input" style="display:none;">
+              <div style="font-size:11px; color:var(--text-mid); margin-bottom:6px;">Spike date (Day 0):</div>
+              <input type="date" id="spike-date" onchange="updateTimeline()"
+                style="background:var(--bg); border:1px solid var(--border-hi); color:var(--text); padding:6px 10px; border-radius:6px; font-family:var(--mono); font-size:12px;" />
+            </div>
+          </div>
+        </div>
+
+        <!-- MONITORING MODE -->
+        <div id="monitoring-view">
+          <div class="grid-2" style="margin-bottom:14px;">
+            <div class="card">
+              <div class="card-label">what to check this week</div>
+              <div class="checklist">
+                <div class="check-item">
+                  <span class="check-icon">→</span>
+                  <div>
+                    <div class="check-title">SOFR vs Fed Funds spread</div>
+                    <div class="check-detail">NY Fed publishes at 8am ET daily. FRED: SOFR + EFFR. Alert if spread &gt;15bp.</div>
+                    <a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" class="check-link">NY Fed SOFR →</a>
+                  </div>
+                </div>
+                <div class="check-item">
+                  <span class="check-icon">→</span>
+                  <div>
+                    <div class="check-title">RRP balance</div>
+                    <div class="check-detail">FRED: RRPONTSYD. Current: ~$28B. Direction: downward. Alert if rising significantly.</div>
+                    <a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank" class="check-link">FRED RRP →</a>
+                  </div>
+                </div>
+                <div class="check-item">
+                  <span class="check-icon">→</span>
+                  <div>
+                    <div class="check-title">Thursday H.4.1 (WALCL)</div>
+                    <div class="check-detail">Fed balance sheet. Published 4:30pm ET every Thursday. FRED: WALCL. Is it rising or flat?</div>
+                    <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank" class="check-link">FRED WALCL →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-label">sofr spread — where are we now?</div>
+              <div class="spread-levels">
+                <div class="spread-row" style="--c: var(--green)">
+                  <span class="spread-range">&lt; 5bp</span>
+                  <span class="spread-label">Normal</span>
+                  <span class="spread-note">No action needed</span>
+                </div>
+                <div class="spread-row" style="--c: #a3e635">
+                  <span class="spread-range">5–15bp</span>
+                  <span class="spread-label">Watch</span>
+                  <span class="spread-note">Quarter-end noise possible</span>
+                </div>
+                <div class="spread-row" style="--c: var(--yellow)">
+                  <span class="spread-range">15–25bp</span>
+                  <span class="spread-label">Prepare</span>
+                  <span class="spread-note">Accelerate TWAP if light</span>
+                </div>
+                <div class="spread-row active-spread" style="--c: var(--orange)">
+                  <span class="spread-range">&gt;25bp</span>
+                  <span class="spread-label">CHUNK BUY ⚡</span>
+                  <span class="spread-note">Primary trigger — this is it</span>
+                </div>
+                <div class="spread-row" style="--c: var(--red)">
+                  <span class="spread-range">&gt;50bp</span>
+                  <span class="spread-label">ALL-IN 🚨</span>
+                  <span class="spread-note">90-day clock starts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kill switches -->
+          <div class="card">
+            <div class="card-label">kill switches — monitoring status</div>
+            <div id="kill-switches">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIVE SPIKE MODE -->
+        <div id="spike-active-view" style="display:none;">
+          <div class="card" style="border-color: var(--red); background: rgba(248,113,113,0.04); margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+              <span style="font-size:24px;">🚨</span>
+              <div>
+                <div style="font-family:var(--mono); color:var(--red); font-weight:700; font-size:14px;">SOFR SPIKE CONFIRMED — CLOCK RUNNING</div>
+                <div style="color:var(--text-mid); font-size:12px; margin-top:2px;">Thesis active. Track each window below. Your only job: confirm WALCL is expanding.</div>
+              </div>
+            </div>
+            <div id="timeline-windows" style="display:grid; gap:10px;">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:14px;">
+            <div class="card-label">this week's checklist</div>
+            <div id="this-week-checklist"></div>
+          </div>
+
+          <div class="card" style="border-color: var(--border-hi);">
+            <div class="card-label">the one rule while you wait</div>
+            <div style="font-size:13px; color:var(--text-mid); line-height:1.8;">
+              Check WALCL every Thursday at 4:30pm ET on FRED.
+              <br>
+              <strong style="color:var(--green);">WALCL rising week-over-week for 4+ weeks</strong> → thesis intact. Do nothing else.
+              <br>
+              <strong style="color:var(--red);">WALCL flat or falling for 2 consecutive weeks</strong> → sterilized injection. Re-evaluate.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ GEO CATALYSTS ════════════════ -->
+    <div class="page" id="page-catalysts">
+      <div class="page-header">
+        <div class="page-header-eyebrow">magnitude factors</div>
+        <h1>Geopolitical Catalysts</h1>
+        <p>These don't change whether the mechanism fires — they determine how powerful it is. Both China and Ukraine lean toward positive surprise.</p>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+            <div>
+              <div style="font-size:16px; font-weight:700; margin-bottom:4px;">🇨🇳 US–China Trade Deal</div>
+              <div style="color:var(--text-mid); font-size:12px;">Tariff reduction or trade framework agreement</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span class="badge green">More likely to improve</span>
+              <span class="badge yellow">Medium-High probability</span>
+              <span class="badge blue">6–18 month horizon</span>
+            </div>
+          </div>
+          <div style="background:rgba(74,222,128,0.05); border:1px solid rgba(74,222,128,0.15); border-radius:8px; padding:12px 16px; margin-bottom:12px;">
+            <div style="font-family:var(--mono); color:var(--green); font-size:10px; letter-spacing:1px; margin-bottom:6px;">THESIS IMPACT — MAGNITUDE AMPLIFIER</div>
+            <div style="color:var(--text-mid); font-size:12px; line-height:1.7;">
+              Tariff cut → import prices fall → core PCE drops <strong style="color:var(--text);">−0.4–0.6pp</strong> → inflation ceiling lifts → Fed can expand fully after SOFR spike → full 2.65× M2 elasticity activates
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:11px; color:var(--text-dim);">
+            <div><span style="color:var(--green);">+ </span>Trump needs midterm economic win — "biggest China deal" is the narrative</div>
+            <div><span style="color:var(--green);">+ </span>Fentanyl framework gives both sides face-saving cover</div>
+            <div><span style="color:var(--green);">+ </span>Farmers and small business hurting from retaliatory tariffs</div>
+            <div><span style="color:var(--red);">− </span>Xi may calculate time is on China's side</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+            <div>
+              <div style="font-size:16px; font-weight:700; margin-bottom:4px;">🕊️ Ukraine–Russia Peace</div>
+              <div style="color:var(--text-mid); font-size:12px;">Ceasefire or negotiated settlement — continued fighting is status quo</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span class="badge green">Positive surprise likely</span>
+              <span class="badge yellow">Medium probability</span>
+              <span class="badge blue">3–12 month horizon</span>
+            </div>
+          </div>
+          <div style="background:rgba(74,222,128,0.05); border:1px solid rgba(74,222,128,0.15); border-radius:8px; padding:12px 16px; margin-bottom:12px;">
+            <div style="font-family:var(--mono); color:#a3e635; font-size:10px; letter-spacing:1px; margin-bottom:6px;">THESIS IMPACT — SECONDARY AMPLIFIER</div>
+            <div style="color:var(--text-mid); font-size:12px; line-height:1.7;">
+              Energy + commodity prices fall → global disinflation → US core PCE <strong style="color:var(--text);">−0.2–0.3pp</strong> → additive to China deal effect → removes headwind for Fed expansion. Dollar weakens → BTC (hard asset) benefits.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.03);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+            <div>
+              <div style="font-size:16px; font-weight:700; margin-bottom:4px;">⚠️ Tariff Escalation Risk</div>
+              <div style="color:var(--text-mid); font-size:12px;">Low room to escalate — ceiling was already tested and caused economic damage</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <span class="badge orange">Low-Medium risk</span>
+              <span class="badge dim">Less room than walkback</span>
+            </div>
+          </div>
+          <div style="background:rgba(249,115,22,0.05); border:1px solid rgba(249,115,22,0.15); border-radius:8px; padding:12px 16px;">
+            <div style="font-family:var(--mono); color:var(--orange); font-size:10px; letter-spacing:1px; margin-bottom:6px;">THESIS IMPACT — MAGNITUDE REDUCER</div>
+            <div style="color:var(--text-mid); font-size:12px; line-height:1.7;">
+              PCE stays elevated → inflation ceiling stays in place → Fed constrained even after SOFR spike → sterilized injection risk increases → BTC lag weakened. Watch core PCE monthly.
+            </div>
+          </div>
+        </div>
+
+        <!-- Combined scenario -->
+        <div class="card" style="border-color: var(--blue); background: rgba(56,189,248,0.04);">
+          <div class="card-label">combined scenario: china deal + ukraine peace</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; margin-bottom:14px;">
+            <div style="background:var(--bg2); border-radius:8px; padding:10px 14px;">
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:4px;">PCE REDUCTION</div>
+              <div style="font-family:var(--mono); color:var(--green); font-size:15px; font-weight:700;">−0.6–0.9pp</div>
+            </div>
+            <div style="background:var(--bg2); border-radius:8px; padding:10px 14px;">
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:4px;">LIKELY PCE LEVEL</div>
+              <div style="font-family:var(--mono); color:var(--green); font-size:15px; font-weight:700;">~2.0–2.3%</div>
+            </div>
+            <div style="background:var(--bg2); border-radius:8px; padding:10px 14px;">
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:4px;">FED CONSTRAINT</div>
+              <div style="font-family:var(--mono); color:var(--green); font-size:15px; font-weight:700;">LIFTED</div>
+            </div>
+            <div style="background:var(--bg2); border-radius:8px; padding:10px 14px;">
+              <div style="font-size:9px; color:var(--text-dim); margin-bottom:4px;">M2 ELASTICITY</div>
+              <div style="font-family:var(--mono); color:var(--blue); font-size:15px; font-weight:700;">FULL 2.65×</div>
+            </div>
+          </div>
+          <div style="color:var(--text-dim); font-size:12px; line-height:1.8;">
+            Both outcomes are politically attractive for Trump before the 2026 midterms — a "China deal" and "ending the war" are splashy, transactional wins that align with his dealmaker identity, improve economic conditions visibly, and play well with his base. Asymmetric upside applies to both: continued status quo is priced in, positive resolution is the surprise.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════ CORE THESIS ════════════════ -->
+    <div class="page" id="page-thesis">
+      <div class="page-header">
+        <div class="page-header-eyebrow">investment thesis</div>
+        <h1>Core Thesis</h1>
+        <p>Bitcoin as a mathematical hedge against monetary debasement, with a quantified mechanism chain and defined entry/exit framework.</p>
+      </div>
+      <div class="placeholder">
+        <div class="placeholder-icon">📋</div>
+        <div class="placeholder-title">Core Thesis Document</div>
+        <div class="placeholder-desc">Coming next session — debt/BTC correlation (R²=0.913), mechanism chain, probability assessment</div>
+      </div>
+    </div>
+
+    <!-- ════════════════ LIQUIDITY ════════════════ -->
+    <div class="page" id="page-liquidity">
+      <div class="page-header">
+        <div class="page-header-eyebrow">liquidity framework</div>
+        <h1>Liquidity Framework</h1>
+        <p>RRP drain mechanics, SOFR trigger system, M2 correlation, 90-day lag model.</p>
+      </div>
+      <div class="placeholder">
+        <div class="placeholder-icon">🌊</div>
+        <div class="placeholder-title">Liquidity Framework</div>
+        <div class="placeholder-desc">RRP monitor, Fed balance sheet tracker, M2 overlay — migrate dashboards here</div>
+      </div>
+    </div>
+
+    <!-- ════════════════ PLACEHOLDER PAGES ════════════════ -->
+    <div class="page" id="page-positions">
+      <div class="page-header"><div class="page-header-eyebrow">portfolio</div><h1>My Positions</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">💼</div><div class="placeholder-title">Portfolio Dashboard</div><div class="placeholder-desc">Hardware wallet tracking, cost basis, allocation — next session</div></div>
+    </div>
+
+    <div class="page" id="page-exits">
+      <div class="page-header"><div class="page-header-eyebrow">portfolio</div><h1>Exit Plan</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">🎯</div><div class="placeholder-title">Exit Dashboard</div><div class="placeholder-desc">CRV/CVX price targets ($1/$3/$6), MVRV Z-Score exit signals, tax planning</div></div>
+    </div>
+
+    <div class="page" id="page-family">
+      <div class="page-header"><div class="page-header-eyebrow">portfolio</div><h1>Family Accounts</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">👨‍👩‍👧</div><div class="placeholder-title">Family Account Tracker</div><div class="placeholder-desc">Separate tracking for family managed portfolios</div></div>
+    </div>
+
+    <div class="page" id="page-structure">
+      <div class="page-header"><div class="page-header-eyebrow">research</div><h1>Market Structure</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">📊</div><div class="placeholder-title">Market Structure</div><div class="placeholder-desc">BTC price memory, swing failure patterns, HTF analysis, CRV/CVX structure</div></div>
+    </div>
+
+    <div class="page" id="page-sentiment">
+      <div class="page-header"><div class="page-header-eyebrow">research</div><h1>Sentiment</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">🌡️</div><div class="placeholder-title">Sentiment Indicators</div><div class="placeholder-desc">MVRV Z-Score, LTH supply, funding rates, fear/greed index</div></div>
+    </div>
+
+    <div class="page" id="page-nuclear">
+      <div class="page-header"><div class="page-header-eyebrow">research</div><h1>Nuclear Energy Thesis</h1></div>
+      <div class="placeholder"><div class="placeholder-icon">⚛️</div><div class="placeholder-title">Nuclear Thesis</div><div class="placeholder-desc">Public opinion shift, SMR pipeline, URA/NLR/OKLO positions</div></div>
+    </div>
+
+  </main>
 </div>
+
+<style>
+  /* Tracker-specific styles */
+  .spike-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px solid var(--border-hi);
+    background: transparent;
+    color: var(--text-mid);
+    transition: all 0.15s;
+  }
+  .spike-btn:hover { background: rgba(255,255,255,0.05); }
+  .spike-btn.active-btn {
+    background: rgba(74,222,128,0.1);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  .spike-btn.active-red {
+    background: rgba(248,113,113,0.1);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .checklist { display: flex; flex-direction: column; gap: 12px; }
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 14px;
+    background: var(--bg2);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .check-icon { color: var(--blue); font-family: var(--mono); font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+  .check-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .check-detail { font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+  .check-link { font-family: var(--mono); font-size: 10px; color: var(--blue); text-decoration: none; display: inline-block; margin-top: 4px; }
+  .check-link:hover { text-decoration: underline; }
+
+  .spread-levels { display: flex; flex-direction: column; gap: 6px; }
+  .spread-row {
+    display: grid;
+    grid-template-columns: 70px 1fr 1fr;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    font-size: 11px;
+  }
+  .spread-row.active-spread { border-color: var(--orange); background: rgba(249,115,22,0.06); }
+  .spread-range { font-family: var(--mono); color: var(--c); font-weight: 700; font-size: 11px; }
+  .spread-label { color: var(--c); font-weight: 600; }
+  .spread-note  { color: var(--text-dim); }
+
+  .kill-switch-row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .kill-switch-row:hover { border-color: var(--border-hi); }
+  .ks-icon { font-size: 16px; text-align: center; }
+  .ks-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .ks-desc { font-size: 11px; color: var(--text-mid); line-height: 1.4; }
+  .ks-status { font-family: var(--mono); font-size: 10px; font-weight: 700; white-space: nowrap; }
+
+  .timeline-window {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .tw-day { font-family: var(--mono); font-weight: 700; }
+  .tw-status { font-size: 11px; font-family: var(--mono); margin-top: 2px; }
+  .tw-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .tw-desc { font-size: 11px; color: var(--text-mid); line-height: 1.5; }
+  .tw-action { font-size: 11px; margin-top: 4px; font-weight: 600; }
+</style>
+
+<script>
+  // ─── PAGE NAVIGATION ─────────────────────────────────────────────────────
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  // ─── KILL SWITCHES ───────────────────────────────────────────────────────
+  const SWITCHES = [
+    { icon: '⏱', label: 'A — Time Kill Switch', status: 'MONITORING', color: 'dim',
+      desc: 'BTC not at 1.5× entry 18 months after WALCL expansion starts → reduce 50%, reassess. Your answer: [set your date]' },
+    { icon: '🏦', label: 'B — Mechanism Failure ⭐', status: 'CORNERSTONE', color: 'blue',
+      desc: 'WALCL flat/falling for 4+ consecutive Thursdays after Fed injection → sterilized injection, not QE → thesis broken at the critical link' },
+    { icon: '📈', label: 'C — Inflation Ceiling', status: 'WATCH', color: 'yellow',
+      desc: 'Core PCE (FRED: PCEPILFE) above 3.5% for 3+ months → Fed constrained → reduce 50%. Currently: ~2.8% — below threshold' },
+    { icon: '💸', label: 'D — Solvency Floor', status: 'DEFINE', color: 'dim',
+      desc: 'At what BTC price can you no longer service $833/month from income alone? Set this number before deploying. [unanswered]' },
+    { icon: '🌍', label: 'E — Black Swan', status: 'DEFINE', color: 'dim',
+      desc: 'USDT depeg below $0.90 / BTC ETF suspended / Treasury dysfunction → 100% exit, no analysis. [write your events]' },
+    { icon: '📉', label: 'F — Mag7 Buyback Shift', status: 'MONITORING', color: 'purple',
+      desc: 'Track quarterly: if 4+ of 7 Mag7 companies show paused/reduced buybacks while CapEx rises → rotation confirmed. Check 10-Q filings.' },
+  ];
+
+  const STATUS_COLORS = { MONITORING: 'var(--text-mid)', CORNERSTONE: 'var(--blue)', WATCH: 'var(--yellow)', DEFINE: 'var(--text-dim)', TRIGGERED: 'var(--red)' };
+
+  function renderKillSwitches() {
+    const el = document.getElementById('kill-switches');
+    el.innerHTML = SWITCHES.map(sw => `
+      <div class="kill-switch-row">
+        <div class="ks-icon">${sw.icon}</div>
+        <div>
+          <div class="ks-label">${sw.label}</div>
+          <div class="ks-desc">${sw.desc}</div>
+        </div>
+        <div class="ks-status" style="color:${STATUS_COLORS[sw.status]}">${sw.status}</div>
+      </div>
+    `).join('');
+  }
+
+  // ─── SPIKE STATE ─────────────────────────────────────────────────────────
+  let spikeDate = null;
+
+  function setSpikeState(hasSpike) {
+    const btnNo  = document.getElementById('btn-no');
+    const btnYes = document.getElementById('btn-yes');
+    const dateInput = document.getElementById('spike-date-input');
+    const monView = document.getElementById('monitoring-view');
+    const spikeView = document.getElementById('spike-active-view');
+
+    if (hasSpike) {
+      btnNo.classList.remove('active-btn');
+      btnYes.classList.add('active-btn', 'active-red');
+      btnYes.classList.remove('active-btn'); // only red class
+      btnYes.style.background = 'rgba(248,113,113,0.1)';
+      btnYes.style.borderColor = 'var(--red)';
+      btnYes.style.color = 'var(--red)';
+      dateInput.style.display = 'block';
+      monView.style.display = 'none';
+      spikeView.style.display = 'block';
+      if (!document.getElementById('spike-date').value) {
+        document.getElementById('spike-date').value = new Date().toISOString().split('T')[0];
+      }
+      updateTimeline();
+    } else {
+      btnNo.classList.add('active-btn');
+      btnYes.style.background = '';
+      btnYes.style.borderColor = '';
+      btnYes.style.color = '';
+      dateInput.style.display = 'none';
+      monView.style.display = 'block';
+      spikeView.style.display = 'none';
+    }
+  }
+
+  function updateTimeline() {
+    const dateStr = document.getElementById('spike-date').value;
+    if (!dateStr) return;
+    const d0 = new Date(dateStr);
+    const today = new Date();
+
+    function addDays(d, n) {
+      const r = new Date(d);
+      r.setDate(r.getDate() + n);
+      return r;
+    }
+    function fmtDate(d) {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    function daysFromNow(d) {
+      const diff = Math.round((d - today) / 86400000);
+      if (diff < 0) return `${Math.abs(diff)}d ago`;
+      if (diff === 0) return 'TODAY';
+      return `in ${diff}d`;
+    }
+    function windowStatus(start, end) {
+      if (today < start) return 'upcoming';
+      if (today > end) return 'past';
+      return 'active';
+    }
+
+    const WINDOWS = [
+      { days: 0,  endDays: 2,  label: 'Day 0–2: SOFR Spike', color: 'var(--red)',
+        action: 'Deploy chunk buy. Execute L3/L4 deployment levels. Mark this date.',
+        watch: 'Confirm Fed emergency injection announcement within 24–48hrs. Watch NY Fed press releases.' },
+      { days: 2,  endDays: 14, label: 'Day 2–14: WALCL Watch',  color: 'var(--orange)',
+        action: 'Check FRED WALCL every Thursday 4:30pm ET. Is it rising?',
+        watch: '4 consecutive rising weeks = sustained expansion. 2 weeks flat/falling = sterilized injection = thesis at risk.' },
+      { days: 30, endDays: 45, label: 'Day 30–45: The Hard Part', color: 'var(--yellow)',
+        action: 'BTC will likely drop 20–40%. This is expected. DO NOTHING.',
+        watch: 'Only check WALCL on Thursdays. If still rising → hold. Crisis fear drives selling, not thesis failure.' },
+      { days: 45, endDays: 75, label: 'Day 45–75: M2 Rising',   color: '#a3e635',
+        action: 'Check FRED M2SL monthly. Look for acceleration vs prior month.',
+        watch: 'M2 growth confirms transmission working. Risk-on sentiment begins returning. Institutional re-entry signals.' },
+      { days: 90, endDays: 120,label: 'Day 90–120: BTC Window', color: 'var(--blue)',
+        action: 'Main move window based on r=0.94 historical correlation. Watch MVRV Z-Score for exit signals.',
+        watch: 'MVRV Z-Score above 4 = watch exit levels. Above 6 = begin selling per exit tiers.' },
+    ];
+
+    const tlEl = document.getElementById('timeline-windows');
+    tlEl.innerHTML = WINDOWS.map(w => {
+      const start = addDays(d0, w.days);
+      const end   = addDays(d0, w.endDays);
+      const status = windowStatus(start, end);
+      const borderColor = status === 'active' ? w.color : (status === 'past' ? 'var(--border)' : 'var(--border)');
+      const opacity = status === 'past' ? 0.5 : 1;
+      return `
+        <div class="timeline-window" style="border-color:${borderColor}; opacity:${opacity}; ${status === 'active' ? 'background:' + w.color.replace(')', ',0.05)').replace('var(', 'rgba(').replace('--red','248,113,113').replace('--orange','249,115,22').replace('--yellow','251,191,36').replace('--blue','56,189,248') + ';' : ''}">
+          <div>
+            <div class="tw-day" style="color:${w.color}">D+${w.days}</div>
+            <div class="tw-day" style="color:${w.color}">${fmtDate(start)}</div>
+            <div class="tw-status" style="color:${status==='active'?w.color:'var(--text-dim)'}">
+              ${status === 'active' ? '▶ ACTIVE' : status === 'past' ? '✓ PAST' : daysFromNow(start)}
+            </div>
+          </div>
+          <div>
+            <div class="tw-title" style="color:${status==='active'?w.color:'var(--text)'}">${w.label}</div>
+            <div class="tw-action" style="color:${w.color}">Action: ${w.action}</div>
+            <div class="tw-desc">${w.watch}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // This week checklist
+    const cwEl = document.getElementById('this-week-checklist');
+    const daysSinceSpike = Math.round((today - d0) / 86400000);
+    const items = [];
+    if (daysSinceSpike <= 14) {
+      items.push({ text: 'Check WALCL (FRED: WALCL) — is it higher than last Thursday?', link: 'https://fred.stlouisfed.org/series/WALCL', urgent: true });
+      items.push({ text: 'Watch for Fed language: "temporary" (bad) vs "ongoing" (good)', urgent: true });
+    }
+    if (daysSinceSpike <= 45) {
+      items.push({ text: 'SOFR spread check — has it normalized back below 10bp?', link: 'https://fred.stlouisfed.org/series/SOFR', urgent: false });
+    }
+    items.push({ text: 'Core PCE (FRED: PCEPILFE) — last reading vs 3.5% threshold', link: 'https://fred.stlouisfed.org/series/PCEPILFE', urgent: false });
+    if (daysSinceSpike >= 45) {
+      items.push({ text: 'M2 (FRED: M2SL) — is growth rate accelerating vs last month?', link: 'https://fred.stlouisfed.org/series/M2SL', urgent: false });
+    }
+
+    cwEl.innerHTML = `<div class="checklist">` + items.map(it => `
+      <div class="check-item" style="${it.urgent ? 'border-color:var(--orange)' : ''}">
+        <span class="check-icon">${it.urgent ? '!' : '→'}</span>
+        <div>
+          <div class="check-detail" style="${it.urgent ? 'color:var(--text)' : ''}">${it.text}</div>
+          ${it.link ? `<a href="${it.link}" target="_blank" class="check-link">Open FRED →</a>` : ''}
+        </div>
+      </div>
+    `).join('') + `</div>`;
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  renderKillSwitches();
+</script>
 
 </body>
 </html>

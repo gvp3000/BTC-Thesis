@@ -1,62 +1,79 @@
-/* ═══════════════════════════════════════════════════════════════
-   BTC THESIS — NAV BUILDER
-   Reads pages.json, builds sidebar, highlights current page.
-   ═══════════════════════════════════════════════════════════════ */
+/**
+ * nav.js — Shared navigation for all pages
+ *
+ * How it works:
+ *  1. Reads pages.json to get all pages and sections
+ *  2. Builds the sidebar nav dynamically
+ *  3. Highlights the active page based on current URL
+ *  4. Handles relative paths (works from any subfolder depth)
+ *  5. Logo links back to index.html (homepage)
+ *
+ * To add a new page to the nav: edit pages.json only.
+ * This file never needs to change unless you want to change nav behavior.
+ */
 
 (function () {
-  // Resolve base path: root pages use "./assets/", subfolder pages use "../assets/"
-  const depth = (window.location.pathname.match(/\//g) || []).length;
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
-
-  // Detect if we're in a subfolder (thesis/, trading/, portfolio/, research/)
-  const subfolders = ['thesis', 'trading', 'portfolio', 'research'];
-  let base = './';
-  for (const part of pathParts) {
-    if (subfolders.includes(part)) { base = '../'; break; }
+  // ── Determine root path (handles pages in subfolders) ───────────────────
+  function getRootPath() {
+    const path = window.location.pathname;
+    // Count directory depth from root
+    const parts = path.replace(/\/$/, '').split('/').filter(Boolean);
+    // GitHub Pages: /repo-name/folder/file.html = depth 2+
+    // Find index.html location by going up to where assets/ lives
+    // We embed a data attribute on the script tag: data-root="../"
+    const scriptEl = document.querySelector('script[src*="nav.js"]');
+    if (scriptEl && scriptEl.dataset.root) return scriptEl.dataset.root;
+    return './';
   }
 
-  // Current filename for active state
-  const currentPath = window.location.pathname;
-  const currentFile = currentPath.split('/').slice(-1)[0] || 'index.html';
+  const ROOT = getRootPath();
 
-  function isActive(pageFile) {
-    // Normalize: compare end of path
-    if (currentPath.endsWith(pageFile)) return true;
-    if (currentPath.endsWith('/' + pageFile)) return true;
-    // Dashboard special case: index.html → dashboard.html
-    if (currentFile === '' && pageFile === 'dashboard.html') return true;
-    return false;
-  }
-
-  fetch(base + 'assets/pages.json')
+  // ── Fetch pages.json and build nav ──────────────────────────────────────
+  fetch(ROOT + 'assets/pages.json')
     .then(r => r.json())
-    .then(data => {
-      let html = '';
+    .then(data => buildNav(data))
+    .catch(() => {
+      // Fallback: render minimal nav if fetch fails (e.g. opening file:// locally)
+      console.warn('nav.js: Could not load pages.json. Open via a local server or GitHub Pages.');
+    });
 
-      // Logo
-      html += `<a class="nav-logo" href="${base}dashboard.html">`;
-      html += `<div class="nav-logo-sub">private research</div>`;
-      html += `<div class="nav-logo-name">BTC<br/><span>THESIS</span></div>`;
-      html += `</a>`;
+  function buildNav(data) {
+    const nav = document.getElementById('site-nav');
+    if (!nav) return;
 
-      // Sections
-      for (const section of data.sections) {
-        html += `<div class="nav-section">${section.label}</div>`;
-        for (const page of section.pages) {
-          const href = base + page.file;
-          const active = isActive(page.file) ? ' active' : '';
-          let badge = '';
-          if (page.badge) {
-            const cls = page.badgeColor === 'yellow' ? 'ty' : page.badgeColor === 'green' ? 'tg' : '';
-            badge = `<span class="ntag ${cls}">${page.badge}</span>`;
-          }
-          html += `<a class="nav-item${active}" href="${href}"><span class="pip"></span>${page.title}${badge}</a>`;
+    const currentFile = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = window.location.pathname;
+
+    let html = `
+      <a href="${ROOT}index.html" class="nav-logo" style="text-decoration:none; color:inherit; cursor:pointer;">
+        <div class="nav-logo-eyebrow">research</div>
+        <div class="nav-logo-title">BTC<br/><span>THESIS</span></div>
+      </a>
+    `;
+
+    data.sections.forEach(section => {
+      html += `<div class="nav-section-label">${section.label}</div>`;
+
+      section.pages.forEach(page => {
+        const href = ROOT + page.file;
+        const isActive = currentPath.endsWith(page.file) || currentPath.endsWith(page.file.replace('.html', ''));
+        const activeClass = isActive ? ' active' : '';
+
+        let badge = '';
+        if (page.badge) {
+          badge = `<span class="nav-badge ${page.badgeColor || 'dim'}">${page.badge}</span>`;
         }
-      }
 
-      // Inject into .nav element
-      const nav = document.querySelector('.nav');
-      if (nav) nav.innerHTML = html;
-    })
-    .catch(err => console.warn('Nav load failed:', err));
+        html += `
+          <a class="nav-link${activeClass}" href="${href}">
+            <span class="nav-dot"></span>
+            ${page.title}
+            ${badge}
+          </a>
+        `;
+      });
+    });
+
+    nav.innerHTML = html;
+  }
 })();
