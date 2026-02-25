@@ -1,380 +1,958 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>The Toll Road Thesis — ETH → CRV → CVX</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
-<style>
-/* Page-specific tokens (extend shared tokens) */
-:root{--card:#0f1629;--bhi:#334155;--tm:#94a3b8;--td:#64748b;--tf:#475569;--amber:#f59e0b;--cyan:#06b6d4;--pink:#ec4899;--crv:#f97316;--cvx:#3b82f6;--eth:#627eea;--uni:#ff007a;--fluid:#22c55e;--fx:#10b981;--mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif}
-/* Scope page links so nav links aren't affected */
-.trt a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(6,182,212,.3)}.trt a:hover{color:#22d3ee}
-.site-nav a{border-bottom:none}
-.hdr{padding:24px 24px 0;border-bottom:1px solid var(--border)}.hdr h1{font-size:18px;font-weight:800;letter-spacing:-.5px}.hdr-sub{font-family:var(--mono);font-size:10px;color:var(--td);letter-spacing:.5px}
-.tabs{display:flex;gap:2px;margin-top:16px;overflow-x:auto}.tb{font-family:var(--mono);font-size:10px;font-weight:700;padding:8px 14px;border:none;cursor:pointer;letter-spacing:.5px;border-radius:6px 6px 0 0;background:0 0;color:var(--td);border-bottom:2px solid transparent;transition:.15s;white-space:nowrap}.tb.a{background:var(--card);color:var(--crv);border-bottom-color:var(--crv)}.tb:hover:not(.a){color:var(--tm)}
-.ct{padding:20px;max-width:920px;margin:0 auto}.tc{display:none;flex-direction:column;gap:16px}.tc.a{display:flex}
-.cd{background:var(--card);border-radius:10px;padding:20px 22px;border:1px solid var(--border)}.ce{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;margin-bottom:6px;text-transform:uppercase}.ct2{font-size:16px;font-weight:700;margin-bottom:14px;line-height:1.3}
-.bg{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:3px;display:inline-block}
-.src{font-family:var(--mono);font-size:8px;color:var(--cyan);opacity:.7;vertical-align:super;cursor:help;margin-left:1px;padding:0 2px}.src:hover{opacity:1}
-.sb{margin-top:10px;padding:10px 14px;background:rgba(6,182,212,.04);border:1px solid rgba(6,182,212,.1);border-radius:6px;font-size:10px;color:var(--td);line-height:1.8}.sb .st{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--cyan);margin-bottom:6px;text-transform:uppercase;opacity:.7}.sb .si{margin-bottom:3px}.sb .sn{font-family:var(--mono);color:var(--cyan);font-weight:700;margin-right:4px;font-size:9px}
-.fg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}@media(max-width:700px){.fg{grid-template-columns:repeat(2,1fr)}}
-.fs{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 12px;cursor:pointer;transition:.2s}.fs:hover{border-color:var(--bhi)}.fs .ic{font-size:20px;margin-bottom:6px}.fs .lb{font-size:12px;font-weight:700;margin-bottom:2px}.fs .su{font-family:var(--mono);font-size:9px}
-.fd{margin-top:12px;padding:14px 16px;border-radius:8px;display:none;font-size:12px;color:var(--tm);line-height:1.7;background:var(--bg2);border:1px solid var(--border)}.fd.a{display:block}
-.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}@media(max-width:600px){.sg{grid-template-columns:1fr}}
-.sc{background:var(--bg2);border-radius:8px;padding:12px 14px;border-left:3px solid}.sl{font-family:var(--mono);font-size:9px;color:var(--td);letter-spacing:.5px;margin-bottom:4px}.sv{font-family:var(--mono);font-size:20px;font-weight:800}.ss{font-size:10px;color:var(--td);margin-top:2px}.ssrc{font-family:var(--mono);font-size:8px;color:var(--cyan);opacity:.6;margin-top:4px}
-.sch{display:flex;gap:2px;align-items:flex-end;height:240px}.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}.bs{width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:200px}.bsg{width:100%;position:relative}.bsl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:10px;font-weight:700;color:#fff}.bp{font-family:var(--mono);font-size:9px;color:var(--td);text-align:center}
-.rcg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.rsl{font-family:var(--mono);font-size:9px;color:var(--td);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}.rc{display:flex;gap:3px;align-items:flex-end;height:120px}.rcl{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}.rv{font-family:var(--mono);font-size:9px;font-weight:600}.rb{width:100%;border-radius:3px 3px 0 0}.rl{font-family:var(--mono);font-size:8px;color:var(--td)}
-.lg{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}.li{display:flex;align-items:center;gap:6px}.lsw{width:10px;height:10px;border-radius:2px}.ll{font-family:var(--mono);font-size:10px;color:var(--tm)}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:600px){.dg{grid-template-columns:1fr}}.dc{background:var(--bg2);border-radius:8px;padding:16px}.di{font-size:11px;color:var(--tm);line-height:1.8;padding-left:14px;position:relative}.di .ar{position:absolute;left:0;font-weight:700}
-.sr{display:grid;grid-template-columns:130px 130px 60px 1fr;gap:12px;padding:10px 14px;background:var(--bg2);border-radius:6px;align-items:center}@media(max-width:650px){.sr{grid-template-columns:1fr 1fr}}
-.stp{display:flex;gap:10px;padding:8px 12px;background:var(--bg2);border-radius:6px;align-items:center;border:1px solid var(--border)}.stp.hl{border-color:#ec489930;background:rgba(236,72,153,.07)}.stpn{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--pink);min-width:20px}
-.ks{background:var(--bg2);border-radius:8px;padding:14px 16px;border:1px solid var(--border)}.kh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.khl{display:flex;align-items:center;gap:8px}.khl .ic{font-size:16px}.khl .lb{font-size:13px;font-weight:700}.kb{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 12px;background:var(--bg);border-radius:6px}.ksl{font-family:var(--mono);font-size:9px;margin-bottom:4px}.kst{font-size:11px;color:var(--tm);line-height:1.6}.km{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}.km span{font-size:10px;color:var(--td)}.km .mk{font-family:var(--mono);color:var(--tf)}
-.clg{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:600px){.clg{grid-template-columns:1fr}}.cli{display:flex;gap:10px;padding:8px 12px;background:var(--bg2);border-radius:6px;align-items:center;border:1px solid var(--border)}.clb{width:14px;height:14px;border-radius:3px;border:2px solid var(--td);flex-shrink:0;cursor:pointer;transition:.15s}.clb:hover{border-color:var(--green)}.clb.ck{background:var(--green);border-color:var(--green)}
-.co{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:12px;color:var(--tm);line-height:1.8}.cot{font-size:12px;font-weight:700;margin-bottom:4px}.tb2{font-size:12px;color:var(--tm);line-height:1.8}.ht{font-weight:700}.mb{font-family:var(--mono);font-size:10px;padding:10px 14px;background:var(--bg2);border-radius:6px;line-height:1.8}
-.tsg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.ts{background:var(--bg2);border-radius:8px;padding:14px 12px;text-align:center}.ts .v{font-family:var(--mono);font-size:22px;font-weight:800}.ts .l{font-size:11px;font-weight:600;color:var(--text);margin-top:4px}.ts .s{font-size:10px;color:var(--td);margin-top:2px}
-.ft{color:var(--tf);font-size:9px;margin-top:20px;line-height:1.6;font-family:var(--mono);padding:14px 0;border-top:1px solid var(--border)}
-.stb{width:100%;border-collapse:collapse}.stb th{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--td);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}.stb td{font-size:11px;padding:8px 10px;border-bottom:1px solid rgba(30,41,59,.5);color:var(--tm);vertical-align:top}.stb td:first-child{font-family:var(--mono);font-size:10px;color:var(--cyan);font-weight:600;white-space:nowrap}.stb tr:hover td{background:rgba(6,182,212,.03)}
-/* FX-specific */
-.fxh{font-family:var(--mono);font-size:64px;font-weight:800;color:var(--fx);line-height:1;letter-spacing:-3px}.fxs{font-family:var(--mono);font-size:11px;color:var(--td);margin-top:4px}
-.fxg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px}@media(max-width:600px){.fxg{grid-template-columns:1fr}}
-.fxc{background:var(--bg2);border-radius:8px;padding:16px;border:1px solid var(--border)}.fxcl{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--td);margin-bottom:6px;text-transform:uppercase}.fxcv{font-family:var(--mono);font-size:24px;font-weight:800;margin-bottom:4px}.fxcd{font-size:11px;color:var(--tm);line-height:1.6}
-.fxbar{width:100%;height:32px;background:var(--bg2);border-radius:6px;position:relative;overflow:hidden;margin:10px 0}.fxfill{height:100%;border-radius:6px;position:relative;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:#fff}
-/* Multi-chain */
-.chn{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:600;margin:3px}.chn.live{border-color:var(--green);color:var(--green)}.chn.new{border-color:var(--cyan);color:var(--cyan)}.chn.soon{border-color:var(--amber);color:var(--amber);border-style:dashed}
-.techbox{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;margin-top:10px}.techlbl{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--td);text-transform:uppercase;margin-bottom:8px}
-.na-price{font-family:var(--mono);font-size:20px;font-weight:800;color:var(--amber);opacity:.6}.na-note{font-family:var(--mono);font-size:8px;color:var(--td);font-style:italic}
-</style></head><body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toll Road Thesis — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Toll Road page-specific styles ── */
+
+    /* -- Tab navigation inside page -- */
+    .tr-tabs {
+      display: flex;
+      gap: 2px;
+      margin-top: 20px;
+      overflow-x: auto;
+      padding-bottom: 1px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tr-tab {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 1px;
+      border-radius: 6px 6px 0 0;
+      background: transparent;
+      color: var(--text-dim);
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .tr-tab:hover:not(.active) { color: var(--text-mid); }
+    .tr-tab.active {
+      background: var(--card);
+      color: var(--orange);
+      border-bottom-color: var(--orange);
+    }
+
+    /* -- Tab content panels -- */
+    .tr-panel { display: none; flex-direction: column; gap: 16px; }
+    .tr-panel.active { display: flex; }
+    .tr-content { padding-top: 20px; }
+
+    /* -- Card accents -- */
+    .card-accent { border-top: 2px solid; }
+
+    /* -- Section eyebrow inside cards -- */
+    .section-eye {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* -- Section title inside cards -- */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    /* -- Body text -- */
+    .body-text {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.8;
+    }
+    .body-text .ht { font-weight: 700; }
+
+    /* -- Mono callout box -- */
+    .mono-box {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 12px 16px;
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      line-height: 1.8;
+      color: var(--text-mid);
+    }
+
+    /* -- Source footnote badges -- */
+    .src {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--blue);
+      opacity: 0.7;
+      vertical-align: super;
+      cursor: help;
+      margin-left: 1px;
+      padding: 0 2px;
+    }
+    .src:hover { opacity: 1; }
+
+    /* -- Source box at card bottom -- */
+    .source-box {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(56,189,248,0.04);
+      border: 1px solid rgba(56,189,248,0.1);
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+    .source-box .sb-title {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: var(--blue);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+    .source-box .sb-item { margin-bottom: 3px; }
+    .source-box .sb-num {
+      font-family: var(--mono);
+      color: var(--blue);
+      font-weight: 700;
+      margin-right: 4px;
+      font-size: 9px;
+    }
+
+    /* -- Flywheel grid -- */
+    .fw-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 700px) { .fw-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .fw-step {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .fw-step:hover { border-color: var(--border-hi); }
+    .fw-step .fw-icon { font-size: 20px; margin-bottom: 6px; }
+    .fw-step .fw-label { font-size: 12px; font-weight: 700; margin-bottom: 2px; color: var(--text); }
+    .fw-step .fw-sub { font-family: var(--mono); font-size: 9px; }
+
+    .fw-detail {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      display: none;
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+    }
+    .fw-detail.active { display: block; }
+
+    /* -- Stats grid -- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+
+    .stat-card {
+      background: var(--bg2);
+      border-radius: 8px;
+      padding: 12px 14px;
+      border-left: 3px solid;
+    }
+    .stat-card .sc-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .stat-card .sc-value {
+      font-family: var(--mono);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .stat-card .sc-note { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+    .stat-card .sc-source { font-family: var(--mono); font-size: 8px; color: var(--blue); opacity: 0.6; margin-top: 4px; }
+
+    /* -- Stacked bar chart -- */
+    .bar-chart {
+      display: flex;
+      gap: 2px;
+      align-items: flex-end;
+      height: 240px;
+    }
+    .bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .bar-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 200px;
+    }
+    .bar-seg {
+      width: 100%;
+      position: relative;
+    }
+    .bar-seg-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .bar-period {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+
+    /* -- Chart legend -- */
+    .chart-legend {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+    .legend-label { font-family: var(--mono); font-size: 10px; color: var(--text-mid); }
+
+    /* -- Revenue mini-charts -- */
+    .rev-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 700px) { .rev-grid { grid-template-columns: 1fr; } }
+
+    .rev-section-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .rev-chart {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 120px;
+    }
+    .rev-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .rev-val { font-family: var(--mono); font-size: 9px; font-weight: 600; }
+    .rev-bar { width: 100%; border-radius: 3px 3px 0 0; }
+    .rev-label { font-family: var(--mono); font-size: 8px; color: var(--text-dim); }
+
+    /* -- Divergence grid -- */
+    .divergence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 600px) { .divergence-grid { grid-template-columns: 1fr; } }
+
+    .divergence-col {
+      background: var(--bg2);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .div-item {
+      font-size: 11px;
+      color: var(--text-mid);
+      line-height: 1.8;
+      padding-left: 14px;
+      position: relative;
+    }
+    .div-item .arrow { position: absolute; left: 0; font-weight: 700; }
+
+    /* -- Callout box -- */
+    .callout {
+      margin-top: 14px;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.8;
+    }
+    .callout-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    /* -- Scenario rows -- */
+    .scenario-row {
+      display: grid;
+      grid-template-columns: 130px 130px 60px 1fr;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      align-items: center;
+    }
+    @media (max-width: 650px) { .scenario-row { grid-template-columns: 1fr 1fr; } }
+
+    /* -- Reflexive steps -- */
+    .reflex-step {
+      display: flex;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      align-items: center;
+      border: 1px solid var(--border);
+    }
+    .reflex-step.highlight {
+      border-color: rgba(167,139,250,0.2);
+      background: rgba(167,139,250,0.05);
+    }
+    .reflex-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--purple);
+      min-width: 20px;
+    }
+
+    /* -- Stat trio -- */
+    .stat-trio {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .stat-trio-item {
+      background: var(--bg2);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-trio-item .sti-val { font-family: var(--mono); font-size: 22px; font-weight: 700; }
+    .stat-trio-item .sti-label { font-size: 11px; font-weight: 600; color: var(--text); margin-top: 4px; }
+    .stat-trio-item .sti-note { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+    /* -- Kill switch cards -- */
+    .ks-card {
+      background: var(--bg2);
+      border-radius: 8px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .ks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .ks-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ks-header-left .ks-icon { font-size: 16px; }
+    .ks-header-left .ks-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .ks-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+    }
+    .ks-sub-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      margin-bottom: 4px;
+    }
+    .ks-sub-text { font-size: 11px; color: var(--text-mid); line-height: 1.6; }
+    .ks-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .ks-meta span { font-size: 10px; color: var(--text-dim); }
+    .ks-meta .meta-key { font-family: var(--mono); color: var(--text-faint); }
+
+    /* -- Checklist -- */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 600px) { .checklist-grid { grid-template-columns: 1fr; } }
+
+    .cl-item {
+      display: flex;
+      gap: 10px;
+      padding: 8px 12px;
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      align-items: center;
+      border: 1px solid var(--border);
+    }
+    .cl-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 2px solid var(--text-dim);
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .cl-box:hover { border-color: var(--green); }
+    .cl-box.checked { background: var(--green); border-color: var(--green); }
+
+    /* -- Source table -- */
+    .src-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .src-table th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+    }
+    .src-table td {
+      font-size: 11px;
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(30,45,69,0.5);
+      color: var(--text-mid);
+      vertical-align: top;
+    }
+    .src-table td:first-child {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--blue);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .src-table tr:hover td { background: rgba(56,189,248,0.03); }
+
+    /* -- Page footer -- */
+    .page-footer {
+      color: var(--text-faint);
+      font-size: 9px;
+      margin-top: 24px;
+      line-height: 1.6;
+      font-family: var(--mono);
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
 <div class="site-layout">
-<nav class="site-nav" id="site-nav"></nav>
-<main class="site-main">
-<div class="trt">
-<div class="hdr"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><span style="font-size:22px;font-weight:800;color:var(--crv)">🛣️</span><div><h1>The Toll Road Thesis</h1><div class="hdr-sub">ETH → CRV → CVX FLYWHEEL · TRADE THESIS + INVALIDATION</div></div></div>
-<div class="tabs"><button class="tb a" onclick="T('flywheel',this)">FLYWHEEL</button><button class="tb" onclick="T('dominance',this)">FEE DOMINANCE</button><button class="tb" onclick="T('fx',this)" style="color:var(--fx)">💱 FX MARKETS</button><button class="tb" onclick="T('chain',this)">MULTI-CHAIN</button><button class="tb" onclick="T('revenue',this)">REVENUE</button><button class="tb" onclick="T('thesis',this)">THE TRADE</button><button class="tb" onclick="T('invalidation',this)">KILL SWITCHES</button><button class="tb" onclick="T('sources',this)">SOURCES</button></div></div>
-<div class="ct">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
 
-<!-- ══ FLYWHEEL ══ -->
-<div id="t-flywheel" class="tc a">
-<div class="cd" style="border-top:2px solid var(--crv)"><div class="ce" style="color:var(--crv)">The Reflexive Flywheel</div><div class="ct2">If ETH pumps, money flows through Curve. Period.</div>
-<div class="tb2" style="margin-bottom:18px">ETH is the <span class="ht" style="color:var(--eth)">precondition</span>, not the bet. CRV is the <span class="ht" style="color:var(--crv)">toll road</span> that all stablecoin liquidity drives through — currently capturing 44% of all DEX fees on Ethereum.<span class="src" title="[1] PRNewswire Dec 2025">1</span> CVX is the <span class="ht" style="color:var(--cvx)">leveraged governance claim</span> on that toll road, controlling the largest single block of veCRV voting power.<span class="src" title="[8] DefiLlama Convex">8</span> The flywheel is a ponzi when it gets running — emission revenue makes it always rational to buy in. Self-reinforcing. Reflexive.</div>
-<div class="fg" id="fwg"></div><div class="fd" id="fwd"></div>
-<div class="sb"><div class="st">📎 Sources</div><div class="si"><span class="sn">[1]</span><a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire — Curve 44% Fee Share</a> (Dec 19, 2025)</div><div class="si"><span class="sn">[2]</span><a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire — Q3 2025: $29B Vol, Revenue Doubles</a> (Nov 11, 2025)</div><div class="si"><span class="sn">[3]</span><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Collection &amp; Distribution</a> (official docs)</div></div></div>
+      <!-- ── PAGE HEADER ── -->
+      <header class="page-header">
+        <div class="page-eyebrow">CRV / CVX trade thesis</div>
+        <h1 class="page-title">🛣️ The Toll Road Thesis</h1>
+        <p class="page-subtitle">ETH → CRV → CVX Flywheel — Trade thesis with full invalidation framework. If ETH pumps, money flows through Curve. Period.</p>
+      </header>
 
-<div class="cd" style="border-top:2px solid var(--amber)"><div class="ce" style="color:var(--amber)">The Core Numbers</div><div class="sg" id="cs"></div>
-<div class="sb"><div class="st">📎 Sources</div><div class="si"><span class="sn">[4]</span><a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko — CRV</a> (live)</div><div class="si"><span class="sn">[5]</span><a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank">CoinGecko — CVX</a> (live)</div><div class="si"><span class="sn">[6]</span><a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama — Curve Finance</a> (live)</div><div class="si"><span class="sn">[7]</span><a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter — Curve 2025 Year-End</a> (Jan 20, 2026)</div></div></div></div>
+      <!-- ── TAB NAVIGATION ── -->
+      <div class="tr-tabs">
+        <button class="tr-tab active" onclick="switchTab('flywheel',this)">FLYWHEEL</button>
+        <button class="tr-tab" onclick="switchTab('dominance',this)">FEE DOMINANCE</button>
+        <button class="tr-tab" onclick="switchTab('revenue',this)">REVENUE</button>
+        <button class="tr-tab" onclick="switchTab('thesis',this)">THE TRADE</button>
+        <button class="tr-tab" onclick="switchTab('invalidation',this)">KILL SWITCHES</button>
+        <button class="tr-tab" onclick="switchTab('sources',this)">SOURCES</button>
+      </div>
 
-<!-- ══ FEE DOMINANCE ══ -->
-<div id="t-dominance" class="tc">
-<div class="cd" style="border-top:2px solid var(--crv)"><div class="ce" style="color:var(--crv)">Ethereum DEX Fee Market Share — Quarterly</div><div class="ct2">Curve's Rise from 1.6% to 44% in 12 Months<span class="src" title="[1]">1</span></div>
-<div class="lg"><div class="li"><div class="lsw" style="background:var(--crv)"></div><span class="ll">Curve</span></div><div class="li"><div class="lsw" style="background:var(--uni);opacity:.5"></div><span class="ll">Uniswap</span></div><div class="li"><div class="lsw" style="background:var(--fluid);opacity:.5"></div><span class="ll">Fluid</span></div><div class="li"><div class="lsw" style="background:var(--tf);opacity:.5"></div><span class="ll">Other</span></div></div>
-<div class="sch" id="sch"></div>
-<div style="margin-top:6px;font-family:var(--mono);font-size:8px;color:var(--tf);text-align:right">Data: <a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama fees/chain/ethereum</a><span class="src">6</span> · Q4 confirmed: <a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire</a><span class="src">1</span></div>
-<div class="co" style="background:var(--bg2);border:1px solid rgba(249,115,22,.12)"><span class="ht" style="color:var(--crv)">The signal:</span> Curve gained 42.4 percentage points of ETH DEX fee share in a single year — during a bear market.<span class="src" title="[1]">1</span> This isn't a meme rotation. This is infrastructure consolidation. Uniswap's share contracted because Curve dominates the trades that generate real revenue: stablecoin settlement, the base layer of every DeFi interaction.</div></div>
-<div class="cd" style="border-top:2px solid var(--amber)"><div class="ce" style="color:var(--amber)">Efficiency Advantage</div>
-<div class="tsg"><div class="ts"><div class="v" style="color:var(--green)">0.04%</div><div class="l">Curve swap fee<span class="src">9</span></div><div class="s">vs Uniswap's 0.30%</div></div><div class="ts"><div class="v" style="color:var(--green)">0.003%</div><div class="l">Price impact $500K<span class="src">9</span></div><div class="s">USDC→USDT on Curve</div></div><div class="ts"><div class="v" style="color:var(--crv)">44%</div><div class="l">Fee share at lower rate<span class="src">1</span></div><div class="s">Volume must be enormous</div></div></div>
-<div class="tb2" style="margin-top:14px">Curve charges <span style="font-family:var(--mono);color:var(--green)">7.5x less per trade</span> than Uniswap<span class="src">9</span> — yet captures nearly half the fee market. This means the <em>volume flowing through Curve is so massive</em> that even at a fraction of the fee rate, it generates comparable revenue. Curve also charges no frontend fee, compared to Uniswap's 0.15% surcharge through their official interface.<span class="src">9</span></div>
-<div class="sb"><div class="st">📎 Sources</div><div class="si"><span class="sn">[6]</span><a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama — Fees by Protocol on Ethereum</a></div><div class="si"><span class="sn">[11]</span><a href="https://coinlaw.io/uniswap-statistics/" target="_blank">CoinLaw — Uniswap Statistics 2026</a></div><div class="si"><span class="sn">[14]</span><a href="https://crypto.news/curve-finance-ethereum-dex-fees-activity-surges-2025/" target="_blank">Crypto.News — Curve Fee Surge ($15.1M 30-day)</a> (Dec 23, 2025)</div></div></div></div>
+      <!-- ── TAB CONTENT ── -->
+      <div class="tr-content">
 
-<!-- ══ FX MARKETS — NEW ══ -->
-<div id="t-fx" class="tc">
-<div class="cd" style="border-top:3px solid var(--fx);border-left:3px solid var(--fx)">
-<div class="ce" style="color:var(--fx)">🔥 The Unpriced Catalyst — On-Chain Foreign Exchange</div>
-<div class="ct2" style="font-size:20px">The global FX market trades $7.5 trillion per day.<br>Curve is building the on-chain version.</div>
-<div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;margin-top:16px">
-<div>
-<div class="tb2" style="font-size:13px">The current thesis prices CRV for what it does today: stablecoin swaps on Ethereum. It does <em>not</em> price what happens when tokenized fiat currencies — EUR, GBP, JPY, BRL stablecoins — begin trading on-chain the way USDC and USDT do today. Curve isn't hoping this happens. They've already built the infrastructure: <span class="ht" style="color:var(--fx)">FXSwap</span>, a purpose-built AMM algorithm for fiat-pair trading that launched in August 2025.<span class="src" title="[16]">16</span> The DAO vote (Proposal #1178) had the <em>highest participation in Curve's history</em> — 90% of all veCRV voted in favor.<span class="src" title="[16]">16</span> The market doesn't understand what even a tiny slice of FX volume would do to Curve's fee math.</div>
-</div>
-<div style="text-align:right;padding:10px 0">
-<div class="fxh">$7.5T</div>
-<div class="fxs">daily FX volume<span class="src" title="[10] BIS">10</span></div>
-<div style="font-family:var(--mono);font-size:9px;color:var(--td);margin-top:2px">BIS Triennial Survey</div>
-</div>
-</div>
+        <!-- ══ FLYWHEEL ══ -->
+        <div id="p-flywheel" class="tr-panel active">
+          <div class="card card-accent" style="border-top-color: var(--orange)">
+            <div class="section-eye" style="color: var(--orange)">The Reflexive Flywheel</div>
+            <div class="section-title">If ETH pumps, money flows through Curve. Period.</div>
+            <div class="body-text" style="margin-bottom: 18px;">
+              ETH is the <span class="ht" style="color: #627eea">precondition</span>, not the bet.
+              CRV is the <span class="ht" style="color: var(--orange)">toll road</span> that all stablecoin liquidity drives through — currently capturing 44% of all DEX fees on Ethereum.<span class="src" title="[1] PRNewswire Dec 2025">1</span>
+              CVX is the <span class="ht" style="color: var(--blue)">leveraged governance claim</span> on that toll road, controlling the largest single block of veCRV voting power.<span class="src" title="[8] DefiLlama Convex">8</span>
+              The flywheel is a ponzi when it gets running — emission revenue makes it always rational to buy in. Self-reinforcing. Reflexive.
+            </div>
+            <div class="fw-grid" id="fwg"></div>
+            <div class="fw-detail" id="fwd"></div>
+            <div class="source-box">
+              <div class="sb-title">📎 Sources</div>
+              <div class="sb-item"><span class="sb-num">[1]</span><a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire — Curve 44% Fee Share</a> (Dec 19, 2025)</div>
+              <div class="sb-item"><span class="sb-num">[2]</span><a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire — Q3 2025: $29B Vol, Revenue Doubles</a> (Nov 11, 2025)</div>
+              <div class="sb-item"><span class="sb-num">[3]</span><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Collection &amp; Distribution</a> (official docs)</div>
+            </div>
+          </div>
 
-<!-- Scenario math -->
-<div style="margin-top:20px;padding:16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:8px">
-<div style="font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--fx);margin-bottom:12px">SCENARIO MATH: WHAT IF CURVE CAPTURES EVEN A FRACTION?</div>
-<div class="tb2" style="margin-bottom:10px">Global FX turnover: $7.5T/day = <span style="font-family:var(--mono);color:var(--text)">$2.74 quadrillion/year</span>.<span class="src">10</span> Curve's current fee rate on stablecoin pairs is 0.04%, with 50% flowing to veCRV holders.<span class="src">3</span> Here's what various capture rates would mean:</div>
+          <div class="card card-accent" style="border-top-color: var(--yellow)">
+            <div class="section-eye" style="color: var(--yellow)">The Core Numbers</div>
+            <div class="stats-grid" id="cs"></div>
+            <div class="source-box">
+              <div class="sb-title">📎 Sources</div>
+              <div class="sb-item"><span class="sb-num">[4]</span><a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko — CRV</a> (live)</div>
+              <div class="sb-item"><span class="sb-num">[5]</span><a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank">CoinGecko — CVX</a> (live)</div>
+              <div class="sb-item"><span class="sb-num">[6]</span><a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama — Curve Finance</a> (live)</div>
+              <div class="sb-item"><span class="sb-num">[7]</span><a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter — Curve 2025 Year-End</a> (Jan 20, 2026)</div>
+            </div>
+          </div>
 
-<div class="fxg">
-<div class="fxc" style="border-color:var(--td)"><div class="fxcl">0.001% Capture</div><div class="fxcv" style="color:var(--td)">$27B/yr</div><div class="fxcd">Volume through Curve. At 0.04% fee → <span style="font-family:var(--mono);color:var(--green)">$10.8M</span> annual fees. Roughly equal to Curve's <em>entire 2025 revenue</em>.<span class="src">7</span> This barely registers as a rounding error on the FX market.</div></div>
-<div class="fxc" style="border-color:var(--amber)"><div class="fxcl">0.01% Capture</div><div class="fxcv" style="color:var(--amber)">$274B/yr</div><div class="fxcd">Volume through Curve. At 0.04% fee → <span style="font-family:var(--mono);color:var(--green)">$109M</span> annual fees. That's <span style="font-family:var(--mono);color:var(--amber)">8× current revenue</span>. CRV fundamentals would be unrecognizable at this level.</div></div>
-<div class="fxc" style="border-color:var(--fx)"><div class="fxcl">0.1% Capture</div><div class="fxcv" style="color:var(--fx)">$2.74T/yr</div><div class="fxcd">Volume through Curve. At 0.04% fee → <span style="font-family:var(--mono);color:var(--green)">$1.1B</span> annual fees. This transforms CRV from a DeFi token into a <em>global financial infrastructure asset</em>. Price discovery enters unknown territory.</div></div>
-</div>
+          <div class="card card-accent" style="border-top-color: var(--teal)">
+            <div class="section-eye" style="color: var(--teal)">The FX Optionality — Unpriced Upside</div>
+            <div class="body-text">
+              <span class="ht" style="color: var(--teal)">Curve is building the decentralized FX market.</span>
+              FXSwap is a new AMM algorithm purpose-built for fiat-pair stablecoin trading (EUR/USD, GBP/USD).<span class="src" title="[9] InsideCryptoReview">9</span>
+              The PYUSD/USDS pool hit >$90M TVL.<span class="src" title="[6] DefiLlama">6</span>
+              If non-USD stablecoins become a real category — EURC, GYEN, BRL stablecoins — Curve isn't just a DEX. It's the on-chain forex exchange.
+              The global FX market trades <span style="font-family: var(--mono); color: var(--text)">$7.5 trillion/day</span>.<span class="src" title="[10] BIS Triennial Survey">10</span>
+              Even capturing 0.001% of that flow transforms the fee math entirely.
+              The market is pricing CRV for its current stablecoin swap business. It is not pricing the FX optionality at all.
+            </div>
+            <div class="source-box">
+              <div class="sb-title">📎 Sources</div>
+              <div class="sb-item"><span class="sb-num">[9]</span><a href="https://insidecryptoreview.com/en/dex/curve" target="_blank">InsideCryptoReview — Curve Finance Review 2026</a> (Feb 2026)</div>
+              <div class="sb-item"><span class="sb-num">[10]</span><a href="https://www.bis.org/statistics/rpfx22.htm" target="_blank">BIS — Triennial Central Bank Survey of FX Markets</a> (2022)</div>
+            </div>
+          </div>
+        </div>
 
-<div style="margin-top:12px;font-size:11px;color:var(--td);line-height:1.6">
-<span style="font-family:var(--mono);color:var(--fx)">Context:</span> Curve already processes $122B/year in stablecoin volume.<span class="src">7</span> The 0.01% FX scenario ($274B) is only 2.2× current throughput — a volume increase that is well within the protocol's technical capacity, especially across multiple chains.
-</div>
-</div>
-</div>
+        <!-- ══ FEE DOMINANCE ══ -->
+        <div id="p-dominance" class="tr-panel">
+          <div class="card card-accent" style="border-top-color: var(--orange)">
+            <div class="section-eye" style="color: var(--orange)">Ethereum DEX Fee Market Share — Quarterly</div>
+            <div class="section-title">Curve's Rise from 1.6% to 44% in 12 Months<span class="src" title="[1]">1</span></div>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-swatch" style="background: var(--orange)"></div><span class="legend-label">Curve</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background: #ff007a; opacity: 0.5"></div><span class="legend-label">Uniswap</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background: var(--green); opacity: 0.5"></div><span class="legend-label">Fluid</span></div>
+              <div class="legend-item"><div class="legend-swatch" style="background: var(--text-faint); opacity: 0.5"></div><span class="legend-label">Other</span></div>
+            </div>
+            <div class="bar-chart" id="sch"></div>
+            <div style="margin-top: 6px; font-family: var(--mono); font-size: 8px; color: var(--text-faint); text-align: right;">
+              Data: <a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama fees/chain/ethereum</a><span class="src">6</span> ·
+              Q4 confirmed: <a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire</a><span class="src">1</span>
+            </div>
+            <div class="callout" style="background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.12);">
+              <span class="ht" style="color: var(--orange)">The signal:</span> Curve gained 42.4 percentage points of ETH DEX fee share in a single year — during a bear market.<span class="src" title="[1]">1</span>
+              This isn't a meme rotation. This is infrastructure consolidation. Uniswap's share contracted because Curve dominates the trades that generate real revenue: stablecoin settlement, the base layer of every DeFi interaction.
+            </div>
+          </div>
 
-<!-- FXSwap Technology -->
-<div class="cd" style="border-top:2px solid var(--fx)">
-<div class="ce" style="color:var(--fx)">How FXSwap Works — The Technology</div>
-<div class="ct2">A new AMM algorithm built specifically for FX-style pairs</div>
+          <div class="card card-accent" style="border-top-color: var(--yellow)">
+            <div class="section-eye" style="color: var(--yellow)">Efficiency Advantage</div>
+            <div class="stat-trio">
+              <div class="stat-trio-item">
+                <div class="sti-val" style="color: var(--green)">0.04%</div>
+                <div class="sti-label">Curve swap fee<span class="src">9</span></div>
+                <div class="sti-note">vs Uniswap's 0.30%</div>
+              </div>
+              <div class="stat-trio-item">
+                <div class="sti-val" style="color: var(--green)">0.003%</div>
+                <div class="sti-label">Price impact $500K<span class="src">9</span></div>
+                <div class="sti-note">USDC→USDT on Curve</div>
+              </div>
+              <div class="stat-trio-item">
+                <div class="sti-val" style="color: var(--orange)">44%</div>
+                <div class="sti-label">Fee share at lower rate<span class="src">1</span></div>
+                <div class="sti-note">Volume must be enormous</div>
+              </div>
+            </div>
+            <div class="body-text" style="margin-top: 14px;">
+              Curve charges <span style="font-family: var(--mono); color: var(--green)">7.5x less per trade</span> than Uniswap<span class="src">9</span> — yet captures nearly half the fee market.
+              This means the <em>volume flowing through Curve is so massive</em> that even at a fraction of the fee rate, it generates comparable revenue.
+              Curve also charges no frontend fee, compared to Uniswap's 0.15% surcharge through their official interface.<span class="src">9</span>
+            </div>
+            <div class="source-box">
+              <div class="sb-title">📎 Sources</div>
+              <div class="sb-item"><span class="sb-num">[6]</span><a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama — Fees by Protocol on Ethereum</a></div>
+              <div class="sb-item"><span class="sb-num">[11]</span><a href="https://coinlaw.io/uniswap-statistics/" target="_blank">CoinLaw — Uniswap Statistics 2026</a></div>
+              <div class="sb-item"><span class="sb-num">[14]</span><a href="https://crypto.news/curve-finance-ethereum-dex-fees-activity-surges-2025/" target="_blank">Crypto.News — Curve Fee Surge ($15.1M 30-day)</a> (Dec 23, 2025)</div>
+            </div>
+          </div>
+        </div>
 
-<div class="tb2" style="margin-bottom:14px">Curve's original StableSwap invariant was designed for like-kind assets that should trade near 1:1 (e.g. USDC ↔ USDT). FX pairs are different: EUR/USD fluctuates, but within tight bands — not like ETH/BTC volatility. Curve built FXSwap to handle exactly this middle ground: assets that <em>aren't</em> pegged but <em>aren't</em> wildly volatile either.<span class="src">16</span></div>
+        <!-- ══ REVENUE ══ -->
+        <div id="p-revenue" class="tr-panel">
+          <div class="card card-accent" style="border-top-color: var(--yellow)">
+            <div class="section-eye" style="color: var(--yellow)">Curve Protocol Metrics — Quarterly</div>
+            <div class="section-title">Revenue Doubled Q2→Q3 2025<span class="src">2</span></div>
+            <div class="rev-grid" id="rcg"></div>
+            <div style="margin-top: 8px; font-family: var(--mono); font-size: 8px; color: var(--text-faint); text-align: right;">
+              Q3 data: <a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire</a><span class="src">2</span> ·
+              Annual: <a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter</a><span class="src">7</span> ·
+              TVL: <a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama</a><span class="src">6</span>
+            </div>
+          </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div class="techbox">
-<div class="techlbl">Concentrated Liquidity</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">FXSwap concentrates liquidity around the current market price. For EUR/USD, this means virtually all pool capital is active in the relevant price range. Result: tighter spreads and deeper effective liquidity than general-purpose AMMs, even with less total capital deposited.<span class="src">17</span></div>
-</div>
-<div class="techbox">
-<div class="techlbl">Refuel Mechanism</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">The breakthrough innovation. Projects, treasuries, or market makers can add "refuel" — a drip-released capital buffer that helps the AMM rebalance when prices drift. This offsets impermanent loss for LPs and keeps spreads competitive. Think of it like engine oil for the market maker.<span class="src">16</span></div>
-</div>
-<div class="techbox">
-<div class="techlbl">LP Protection</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">In traditional AMMs, LPs providing EUR/USD liquidity get destroyed by impermanent loss when FX rates move. FXSwap's refuel absorbs the rebalancing cost. LPs keep more of their yield without active position management.<span class="src">16</span> This is critical for attracting institutional-grade liquidity.</div>
-</div>
-<div class="techbox">
-<div class="techlbl">TradFi Competitive Spreads</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">Early analysis shows FXSwap delivering strong execution for large trades compared to Uniswap V3.<span class="src">17</span> For a $1M EUR-stablecoin trade: FXSwap hypothesis is ~0.10% spread vs ~0.40% on a less-deep pool — saving ~$3,000 per million traded.<span class="src">17</span></div>
-</div>
-</div>
+          <div class="card card-accent" style="border-top-color: var(--red)">
+            <div class="section-eye" style="color: var(--red)">The Revenue vs. Token Price Divergence</div>
+            <div class="section-title">Curve is earning more while the token trades near ATL</div>
+            <div class="divergence-grid">
+              <div class="divergence-col" style="border-left: 3px solid var(--green)">
+                <div style="font-family: var(--mono); font-size: 9px; color: var(--green); margin-bottom: 8px; letter-spacing: 1px;">FUNDAMENTALS (IMPROVING)</div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>Fee share: 1.6% → 44%<span class="src">1</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>Revenue: Q2 $3.9M → Q3 $7.3M (+87%)<span class="src">2</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>2025 total: $13.6M to veCRV holders<span class="src">7</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>Volume: $122.3B annual<span class="src">7</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>Pools >$1M TVL: +41% YoY<span class="src">2</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>Emissions cut: 137M → 115M CRV/yr<span class="src">9</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>TVL/MCap ratio: 0.40 (undervalued)<span class="src">12</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--green)">↑</span>FX pools on roadmap (new TAM)<span class="src">9</span></div>
+              </div>
+              <div class="divergence-col" style="border-left: 3px solid var(--red)">
+                <div style="font-family: var(--mono); font-size: 9px; color: var(--red); margin-bottom: 8px; letter-spacing: 1px;">PRICE ACTION (COLLAPSING)</div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>CRV: ~$0.42 — down 97% from ATH<span class="src">4</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>CVX: ~$1.73 — down 97% from ATH<span class="src">5</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>CRV ATL: $0.18 (Aug 2024)<span class="src">4</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>Bear market sentiment across DeFi</div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>48% circulating, emission overhang<span class="src">4</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>2023 Vyper exploit history ($70M)<span class="src">9</span></div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>Curve Wars narrative faded from CT</div>
+                <div class="div-item"><span class="arrow" style="color: var(--red)">↓</span>"DeFi is dead" consensus</div>
+              </div>
+            </div>
+            <div class="callout" style="background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.15);">
+              <div class="callout-title" style="color: var(--orange)">The Asymmetry</div>
+              When fundamentals improve while price collapses, one of two things is true: either the market knows something you don't (bear case), or the market is mispricing a recovery asset at peak pessimism (your thesis).
+              The 44% fee share number is not narrative — it's on-chain, verifiable on <a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama</a>, and measured against the most competitive DeFi ecosystem on Earth.<span class="src">6</span>
+            </div>
+          </div>
+        </div>
 
-<div style="margin-top:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--fx)">
-<div style="font-size:12px;color:var(--text);font-weight:700;margin-bottom:6px">Why this matters for CRV price:</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.8">FX pools generate trading fees → 50% go to veCRV holders → incentive to buy and lock CRV increases → same reflexive flywheel, but fed by an entirely new revenue stream. Every EUR/USD swap, every GBP/USDC trade, every JPY stablecoin conversion — they all pay the toll road. The FX market is <span style="font-family:var(--mono);color:var(--fx)">500× larger</span> than all of DeFi combined. Even capturing a sliver rewrites the bull case.</div>
-</div>
+        <!-- ══ THE TRADE ══ -->
+        <div id="p-thesis" class="tr-panel">
+          <div class="card card-accent" style="border-top-color: var(--orange)">
+            <div class="section-eye" style="color: var(--orange)">ETH / CRV / CVX — The Toll Road Trade</div>
+            <div class="section-title">Thesis Statement</div>
+            <div class="body-text" style="margin-bottom: 16px;">
+              <span style="color: var(--text); font-weight: 600;">Core belief:</span>
+              Curve Finance has quietly consolidated into the dominant stablecoin infrastructure layer on Ethereum during the bear market.<span class="src">1</span>
+              When liquidity expansion (WALCL → M2) forces capital back into crypto, stablecoin volume explodes. Curve captures 44% of that flow.<span class="src">1</span>
+              The veCRV/CVX governance flywheel converts volume into locked supply,<span class="src">3</span> creating a reflexive loop where rising fees make it rational to buy and lock — which reduces floating supply — which amplifies price moves.
+              CRV at ~$0.42<span class="src">4</span> and CVX at ~$1.73<span class="src">5</span> represent 97% drawdowns from ATH on a working protocol with proven fee capture, rising revenue,<span class="src">2</span> and unpriced FX optionality.
+            </div>
+            <div class="mono-box" style="color: var(--orange); border: 1px solid rgba(249,115,22,0.12);">
+              MECHANISM: WALCL ↑ → M2 ↑ → Stablecoins mint → ETH DeFi TVL ↑ → Swap volume ↑ → Curve fees ↑ → veCRV rewards ↑ → More locking → Less float → CRV ↑ → CVX amplifies → Reflexive loop
+            </div>
+          </div>
 
-<div class="sb"><div class="st">📎 Sources</div>
-<div class="si"><span class="sn">[16]</span><a href="https://news.curve.finance/curve-monthly-recap-august-2025/" target="_blank">Curve News — FXSwap Launch & Recap</a> (Aug 2025) — DAO Proposal #1178, 90% veCRV participation, refuel mechanism explained</div>
-<div class="si"><span class="sn">[17]</span><a href="https://en.cryptonomist.ch/2025/09/04/curve-launches-fxswap-on-chain-forex-aims-for-tighter-spreads-and-deep-liquidity/" target="_blank">Cryptonomist — FXSwap On-Chain Forex Aims for Tighter Spreads</a> (Sep 4, 2025)</div>
-<div class="si"><span class="sn">[10]</span><a href="https://www.bis.org/statistics/rpfx22.htm" target="_blank">BIS — Triennial Central Bank Survey of FX &amp; OTC Derivatives Markets</a> (2022)</div>
-<div class="si"><span class="sn">[9]</span><a href="https://insidecryptoreview.com/en/dex/curve" target="_blank">InsideCryptoReview — Curve Review 2026</a> — FX roadmap, Yield Basis, Curve-Lite</div>
-</div>
-</div>
+          <div class="card card-accent" style="border-top-color: var(--green)">
+            <div class="section-eye" style="color: var(--green)">Upside Scenarios</div>
+            <div style="display: flex; flex-direction: column; gap: 8px;" id="scn"></div>
+            <div style="margin-top: 10px; font-size: 10px; color: var(--text-dim); line-height: 1.6;">
+              <em>Price targets based on prior cycle ranges, ATH data from <a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko</a><span class="src">4,5</span>, and fee capture analysis. Not predictions — scenario mapping for position sizing.</em>
+            </div>
+          </div>
 
-<!-- FX Timeline -->
-<div class="cd" style="border-top:2px solid var(--cyan)">
-<div class="ce" style="color:var(--cyan)">FX Catalyst Timeline</div>
-<div class="ct2">From algorithm to global infrastructure</div>
-<div style="display:flex;flex-direction:column;gap:8px">
-<div class="stp"><span class="stpn" style="color:var(--green)">✓</span><span style="font-size:11px;color:var(--green);font-weight:600">Aug 2025 — FXSwap algorithm approved by DAO (Proposal #1178, 90% participation)<span class="src">16</span></span></div>
-<div class="stp"><span class="stpn" style="color:var(--green)">✓</span><span style="font-size:11px;color:var(--green);font-weight:600">Sep 2025 — Initial EUR/GBP stablecoin pools live, early volume observed<span class="src">17</span></span></div>
-<div class="stp"><span class="stpn" style="color:var(--green)">✓</span><span style="font-size:11px;color:var(--green);font-weight:600">Jan 2026 — crvUSD monetary policy update + FXSwap shipped alongside frontend upgrades<span class="src">16</span></span></div>
-<div class="stp"><span class="stpn" style="color:var(--amber)">→</span><span style="font-size:11px;color:var(--amber)">2026 H1 — Pool-by-pool tuning: fees, parameters, new asset pairs being optimized<span class="src">16</span></span></div>
-<div class="stp"><span class="stpn" style="color:var(--td)">○</span><span style="font-size:11px;color:var(--td)">2026+ — Non-USD stablecoin adoption (EURC by Circle, institutional on-ramps)</span></div>
-<div class="stp"><span class="stpn" style="color:var(--td)">○</span><span style="font-size:11px;color:var(--td)">2026+ — CBDC interoperability: digital EUR, digital GBP settlement via Curve pools</span></div>
-<div class="stp" style="border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.06)"><span class="stpn" style="color:var(--fx)">★</span><span style="font-size:11px;color:var(--fx);font-weight:700">Endgame — Curve becomes the decentralized FOREX exchange. Fee math transforms.</span></div>
-</div>
-<div style="margin-top:12px;font-size:11px;color:var(--td);line-height:1.6"><span style="font-family:var(--mono);color:var(--fx)">Key insight:</span> This isn't speculative. The algorithm is live. Pools exist. The DAO voted overwhelmingly in favor. What's unknown is <em>adoption rate</em> — which is why the market isn't pricing it yet. That's the opportunity.</div>
-</div></div>
+          <div class="card card-accent" style="border-top-color: var(--purple)">
+            <div class="section-eye" style="color: var(--purple)">The Reflexivity Argument</div>
+            <div class="section-title">"It always makes sense to buy in"</div>
+            <div class="body-text"><span class="ht" style="color: var(--purple)">When the flywheel is spinning, the incentive structure is self-reinforcing:</span></div>
+            <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;" id="rfx"></div>
+            <div class="source-box">
+              <div class="sb-title">📎 Mechanism Sources</div>
+              <div class="sb-item"><span class="sb-num">[3]</span><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Distribution</a> (100% admin fees → veCRV, weekly Thu)</div>
+              <div class="sb-item"><span class="sb-num">[8]</span><a href="https://defillama.com/protocol/convex-finance" target="_blank">DefiLlama — Convex Finance</a> (vlCVX governance)</div>
+            </div>
+          </div>
+        </div>
 
-<!-- ══ MULTI-CHAIN — NEW ══ -->
-<div id="t-chain" class="tc">
-<div class="cd" style="border-top:2px solid var(--purple)">
-<div class="ce" style="color:var(--purple)">Multi-Chain Deployment</div>
-<div class="ct2">Curve captures stablecoin volume wherever DeFi happens — not just Ethereum</div>
+        <!-- ══ KILL SWITCHES ══ -->
+        <div id="p-invalidation" class="tr-panel">
+          <div class="card card-accent" style="border-top-color: var(--red)">
+            <div class="section-eye" style="color: var(--red)">CRV/CVX Invalidation Dashboard</div>
+            <div class="section-title">8 Kill Switches — Check Weekly</div>
+            <div style="color: var(--text-dim); font-size: 11px; line-height: 1.6; margin-bottom: 16px;">
+              These are specific to the CRV/CVX flywheel thesis. They operate <em>in addition to</em> the 5 macro kill switches (Time, Mechanism, Inflation, Solvency, Black Swan). Each switch links to a verifiable data source.
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;" id="kss"></div>
+          </div>
 
-<div class="tb2" style="margin-bottom:16px">Curve is not an Ethereum-only protocol. The DEX is deployed across <span style="font-family:var(--mono);color:var(--purple)">7+ major chains</span>,<span class="src">9</span> with permissionless deployment to any EVM chain via Curve-Lite.<span class="src">18</span> This means Curve captures stablecoin swap fees on Arbitrum, Optimism, Polygon, Base, Avalanche — anywhere DeFi users are active. And every chain's fees ultimately flow back to veCRV holders on Ethereum mainnet.<span class="src">3</span></div>
+          <div class="card card-accent" style="border-top-color: var(--yellow)">
+            <div class="section-eye" style="color: var(--yellow)">Weekly Monitoring Checklist</div>
+            <div class="checklist-grid" id="chl"></div>
+          </div>
+        </div>
 
-<div style="margin-bottom:14px">
-<div style="font-family:var(--mono);font-size:9px;color:var(--td);letter-spacing:1px;margin-bottom:8px">LIVE DEPLOYMENTS</div>
-<div style="display:flex;flex-wrap:wrap;gap:4px">
-<span class="chn live">⟠ Ethereum</span>
-<span class="chn live">◆ Arbitrum</span>
-<span class="chn live">🔴 Optimism</span>
-<span class="chn live">🟣 Polygon</span>
-<span class="chn live">🔵 Base</span>
-<span class="chn live">🔺 Avalanche</span>
-<span class="chn live">👻 Fantom</span>
-</div>
-<div style="font-family:var(--mono);font-size:9px;color:var(--td);letter-spacing:1px;margin:12px 0 8px">RECENT EXPANSIONS (2025)</div>
-<div style="display:flex;flex-wrap:wrap;gap:4px">
-<span class="chn new">⚡ Monad</span>
-<span class="chn new">⚛️ Plasma</span>
-<span class="chn new">🔗 Etherlink</span>
-<span class="chn new">✕ X Layer</span>
-<span class="chn new">🎵 Sonic</span>
-<span class="chn new">🌐 TAC (TON)</span>
-</div>
-<div style="font-family:var(--mono);font-size:9px;color:var(--td);letter-spacing:1px;margin:12px 0 8px">ON ROADMAP (CURVE-LITE)</div>
-<div style="display:flex;flex-wrap:wrap;gap:4px">
-<span class="chn soon">📜 Scroll</span>
-<span class="chn soon">⚡ zkSync</span>
-<span class="chn soon">🔷 Polygon CDK</span>
-<span class="chn soon">+ Any EVM chain</span>
-</div>
-</div>
+        <!-- ══ SOURCES ══ -->
+        <div id="p-sources" class="tr-panel">
+          <div class="card card-accent" style="border-top-color: var(--blue)">
+            <div class="section-eye" style="color: var(--blue)">Complete Source Index</div>
+            <div class="section-title">Every claim is independently verifiable</div>
+            <div class="body-text" style="margin-bottom: 16px;">
+              This thesis was built from primary sources: official protocol documentation, on-chain data platforms, and first-party press releases.
+              No unnamed "analysts" or prediction sites. Every data point links back to a verifiable source.
+            </div>
+            <table class="src-table">
+              <thead><tr><th>#</th><th>Source</th><th>Type</th><th>What It Proves</th></tr></thead>
+              <tbody>
+                <tr><td>[1]</td><td><a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire — Curve 44% Fee Share</a><br><span style="font-size:9px;color:var(--text-faint)">Dec 19, 2025</span></td><td>First-party PR</td><td>Fee share: 1.6% → 44% in 12 months</td></tr>
+                <tr><td>[2]</td><td><a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire — Q3 2025 Report</a><br><span style="font-size:9px;color:var(--text-faint)">Nov 11, 2025</span></td><td>First-party PR</td><td>$29B vol, $7.3M rev (+87% QoQ), pools >$1M +41%</td></tr>
+                <tr><td>[3]</td><td><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Distribution</a></td><td>Official docs</td><td>100% admin fees → veCRV, weekly Thu distribution</td></tr>
+                <tr><td>[4]</td><td><a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko — CRV</a></td><td>Market aggregator</td><td>Price, MCap ($332M), supply (1.5B circ), ATH/ATL</td></tr>
+                <tr><td>[5]</td><td><a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank">CoinGecko — CVX</a></td><td>Market aggregator</td><td>Price, MCap ($159M), supply (92M circ), ATH ($60.09)</td></tr>
+                <tr><td>[6]</td><td><a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama — Curve Finance</a></td><td>On-chain analytics</td><td>TVL ($2.1B), fees, revenue, volume — live</td></tr>
+                <tr><td>[7]</td><td><a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter — Curve 2025 Year-End</a><br><span style="font-size:9px;color:var(--text-faint)">Jan 20, 2026</span></td><td>Press coverage</td><td>$122.3B annual vol, $13.6M annual rev to veCRV</td></tr>
+                <tr><td>[8]</td><td><a href="https://defillama.com/protocol/convex-finance" target="_blank">DefiLlama — Convex Finance</a></td><td>On-chain analytics</td><td>Convex TVL, vlCVX locked supply, governance</td></tr>
+                <tr><td>[9]</td><td><a href="https://insidecryptoreview.com/en/dex/curve" target="_blank">InsideCryptoReview — Curve Review 2026</a><br><span style="font-size:9px;color:var(--text-faint)">Feb 2026</span></td><td>Independent review</td><td>Fee structure (0.04%), FX roadmap, V2 pools, emissions</td></tr>
+                <tr><td>[10]</td><td><a href="https://www.bis.org/statistics/rpfx22.htm" target="_blank">BIS — Triennial FX Survey</a></td><td>Central bank data</td><td>Global FX: $7.5T daily turnover</td></tr>
+                <tr><td>[11]</td><td><a href="https://coinlaw.io/uniswap-statistics/" target="_blank">CoinLaw — Uniswap Stats 2026</a></td><td>Market research</td><td>Uni V4 vol, Curve competitive comparison, Fluid share</td></tr>
+                <tr><td>[12]</td><td><a href="https://www.ccn.com/curve-dao-crv-price-prediction/" target="_blank">CCN — CRV TVL/MCap Ratio</a><br><span style="font-size:9px;color:var(--text-faint)">May 2025</span></td><td>Market analysis</td><td>TVL-to-MCap ratio 0.40 (undervalued by DeFi metrics)</td></tr>
+                <tr><td>[13]</td><td><a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama — ETH DEX Fees</a></td><td>On-chain analytics</td><td>DEX fee ranking — Curve vs Uniswap vs Fluid (live)</td></tr>
+                <tr><td>[14]</td><td><a href="https://crypto.news/curve-finance-ethereum-dex-fees-activity-surges-2025/" target="_blank">Crypto.News — Curve Fee Surge</a><br><span style="font-size:9px;color:var(--text-faint)">Dec 23, 2025</span></td><td>Press coverage</td><td>$15.1M in 30-day fees, crvUSD + BTC pool drivers</td></tr>
+                <tr><td>[15]</td><td><a href="https://www.coingecko.com/en/coins/crvusd" target="_blank">CoinGecko — crvUSD</a></td><td>Market aggregator</td><td>crvUSD FDV (~$290M), peg stability, trading volume</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top: 16px; padding: 12px 16px; background: var(--bg2); border-radius: 8px; border-left: 3px solid var(--blue);">
+              <div style="font-family: var(--mono); font-size: 10px; color: var(--blue); margin-bottom: 6px;">LIVE DATA BOOKMARKS — CHECK WEEKLY</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <a href="https://defillama.com/fees/chain/ethereum" target="_blank" style="font-size: 11px;">DefiLlama — ETH DEX Fees</a>
+                <a href="https://defillama.com/protocol/curve-finance" target="_blank" style="font-size: 11px;">DefiLlama — Curve TVL/Revenue</a>
+                <a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank" style="font-size: 11px;">CoinGecko — CRV Price</a>
+                <a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank" style="font-size: 11px;">CoinGecko — CVX Price</a>
+                <a href="https://defillama.com/protocol/convex-finance" target="_blank" style="font-size: 11px;">DefiLlama — Convex Finance</a>
+                <a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank" style="font-size: 11px;">Curve — Fee Distribution Docs</a>
+                <a href="https://www.coingecko.com/en/coins/crvusd" target="_blank" style="font-size: 11px;">CoinGecko — crvUSD</a>
+                <a href="https://curve.fi/#/ethereum/pools" target="_blank" style="font-size: 11px;">Curve.fi — Pool Explorer</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="sb"><div class="st">📎 Sources</div>
-<div class="si"><span class="sn">[9]</span><a href="https://insidecryptoreview.com/en/dex/curve" target="_blank">InsideCryptoReview</a> — "In 2026, Curve operates on 7 chains: Ethereum, Arbitrum, Optimism, Polygon, Base, Avalanche, and Fantom"</div>
-<div class="si"><span class="sn">[18]</span><a href="https://resources.curve.finance/cross-chain/overview/" target="_blank">Curve Resources — Cross-Chain Overview</a> — Permissionless deployment, CRV rewards, gauge controller</div>
-<div class="si"><span class="sn">[2]</span><a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire Q3 2025</a> — "Expanded multi-chain presence with new deployments on Plasma and Etherlink"</div>
-<div class="si"><span class="sn">[20]</span><a href="https://messari.io/project/curve-2" target="_blank">Messari — Curve Finance Timeline</a> — Monad, X Layer deployments, Robinhood listing</div>
-</div>
-</div>
+      </div><!-- end tr-content -->
 
-<!-- How it works technically -->
-<div class="cd" style="border-top:2px solid var(--cyan)">
-<div class="ce" style="color:var(--cyan)">How Multi-Chain Works — The Technology</div>
-<div class="ct2">One protocol, many chains, unified token economics</div>
+      <div class="page-footer">Research document — not financial advice. Sources: on-chain analytics (DefiLlama), market aggregators (CoinGecko), official docs (Curve Resources), first-party PR (PRNewswire). Fee share = 30-day rolling. Last updated: Feb 25, 2026.</div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div class="techbox">
-<div class="techlbl">🧬 StableSwap Invariant</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">Curve's core algorithm blends two mathematical curves: a constant-sum formula (perfect for 1:1 pegged assets) amplified by a concentration parameter, combined with a constant-product formula (Uniswap-style) as a safety net. The result is a bonding curve that keeps slippage near zero when pools are balanced, but still functions when assets depeg. This is why Curve dominates like-kind swaps — the math is purpose-built for it.</div>
-</div>
-<div class="techbox">
-<div class="techlbl">📦 Deploy Anywhere (Curve-Lite)</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">Curve-Lite is a lightweight version of the DEX that can be permissionlessly deployed on any EVM-compatible chain.<span class="src">18</span> The 2026 roadmap targets 3–5 new chains including Scroll, zkSync, and Polygon CDK. Any chain that needs stablecoin infrastructure can spin up Curve pools. Curve becomes the default liquidity layer.</div>
-</div>
-<div class="techbox">
-<div class="techlbl">🗳️ Gauge Controller (CRV Rewards)</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">CRV inflation rewards flow to pools on <em>every</em> supported chain, not just Ethereum.<span class="src">18</span> The Curve DAO votes to add markets on new chains to the Gauge Controller, which governs where CRV emissions are directed. This means protocols on Arbitrum or Base can compete for Curve emissions — extending the Curve Wars to every chain.</div>
-</div>
-<div class="techbox">
-<div class="techlbl">🔒 Governance: Ethereum-Only</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.7">While the DEX deploys everywhere, all governance remains on Ethereum mainnet.<span class="src">18</span> veCRV voting, fee distribution, and CRV minting happen exclusively on L1. This is a deliberate security design: the value-capture layer is anchored to Ethereum's security, even as fee-generating pools spread across dozens of chains.</div>
-</div>
-</div>
-
-<div style="margin-top:14px;padding:12px 16px;background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.15);border-radius:8px;border-left:3px solid var(--purple)">
-<div style="font-size:12px;color:var(--text);font-weight:700;margin-bottom:6px">Why multi-chain matters for the thesis:</div>
-<div style="font-size:11px;color:var(--tm);line-height:1.8">Stablecoin trading doesn't happen on one chain. Arbitrum has $2.8B TVL. Base is the fastest-growing L2. Polygon serves enterprises. Curve's presence on all of them means it captures fees from the <em>entire</em> EVM ecosystem, not just Ethereum mainnet. Each new chain deployment is a new toll booth on a new highway — all feeding back into the same veCRV reward pool. The more chains Curve is on, the more robust the fee base, and the harder it is for any single competitor to displace.</div>
-</div>
-
-<div class="sb"><div class="st">📎 Sources</div>
-<div class="si"><span class="sn">[18]</span><a href="https://resources.curve.finance/cross-chain/overview/" target="_blank">Curve Resources — Cross-Chain Overview</a> (official docs)</div>
-<div class="si"><span class="sn">[19]</span><a href="https://docs.curve.finance/references/deployed-contracts/" target="_blank">Curve Technical Docs — Deployed Contracts</a> (all chain deployments)</div>
-</div>
-</div>
-
-<!-- Architecture diagram as text -->
-<div class="cd" style="border-top:2px solid var(--amber)">
-<div class="ce" style="color:var(--amber)">Architecture — Fee Flow Across Chains</div>
-<div style="font-family:var(--mono);font-size:10px;line-height:2.2;padding:14px;background:var(--bg2);border-radius:8px;color:var(--tm)">
-<div style="text-align:center;margin-bottom:8px;font-weight:700;color:var(--text);font-size:12px">Every chain → same CRV reward pool</div>
-<div>┌─ <span style="color:var(--green)">Arbitrum</span> pools ──→ swap fees ──┐</div>
-<div>├─ <span style="color:var(--red)">Optimism</span> pools ──→ swap fees ──┤</div>
-<div>├─ <span style="color:var(--blue)">Base</span> pools ──────→ swap fees ──┤</div>
-<div>├─ <span style="color:var(--purple)">Polygon</span> pools ───→ swap fees ──┤ ──→ <span style="color:var(--crv)">veCRV holders</span> (Ethereum)</div>
-<div>├─ <span style="color:var(--pink)">Avalanche</span> pools ─→ swap fees ──┤      ↓</div>
-<div>├─ <span style="color:var(--cyan)">Monad</span> pools ────→ swap fees ──┤     <span style="color:var(--amber)">Weekly Thu distribution</span><span class="src">3</span></div>
-<div>├─ <span style="color:#fff">Plasma</span> pools ────→ swap fees ──┤      ↓</div>
-<div>└─ <span style="color:var(--fx)">+ Future chains</span> → swap fees ──┘     <span style="color:var(--green)">CRV buy pressure / lock</span></div>
-</div>
-<div style="margin-top:8px;font-size:10px;color:var(--td)">CRV emissions also flow outward to incentivize LP on each chain via the Gauge Controller.<span class="src">18</span> Two-way value flow: chains generate fees → veCRV holders receive rewards → DAO directs emissions back to productive pools.</div>
-</div></div>
-
-<!-- ══ REVENUE ══ -->
-<div id="t-revenue" class="tc">
-<div class="cd" style="border-top:2px solid var(--amber)"><div class="ce" style="color:var(--amber)">Curve Protocol Metrics — Quarterly</div><div class="ct2">Revenue Doubled Q2→Q3 2025<span class="src">2</span></div>
-<div class="rcg" id="rcg"></div>
-<div style="margin-top:8px;font-family:var(--mono);font-size:8px;color:var(--tf);text-align:right">Q3 data: <a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire</a><span class="src">2</span> · Annual: <a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter</a><span class="src">7</span> · TVL: <a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama</a><span class="src">6</span></div></div>
-<div class="cd" style="border-top:2px solid var(--red)"><div class="ce" style="color:var(--red)">The Revenue vs. Token Price Divergence</div><div class="ct2">Curve is earning more while the token trades near ATL</div>
-<div class="dg">
-<div class="dc" style="border-left:3px solid var(--green)"><div style="font-family:var(--mono);font-size:9px;color:var(--green);margin-bottom:8px;letter-spacing:1px">FUNDAMENTALS (IMPROVING)</div>
-<div class="di"><span class="ar" style="color:var(--green)">↑</span>Fee share: 1.6% → 44%<span class="src">1</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>Revenue: Q2 $3.9M → Q3 $7.3M (+87%)<span class="src">2</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>2025 total: $13.6M to veCRV holders<span class="src">7</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>Volume: $122.3B annual<span class="src">7</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>Pools >$1M TVL: +41% YoY<span class="src">2</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>Emissions cut: 137M → 115M CRV/yr<span class="src">9</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>TVL/MCap ratio: 0.40 (undervalued)<span class="src">12</span></div><div class="di"><span class="ar" style="color:var(--green)">↑</span>FXSwap live + multi-chain expansion<span class="src">16</span></div></div>
-<div class="dc" style="border-left:3px solid var(--red)"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:8px;letter-spacing:1px">PRICE ACTION (COLLAPSING)</div>
-<div class="di"><span class="ar" style="color:var(--red)">↓</span>CRV: 97% below ATH ($15.37)<span class="src">4</span></div><div class="di"><span class="ar" style="color:var(--red)">↓</span>CVX: 97% below ATH ($60.09)<span class="src">5</span></div><div class="di"><span class="ar" style="color:var(--red)">↓</span>CRV ATL: $0.18 (Aug 2024)<span class="src">4</span></div><div class="di"><span class="ar" style="color:var(--red)">↓</span>Bear market sentiment across DeFi</div><div class="di"><span class="ar" style="color:var(--red)">↓</span>48% circulating, emission overhang<span class="src">4</span></div><div class="di"><span class="ar" style="color:var(--red)">↓</span>2023 Vyper exploit history ($70M)<span class="src">9</span></div><div class="di"><span class="ar" style="color:var(--red)">↓</span>Curve Wars narrative faded from CT</div><div class="di"><span class="ar" style="color:var(--red)">↓</span>"DeFi is dead" consensus</div></div></div>
-<div class="co" style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.15)"><div class="cot" style="color:var(--crv)">The Asymmetry</div>When fundamentals improve while price collapses, one of two things is true: either the market knows something you don't (bear case), or the market is mispricing a recovery asset at peak pessimism (your thesis). The 44% fee share number is not narrative — it's on-chain, verifiable on <a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama</a>, and measured against the most competitive DeFi ecosystem on Earth.<span class="src">6</span></div></div></div>
-
-<!-- ══ THE TRADE ══ -->
-<div id="t-thesis" class="tc">
-<div class="cd" style="border-top:2px solid var(--crv)"><div class="ce" style="color:var(--crv)">ETH / CRV / CVX — The Toll Road Trade</div><div class="ct2">Thesis Statement</div>
-<div class="tb2" style="margin-bottom:16px"><span style="color:var(--text);font-weight:600">Core belief:</span> Curve Finance has quietly consolidated into the dominant stablecoin infrastructure layer on Ethereum — and now across 7+ chains — during the bear market.<span class="src">1</span> When liquidity expansion (WALCL → M2) forces capital back into crypto, stablecoin volume explodes. Curve captures 44% of that flow.<span class="src">1</span> The veCRV/CVX governance flywheel converts volume into locked supply,<span class="src">3</span> creating a reflexive loop where rising fees make it rational to buy and lock — which reduces floating supply — which amplifies price moves. CRV and CVX sit 97% below ATH on a working protocol with proven fee capture, rising revenue,<span class="src">2</span> unpriced FX optionality,<span class="src">16</span> and cross-chain fee capture on every major EVM chain.<span class="src">18</span></div>
-<div class="mb" style="color:var(--crv);border:1px solid rgba(249,115,22,.12)">MECHANISM: WALCL ↑ → M2 ↑ → Stablecoins mint → ETH DeFi TVL ↑ → Swap volume ↑ (all chains) → Curve fees ↑ → veCRV rewards ↑ → More locking → Less float → CRV ↑ → CVX amplifies → FX volume adds fuel → Reflexive loop</div></div>
-<div class="cd" style="border-top:2px solid var(--green)"><div class="ce" style="color:var(--green)">Upside Scenarios</div><div style="display:flex;flex-direction:column;gap:8px" id="scn"></div>
-<div style="margin-top:10px;font-size:10px;color:var(--td);line-height:1.6"><em>Multiples calculated from current price. ATH data from <a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko</a><span class="src">4,5</span>. Not predictions — scenario mapping for position sizing.</em></div></div>
-<div class="cd" style="border-top:2px solid var(--pink)"><div class="ce" style="color:var(--pink)">The Reflexivity Argument</div><div class="ct2">"It always makes sense to buy in"</div>
-<div class="tb2"><span class="ht" style="color:var(--pink)">When the flywheel is spinning, the incentive structure is self-reinforcing:</span></div>
-<div style="margin-top:12px;display:flex;flex-direction:column;gap:6px" id="rfx"></div>
-<div class="sb"><div class="st">📎 Mechanism Sources</div><div class="si"><span class="sn">[3]</span><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Distribution</a> (100% admin fees → veCRV, weekly Thu)</div><div class="si"><span class="sn">[8]</span><a href="https://defillama.com/protocol/convex-finance" target="_blank">DefiLlama — Convex Finance</a> (vlCVX governance)</div></div></div></div>
-
-<!-- ══ KILL SWITCHES ══ -->
-<div id="t-invalidation" class="tc">
-<div class="cd" style="border-top:2px solid var(--red)"><div class="ce" style="color:var(--red)">CRV/CVX Invalidation Dashboard</div><div class="ct2">8 Kill Switches — Check Weekly</div>
-<div style="color:var(--td);font-size:11px;line-height:1.6;margin-bottom:16px">These are specific to the CRV/CVX flywheel thesis. They operate <em>in addition to</em> the 5 macro kill switches (Time, Mechanism, Inflation, Solvency, Black Swan). Each switch links to a verifiable data source.</div>
-<div style="display:flex;flex-direction:column;gap:8px" id="kss"></div></div>
-<div class="cd" style="border-top:2px solid var(--amber)"><div class="ce" style="color:var(--amber)">Weekly Monitoring Checklist</div><div class="clg" id="chl"></div></div></div>
-
-<!-- ══ SOURCES ══ -->
-<div id="t-sources" class="tc">
-<div class="cd" style="border-top:2px solid var(--cyan)"><div class="ce" style="color:var(--cyan)">Complete Source Index</div><div class="ct2">Every claim is independently verifiable</div>
-<div class="tb2" style="margin-bottom:16px">This thesis was built from primary sources: official protocol documentation, on-chain data platforms, and first-party press releases. No unnamed "analysts" or prediction sites. Every data point links back to a verifiable source.</div>
-<table class="stb"><thead><tr><th>#</th><th>Source</th><th>Type</th><th>What It Proves</th></tr></thead><tbody>
-<tr><td>[1]</td><td><a href="https://www.prnewswire.com/news-releases/curve-finance-strengthens-its-position-as-a-leading-ethereum-dex-with-44-fee-share-302647071.html" target="_blank">PRNewswire — Curve 44% Fee Share</a><br><span style="font-size:9px;color:var(--tf)">Dec 19, 2025</span></td><td>First-party PR</td><td>Fee share: 1.6% → 44% in 12 months</td></tr>
-<tr><td>[2]</td><td><a href="https://www.prnewswire.com/news-releases/curve-finance-reports-strong-q3-2025-trading-volume-hits-29b-while-revenue-more-than-doubles-302611749.html" target="_blank">PRNewswire — Q3 2025 Report</a><br><span style="font-size:9px;color:var(--tf)">Nov 11, 2025</span></td><td>First-party PR</td><td>$29B vol, $7.3M rev (+87% QoQ), Plasma/Etherlink deploy</td></tr>
-<tr><td>[3]</td><td><a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank">Curve Resources — Fee Distribution</a></td><td>Official docs</td><td>100% admin fees → veCRV, weekly Thu distribution</td></tr>
-<tr><td>[4]</td><td><a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank">CoinGecko — CRV</a></td><td>Market aggregator</td><td>Price, MCap, supply (1.5B circ / 3.03B max), ATH/ATL</td></tr>
-<tr><td>[5]</td><td><a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank">CoinGecko — CVX</a></td><td>Market aggregator</td><td>Price, MCap, supply (92M circ / 100M max), ATH ($60.09)</td></tr>
-<tr><td>[6]</td><td><a href="https://defillama.com/protocol/curve-finance" target="_blank">DefiLlama — Curve Finance</a></td><td>On-chain analytics</td><td>TVL ($2.1B), fees, revenue, volume — live</td></tr>
-<tr><td>[7]</td><td><a href="https://www.crypto-reporter.com/press-releases/curve-finance-closes-2025-with-stable-volumes-and-a-stronger-infrastructure-role-121000/" target="_blank">Crypto Reporter — Curve 2025 Year-End</a><br><span style="font-size:9px;color:var(--tf)">Jan 20, 2026</span></td><td>Press coverage</td><td>$122.3B annual vol, $13.6M annual rev to veCRV</td></tr>
-<tr><td>[8]</td><td><a href="https://defillama.com/protocol/convex-finance" target="_blank">DefiLlama — Convex Finance</a></td><td>On-chain analytics</td><td>Convex TVL, vlCVX locked supply, governance</td></tr>
-<tr><td>[9]</td><td><a href="https://insidecryptoreview.com/en/dex/curve" target="_blank">InsideCryptoReview — Curve Review 2026</a><br><span style="font-size:9px;color:var(--tf)">Feb 2026</span></td><td>Independent review</td><td>Fee structure, FX roadmap, 7-chain deployment, emissions</td></tr>
-<tr><td>[10]</td><td><a href="https://www.bis.org/statistics/rpfx22.htm" target="_blank">BIS — Triennial FX Survey</a></td><td>Central bank data</td><td>Global FX: $7.5T daily turnover</td></tr>
-<tr><td>[11]</td><td><a href="https://coinlaw.io/uniswap-statistics/" target="_blank">CoinLaw — Uniswap Stats 2026</a></td><td>Market research</td><td>Uni V4 vol, Curve competitive comparison, Fluid share</td></tr>
-<tr><td>[12]</td><td><a href="https://www.ccn.com/curve-dao-crv-price-prediction/" target="_blank">CCN — CRV TVL/MCap Ratio</a><br><span style="font-size:9px;color:var(--tf)">May 2025</span></td><td>Market analysis</td><td>TVL-to-MCap ratio 0.40 (undervalued by DeFi metrics)</td></tr>
-<tr><td>[13]</td><td><a href="https://defillama.com/fees/chain/ethereum" target="_blank">DefiLlama — ETH DEX Fees</a></td><td>On-chain analytics</td><td>DEX fee ranking — Curve vs Uniswap vs Fluid (live)</td></tr>
-<tr><td>[14]</td><td><a href="https://crypto.news/curve-finance-ethereum-dex-fees-activity-surges-2025/" target="_blank">Crypto.News — Curve Fee Surge</a><br><span style="font-size:9px;color:var(--tf)">Dec 23, 2025</span></td><td>Press coverage</td><td>$15.1M in 30-day fees, crvUSD + BTC pool drivers</td></tr>
-<tr><td>[15]</td><td><a href="https://www.coingecko.com/en/coins/crvusd" target="_blank">CoinGecko — crvUSD</a></td><td>Market aggregator</td><td>crvUSD FDV (~$290M), peg stability, trading volume</td></tr>
-<tr style="background:rgba(16,185,129,.04)"><td>[16]</td><td><a href="https://news.curve.finance/curve-monthly-recap-august-2025/" target="_blank">Curve News — FXSwap Launch & Aug Recap</a><br><span style="font-size:9px;color:var(--tf)">Aug/Sep 2025</span></td><td>Official blog</td><td>FXSwap algorithm, DAO Proposal #1178 (90% vote), refuel mechanism, pool tuning</td></tr>
-<tr style="background:rgba(16,185,129,.04)"><td>[17]</td><td><a href="https://en.cryptonomist.ch/2025/09/04/curve-launches-fxswap-on-chain-forex-aims-for-tighter-spreads-and-deep-liquidity/" target="_blank">Cryptonomist — FXSwap On-Chain Forex</a><br><span style="font-size:9px;color:var(--tf)">Sep 4, 2025</span></td><td>Press coverage</td><td>FXSwap spread analysis, EUR/GBP pools, execution quality vs Uni V3</td></tr>
-<tr style="background:rgba(168,85,247,.04)"><td>[18]</td><td><a href="https://resources.curve.finance/cross-chain/overview/" target="_blank">Curve Resources — Cross-Chain Overview</a></td><td>Official docs</td><td>Permissionless DEX deployment, CRV rewards on all chains, gauge controller</td></tr>
-<tr style="background:rgba(168,85,247,.04)"><td>[19]</td><td><a href="https://docs.curve.finance/references/deployed-contracts/" target="_blank">Curve Technical Docs — Deployed Contracts</a></td><td>Official docs</td><td>All chain deployments: Optimism, Fraxtal, Sonic contract addresses</td></tr>
-<tr style="background:rgba(168,85,247,.04)"><td>[20]</td><td><a href="https://messari.io/project/curve-2" target="_blank">Messari — Curve Finance Timeline</a></td><td>Research platform</td><td>X Layer deploy (Oct 2025), YieldBasis, Monad launch, CRV on Robinhood</td></tr>
-</tbody></table>
-<div style="margin-top:16px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--cyan)">
-<div style="font-family:var(--mono);font-size:10px;color:var(--cyan);margin-bottom:6px">LIVE DATA BOOKMARKS — CHECK WEEKLY</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-<a href="https://defillama.com/fees/chain/ethereum" target="_blank" style="font-size:11px">DefiLlama — ETH DEX Fees</a>
-<a href="https://defillama.com/protocol/curve-finance" target="_blank" style="font-size:11px">DefiLlama — Curve TVL/Revenue</a>
-<a href="https://www.coingecko.com/en/coins/curve-dao-token" target="_blank" style="font-size:11px">CoinGecko — CRV Price</a>
-<a href="https://www.coingecko.com/en/coins/convex-finance" target="_blank" style="font-size:11px">CoinGecko — CVX Price</a>
-<a href="https://defillama.com/protocol/convex-finance" target="_blank" style="font-size:11px">DefiLlama — Convex Finance</a>
-<a href="https://resources.curve.finance/vecrv/fee-collection-distribution/" target="_blank" style="font-size:11px">Curve — Fee Distribution Docs</a>
-<a href="https://www.coingecko.com/en/coins/crvusd" target="_blank" style="font-size:11px">CoinGecko — crvUSD</a>
-<a href="https://curve.fi/#/ethereum/pools" target="_blank" style="font-size:11px">Curve.fi — Pool Explorer</a>
-<a href="https://news.curve.finance/" target="_blank" style="font-size:11px">Curve News — Official Blog</a>
-<a href="https://resources.curve.finance/cross-chain/overview/" target="_blank" style="font-size:11px">Curve — Cross-Chain Docs</a>
-</div></div></div></div>
-
-<div class="ft">Research document — not financial advice. Sources: on-chain analytics (DefiLlama), market aggregators (CoinGecko), official docs (Curve Resources), first-party PR (PRNewswire), central bank data (BIS). Fee share = 30-day rolling. Prices marked NA pending live feed integration. Last updated: Feb 25, 2026.</div>
+    </div>
+  </main>
 </div>
 
+<script src="assets/nav.js"></script>
 <script>
-function T(id,btn){document.querySelectorAll('.tc').forEach(t=>t.classList.remove('a'));document.querySelectorAll('.tb').forEach(b=>b.classList.remove('a'));document.getElementById('t-'+id).classList.add('a');btn.classList.add('a')}
-const D=[{p:"Q1 2024",c:1.6,u:68,f:0,o:30.4},{p:"Q2 2024",c:3.2,u:62,f:2,o:32.8},{p:"Q3 2024",c:5.8,u:58,f:5,o:31.2},{p:"Q4 2024",c:12,u:52,f:10,o:26},{p:"Q1 2025",c:18,u:48,f:12,o:22},{p:"Q2 2025",c:28,u:40,f:14,o:18},{p:"Q3 2025",c:35,u:34,f:15,o:16},{p:"Q4 2025",c:44,u:28,f:16,o:12}];
-const R=[{q:"Q1'24",r:1.2,v:12,t:1.8},{q:"Q2'24",r:1.8,v:16,t:1.9},{q:"Q3'24",r:2.4,v:20,t:2.0},{q:"Q4'24",r:2.8,v:22,t:2.0},{q:"Q1'25",r:3.2,v:24,t:2.1},{q:"Q2'25",r:3.9,v:25.5,t:2.1},{q:"Q3'25",r:7.3,v:29,t:2.3},{q:"Q4'25",r:5.8,v:28,t:2.2}];
-const FW=[{ic:"💧",lb:"Liquidity Expansion",su:"WALCL ↑ → M2 ↑",cl:"var(--blue)",dt:"Fed balance sheet expands → M2 grows → capital enters crypto via stablecoins. Track WALCL on FRED every Thursday."},{ic:"⟠",lb:"ETH Pump",su:"Capital → Ethereum",cl:"var(--eth)",dt:"Stablecoins on-ramp to ETH. DeFi TVL grows. ETH is the precondition, not the bet."},{ic:"🔄",lb:"Stablecoin Volume",su:"Swaps explode",cl:"var(--cyan)",dt:"Every trade settles through stablecoins. USDC↔USDT↔DAI volume 5-10x in bull markets. Track on DefiLlama."},{ic:"🛣️",lb:"Curve = Toll Road",su:"44% of ETH DEX fees",cl:"var(--crv)",dt:"Curve's StableSwap invariant dominates like-kind swaps. 0.003% slippage on $500K trades. Deployed on 7+ chains — captures fees everywhere. [Source 9]"},{ic:"🗳️",lb:"veCRV Rewards",su:"100% fees → holders",cl:"var(--amber)",dt:"$13.6M distributed to veCRV holders in 2025 [Source 7]. Revenue doubled Q2→Q3 [Source 2]. Weekly Thu distribution."},{ic:"🔒",lb:"Lock More CRV",su:"Supply squeeze",cl:"var(--orange)",dt:"Higher fees → more locking incentive → less floating supply → thinner order book. Lock periods: 1-4 years."},{ic:"⚡",lb:"CVX Amplifies",su:"Levered governance",cl:"var(--cvx)",dt:"Convex controls largest veCRV block. CVX = leveraged claim on the toll road. vlCVX holders direct emissions. [Source 8]"},{ic:"♻️",lb:"Reflexive Loop",su:"Self-reinforcing",cl:"var(--pink)",dt:"\"It always makes sense to buy in\" — emission revenue makes locking rational. Ponzi dynamics when volume is flowing."}];
-const CS=[{l:"CRV Price",v:"NA",s:"97% below ATH ($15.37) · ATL $0.18",c:"var(--amber)",sr:"[4] CoinGecko — live feed pending"},{l:"ETH DEX Fee Share",v:"44%",s:"Up from 1.6% (Dec 2024)",c:"var(--green)",sr:"[1] PRNewswire"},{l:"2025 Revenue",v:"$13.6M",s:"100% distributed to veCRV holders",c:"var(--amber)",sr:"[7] Crypto Reporter"},{l:"CRV Emissions",v:"115M/yr",s:"Reduced from 137M",c:"var(--purple)",sr:"[9] InsideCryptoReview"},{l:"Curve TVL",v:"$2.1B",s:"Stable through bear · TVL/MCap 0.40",c:"var(--cyan)",sr:"[6] DefiLlama"},{l:"CRV Circulating",v:"1.5B",s:"Of 3.03B max (48%)",c:"var(--orange)",sr:"[4] CoinGecko"},{l:"CVX Price",v:"NA",s:"ATH $60.09 · MCap ~$159M",c:"var(--amber)",sr:"[5] CoinGecko — live feed pending"},{l:"Chains Live",v:"13+",s:"7 major + 6 recent expansions",c:"var(--purple)",sr:"[9][18] Curve Docs"}];
-const SC=[{l:"CRV Conservative",tg:"$1.00 – $2.00",m:"TBD",b:"DeFi recovery, fee share sustained",c:"var(--green)"},{l:"CRV Base Case",tg:"$3.00 – $5.00",m:"TBD",b:"Prior cycle range. Flywheel running.",c:"var(--amber)"},{l:"CRV Bull",tg:"$5.00 – $10.00",m:"TBD",b:"FX pools + multi-chain + institutional flow",c:"var(--crv)"},{l:"CRV FX Supercycle",tg:"$10.00+",m:"TBD",b:"FX capture >0.01%. Reprices entire protocol.",c:"var(--fx)"},{l:"CVX Conservative",tg:"$5 – $12",m:"TBD",b:"CRV recovers, governance premium holds",c:"var(--blue)"},{l:"CVX Bull",tg:"$20 – $60",m:"TBD",b:"Curve Wars reignite. Requires CRV $5+",c:"var(--cvx)"}];
-const RF=["CRV fees rise → veCRV yield rises → rational to buy CRV and lock","More CRV locked → less floating supply → upward price pressure","Price rises → emission revenue (in $) rises → APY increases","Higher APY → more locking → less float → price accelerates","Protocols compete for veCRV → demand for CVX to direct emissions","CVX demand rises → CVX price rises → governance premium expands","FX volume adds new fee source → accelerates everything above","This is a ponzi when it's running. Geometric, not arithmetic."];
-const KS=[{ic:"⟠",lb:"ETH DeFi Volume Collapse",tr:"ETH total DEX volume < $500M/day for 30+ days",ac:"Reduce CRV/CVX 50%. Precondition failing.",st:"MONITOR",c:"var(--eth)",mt:"ETH daily DEX vol",so:"DefiLlama",ur:"https://defillama.com/dexs/chains",cu:"~$1.2B/day"},{ic:"📊",lb:"Curve Fee Share Decline",tr:"Curve fee share < 25% for 2 consecutive months",ac:"Investigate. If structural → reduce 50%.",st:"STRONG",c:"var(--green)",mt:"Curve % ETH DEX fees",so:"DefiLlama",ur:"https://defillama.com/fees/chain/ethereum",cu:"~44%"},{ic:"🩸",lb:"TVL Exodus",tr:"Curve TVL < $1B while total DeFi TVL stable/growing",ac:"Full exit CRV/CVX. Infrastructure thesis broken.",st:"MONITOR",c:"var(--amber)",mt:"Curve TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/curve-finance",cu:"$2.1B"},{ic:"🔓",lb:"veCRV Mass Unlock",tr:"veCRV locked supply drops >20% in one quarter",ac:"Reduce CVX 100%, CRV 50%. Flywheel breaking.",st:"MONITOR",c:"var(--purple)",mt:"veCRV locked supply",so:"Curve Dashboard",ur:"https://curve.fi/#/ethereum/dashboard",cu:"Stable"},{ic:"🪝",lb:"Uni v4 StableSwap Hook",tr:"Uni v4 StableSwap hook > $500M TVL in stablecoin pools",ac:"If Curve fee share declining too → reduce 30%.",st:"LOW RISK",c:"var(--td)",mt:"Uni v4 hook TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/uniswap-v4",cu:"Negligible"},{ic:"🐛",lb:"Smart Contract Exploit",tr:"Curve/Convex core exploited with >$50M loss",ac:"Exit 100% immediately. Re-evaluate post-mortem.",st:"DEFINE",c:"var(--red)",mt:"Exploit alerts",so:"Rekt.news",ur:"https://rekt.news",cu:"No active exploit"},{ic:"📉",lb:"Emission Death Spiral",tr:"CRV sell pressure > fee revenue for 6+ months post-recovery",ac:"Exit CRV, hold CVX if premium holds.",st:"WATCH",c:"var(--amber)",mt:"Emission vs revenue",so:"Curve Resources",ur:"https://resources.curve.finance",cu:"115M CRV/yr"},{ic:"💱",lb:"FX Pools Fail to Launch",tr:"By Q4 2026, FX pool TVL < $100M total",ac:"Remove FX upside. Doesn't kill base case.",st:"UPSIDE",c:"var(--cyan)",mt:"FX pool TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/curve-finance",cu:"Early stage"}];
-const CL=[{ck:"Curve fee share on DefiLlama",fr:"Weekly",ur:"https://defillama.com/fees/chain/ethereum"},{ck:"Curve TVL trend",fr:"Weekly",ur:"https://defillama.com/protocol/curve-finance"},{ck:"CRV + CVX price check",fr:"Weekly",ur:"https://www.coingecko.com/en/coins/curve-dao-token"},{ck:"veCRV locked supply",fr:"Monthly",ur:"https://curve.fi/#/ethereum/dashboard"},{ck:"Uni v4 stablecoin hook TVL",fr:"Monthly",ur:"https://defillama.com/protocol/uniswap-v4"},{ck:"FX pool TVL growth",fr:"Monthly",ur:"https://curve.fi/#/ethereum/pools"},{ck:"Curve quarterly revenue",fr:"Quarterly",ur:"https://www.prnewswire.com/"},{ck:"Exploit alerts",fr:"Daily (passive)",ur:"https://rekt.news"},{ck:"Multi-chain deployment status",fr:"Monthly",ur:"https://resources.curve.finance/cross-chain/overview/"},{ck:"FXSwap pool performance",fr:"Monthly",ur:"https://news.curve.finance/"}];
+// ── Tab switching ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.tr-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tr-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('p-' + id).classList.add('active');
+  btn.classList.add('active');
+}
 
-// Render flywheel
-let af=-1;const fg=document.getElementById('fwg'),fd=document.getElementById('fwd');
-FW.forEach((s,i)=>{const e=document.createElement('div');e.className='fs';e.style.borderLeft='3px solid '+s.cl;e.innerHTML='<div class="ic">'+s.ic+'</div><div class="lb">'+s.lb+'</div><div class="su" style="color:'+s.cl+'">'+s.su+'</div>';e.onclick=()=>{document.querySelectorAll('.fs').forEach(x=>x.style.borderColor=x.style.borderLeftColor);if(af===i){af=-1;fd.classList.remove('a');return}af=i;fd.className='fd a';fd.innerHTML='<div style="font-size:13px;font-weight:700;color:'+s.cl+';margin-bottom:4px">Step '+(i+1)+': '+s.lb+'</div>'+s.dt};fg.appendChild(e)});
+// ── DATA ──
+const D = [
+  {p:"Q1 2024",c:1.6,u:68,f:0,o:30.4},{p:"Q2 2024",c:3.2,u:62,f:2,o:32.8},
+  {p:"Q3 2024",c:5.8,u:58,f:5,o:31.2},{p:"Q4 2024",c:12,u:52,f:10,o:26},
+  {p:"Q1 2025",c:18,u:48,f:12,o:22},{p:"Q2 2025",c:28,u:40,f:14,o:18},
+  {p:"Q3 2025",c:35,u:34,f:15,o:16},{p:"Q4 2025",c:44,u:28,f:16,o:12}
+];
 
-// Render stats
-const csg=document.getElementById('cs');CS.forEach(s=>{const isNA=s.v==='NA';csg.innerHTML+='<div class="sc" style="border-left-color:'+s.c+'"><div class="sl">'+s.l.toUpperCase()+'</div><div class="'+(isNA?'na-price':'sv')+'" style="color:'+s.c+'">'+s.v+'</div>'+(isNA?'<div class="na-note">live feed pending</div>':'')+'<div class="ss">'+s.s+'</div><div class="ssrc">'+s.sr+'</div></div>'});
+const R = [
+  {q:"Q1'24",r:1.2,v:12,t:1.8},{q:"Q2'24",r:1.8,v:16,t:1.9},
+  {q:"Q3'24",r:2.4,v:20,t:2.0},{q:"Q4'24",r:2.8,v:22,t:2.0},
+  {q:"Q1'25",r:3.2,v:24,t:2.1},{q:"Q2'25",r:3.9,v:25.5,t:2.1},
+  {q:"Q3'25",r:7.3,v:29,t:2.3},{q:"Q4'25",r:5.8,v:28,t:2.2}
+];
 
-// Render stacked chart
-const sch=document.getElementById('sch');
-D.forEach(d=>{let h='';[{k:'o',cl:'#475569'},{k:'f',cl:'#22c55e'},{k:'u',cl:'#ff007a'},{k:'c',cl:'#f97316'}].forEach(sg=>{const ht=(d[sg.k]/100)*200;const op=sg.k==='c'?'cc':'55';const lb=sg.k==='c'&&d.c>10?'<span class="bsl">'+d.c+'%</span>':'';const rd=sg.k==='o'?'border-radius:3px 3px 0 0;':sg.k==='c'?'border-radius:0 0 3px 3px;':'';h+='<div class="bsg" style="height:'+ht+'px;background:'+sg.cl+op+';'+rd+'">'+lb+'</div>'});sch.innerHTML+='<div class="bc"><div class="bs">'+h+'</div><div class="bp">'+d.p+'</div></div>'});
+const FW = [
+  {ic:"💧",lb:"Liquidity Expansion",su:"WALCL ↑ → M2 ↑",cl:"var(--blue)",dt:"Fed balance sheet expands → M2 grows → capital enters crypto via stablecoins. Track WALCL on FRED every Thursday."},
+  {ic:"⟠",lb:"ETH Pump",su:"Capital → Ethereum",cl:"#627eea",dt:"Stablecoins on-ramp to ETH. DeFi TVL grows. ETH is the precondition, not the bet."},
+  {ic:"🔄",lb:"Stablecoin Volume",su:"Swaps explode",cl:"var(--teal)",dt:"Every trade settles through stablecoins. USDC↔USDT↔DAI volume 5-10x in bull markets. Track on DefiLlama."},
+  {ic:"🛣️",lb:"Curve = Toll Road",su:"44% of ETH DEX fees",cl:"var(--orange)",dt:"Curve's StableSwap invariant dominates like-kind swaps. 0.003% slippage on $500K trades. [Source 9: InsideCryptoReview]"},
+  {ic:"🗳️",lb:"veCRV Rewards",su:"100% fees → holders",cl:"var(--yellow)",dt:"$13.6M distributed to veCRV holders in 2025 [Source 7]. Revenue doubled Q2→Q3 [Source 2]. Weekly Thu distribution."},
+  {ic:"🔒",lb:"Lock More CRV",su:"Supply squeeze",cl:"var(--orange)",dt:"Higher fees → more locking incentive → less floating supply → thinner order book. Lock periods: 1-4 years."},
+  {ic:"⚡",lb:"CVX Amplifies",su:"Levered governance",cl:"var(--blue)",dt:"Convex controls largest veCRV block. CVX = leveraged claim on the toll road. vlCVX holders direct emissions. [Source 8]"},
+  {ic:"♻️",lb:"Reflexive Loop",su:"Self-reinforcing",cl:"var(--purple)",dt:"\"It always makes sense to buy in\" — emission revenue makes locking rational. Ponzi dynamics when volume is flowing."}
+];
 
-// Render revenue
-const rcg=document.getElementById('rcg');
-[{f:'r',cl:'#f59e0b',lb:'veCRV REVENUE ($M)',u:'$',sx:'M'},{f:'v',cl:'#06b6d4',lb:'TRADING VOLUME ($B)',u:'$',sx:'B'},{f:'t',cl:'#a855f7',lb:'TVL ($B)',u:'$',sx:'B'}].forEach(cfg=>{const mx=Math.max(...R.map(d=>d[cfg.f]));let h='';R.forEach(d=>{const ht=(d[cfg.f]/mx)*90;h+='<div class="rcl"><div class="rv" style="color:'+cfg.cl+'">'+cfg.u+d[cfg.f]+cfg.sx+'</div><div class="rb" style="height:'+ht+'px;background:linear-gradient(to top,'+cfg.cl+'cc,'+cfg.cl+'44)"></div><div class="rl">'+d.q+'</div></div>'});rcg.innerHTML+='<div><div class="rsl">'+cfg.lb+'</div><div class="rc">'+h+'</div></div>'});
+const CS = [
+  {l:"CRV Price",v:"~$0.42",s:"97% below ATH ($15.37) · ATL $0.18",c:"var(--red)",sr:"[4] CoinGecko"},
+  {l:"ETH DEX Fee Share",v:"44%",s:"Up from 1.6% (Dec 2024)",c:"var(--green)",sr:"[1] PRNewswire"},
+  {l:"2025 Revenue",v:"$13.6M",s:"100% distributed to veCRV holders",c:"var(--yellow)",sr:"[7] Crypto Reporter"},
+  {l:"CRV Emissions",v:"115M/yr",s:"Reduced from 137M",c:"var(--purple)",sr:"[9] InsideCryptoReview"},
+  {l:"Curve TVL",v:"$2.1B",s:"Stable through bear · TVL/MCap 0.40",c:"var(--teal)",sr:"[6] DefiLlama"},
+  {l:"CRV Circulating",v:"1.5B",s:"Of 3.03B max (48%)",c:"var(--orange)",sr:"[4] CoinGecko"},
+  {l:"CVX Price",v:"~$1.73",s:"ATH $60.09 · MCap $159M",c:"var(--blue)",sr:"[5] CoinGecko"},
+  {l:"CVX Supply",v:"92M",s:"Of 100M max · vlCVX active",c:"var(--blue)",sr:"[5] CoinGecko"}
+];
 
-// Render scenarios
-const scn=document.getElementById('scn');SC.forEach(s=>{scn.innerHTML+='<div class="sr" style="border-left:3px solid '+s.c+'"><div style="font-size:11px;font-weight:700;color:'+s.c+'">'+s.l+'</div><div style="font-family:var(--mono);font-size:12px;color:var(--text)">'+s.tg+'</div><div><span class="bg" style="background:'+s.c+'18;color:'+s.c+';border:1px solid '+s.c+'30">'+s.m+'</span></div><div style="font-size:10px;color:var(--td)">'+s.b+'</div></div>'});
+const SC = [
+  {l:"CRV Conservative",tg:"$1.00 – $2.00",m:"2–5×",b:"DeFi recovery, fee share sustained",c:"var(--green)"},
+  {l:"CRV Base Case",tg:"$3.00 – $5.00",m:"7–12×",b:"Prior cycle range. Flywheel running.",c:"var(--yellow)"},
+  {l:"CRV Bull",tg:"$5.00 – $10.00",m:"12–24×",b:"FX pools + institutional flow",c:"var(--orange)"},
+  {l:"CVX Conservative",tg:"$5 – $12",m:"3–7×",b:"CRV recovers, governance premium holds",c:"var(--blue)"},
+  {l:"CVX Bull",tg:"$20 – $60",m:"12–35×",b:"Curve Wars reignite. Requires CRV $5+",c:"var(--blue)"}
+];
 
-// Render reflexive steps
-const rfx=document.getElementById('rfx');RF.forEach((s,i)=>{const last=i===RF.length-1;rfx.innerHTML+='<div class="stp'+(last?' hl':'')+'"><span class="stpn">'+(i+1)+'.</span><span style="font-size:11px;color:'+(last?'var(--pink)':'var(--tm)')+';font-weight:'+(last?700:400)+'">'+s+'</span></div>'});
+const RF = [
+  "CRV fees rise → veCRV yield rises → rational to buy CRV and lock",
+  "More CRV locked → less floating supply → upward price pressure",
+  "Price rises → emission revenue (in $) rises → APY increases",
+  "Higher APY → more locking → less float → price accelerates",
+  "Protocols compete for veCRV → demand for CVX to direct emissions",
+  "CVX demand rises → CVX price rises → governance premium expands",
+  "This is a ponzi when it's running. Geometric, not arithmetic."
+];
 
-// Render kill switches
-const kss=document.getElementById('kss');KS.forEach(sw=>{kss.innerHTML+='<div class="ks" style="border-left:3px solid '+sw.c+'"><div class="kh"><div class="khl"><span class="ic">'+sw.ic+'</span><span class="lb">'+sw.lb+'</span></div><span class="bg" style="background:'+sw.c+'18;color:'+sw.c+';border:1px solid '+sw.c+'30">'+sw.st+'</span></div><div class="kb"><div><div class="ksl" style="color:var(--red)">TRIGGER</div><div class="kst">'+sw.tr+'</div></div><div><div class="ksl" style="color:var(--green)">ACTION</div><div class="kst">'+sw.ac+'</div></div></div><div class="km"><span><span class="mk">METRIC:</span> '+sw.mt+'</span><span><span class="mk">SOURCE:</span> <a href="'+sw.ur+'" target="_blank" style="font-size:10px">'+sw.so+'</a></span><span><span class="mk">CURRENT:</span> <span style="color:'+sw.c+'">'+sw.cu+'</span></span></div></div>'});
+const KS = [
+  {ic:"⟠",lb:"ETH DeFi Volume Collapse",tr:"ETH total DEX volume < $500M/day for 30+ days",ac:"Reduce CRV/CVX 50%. Precondition failing.",st:"MONITOR",c:"#627eea",mt:"ETH daily DEX vol",so:"DefiLlama",ur:"https://defillama.com/dexs/chains",cu:"~$1.2B/day"},
+  {ic:"📊",lb:"Curve Fee Share Decline",tr:"Curve fee share < 25% for 2 consecutive months",ac:"Investigate. If structural → reduce 50%.",st:"STRONG",c:"var(--green)",mt:"Curve % ETH DEX fees",so:"DefiLlama",ur:"https://defillama.com/fees/chain/ethereum",cu:"~44%"},
+  {ic:"🩸",lb:"TVL Exodus",tr:"Curve TVL < $1B while total DeFi TVL stable/growing",ac:"Full exit CRV/CVX. Infrastructure thesis broken.",st:"MONITOR",c:"var(--yellow)",mt:"Curve TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/curve-finance",cu:"$2.1B"},
+  {ic:"🔓",lb:"veCRV Mass Unlock",tr:"veCRV locked supply drops >20% in one quarter",ac:"Reduce CVX 100%, CRV 50%. Flywheel breaking.",st:"MONITOR",c:"var(--purple)",mt:"veCRV locked supply",so:"Curve Dashboard",ur:"https://curve.fi/#/ethereum/dashboard",cu:"Stable"},
+  {ic:"🪝",lb:"Uni v4 StableSwap Hook",tr:"Uni v4 StableSwap hook > $500M TVL in stablecoin pools",ac:"If Curve fee share declining too → reduce 30%.",st:"LOW RISK",c:"var(--text-dim)",mt:"Uni v4 hook TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/uniswap-v4",cu:"Negligible"},
+  {ic:"🐛",lb:"Smart Contract Exploit",tr:"Curve/Convex core exploited with >$50M loss",ac:"Exit 100% immediately. Re-evaluate post-mortem.",st:"DEFINE",c:"var(--red)",mt:"Exploit alerts",so:"Rekt.news",ur:"https://rekt.news",cu:"No active exploit"},
+  {ic:"📉",lb:"Emission Death Spiral",tr:"CRV sell pressure > fee revenue for 6+ months post-recovery",ac:"Exit CRV, hold CVX if premium holds.",st:"WATCH",c:"var(--yellow)",mt:"Emission vs revenue",so:"Curve Resources",ur:"https://resources.curve.finance",cu:"115M CRV/yr"},
+  {ic:"💱",lb:"FX Pools Fail to Launch",tr:"By Q4 2026, FX pool TVL < $100M total",ac:"Remove FX upside. Doesn't kill base case.",st:"UPSIDE",c:"var(--teal)",mt:"FX pool TVL",so:"DefiLlama",ur:"https://defillama.com/protocol/curve-finance",cu:"Early stage"}
+];
 
-// Render checklist
-const chl=document.getElementById('chl');CL.forEach(c=>{chl.innerHTML+='<div class="cli"><div class="clb" onclick="this.classList.toggle(\'ck\')"></div><div><div style="font-size:11px;color:var(--text)">'+c.ck+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--td)">'+c.fr+' · <a href="'+c.ur+'" target="_blank" style="font-size:9px">'+c.ur.replace('https://','').replace('www.','').split('/').slice(0,2).join('/')+'</a></div></div></div>'});
+const CL = [
+  {ck:"Curve fee share on DefiLlama",fr:"Weekly",ur:"https://defillama.com/fees/chain/ethereum"},
+  {ck:"Curve TVL trend",fr:"Weekly",ur:"https://defillama.com/protocol/curve-finance"},
+  {ck:"CRV + CVX price check",fr:"Weekly",ur:"https://www.coingecko.com/en/coins/curve-dao-token"},
+  {ck:"veCRV locked supply",fr:"Monthly",ur:"https://curve.fi/#/ethereum/dashboard"},
+  {ck:"Uni v4 stablecoin hook TVL",fr:"Monthly",ur:"https://defillama.com/protocol/uniswap-v4"},
+  {ck:"FX pool TVL growth",fr:"Monthly",ur:"https://curve.fi/#/ethereum/pools"},
+  {ck:"Curve quarterly revenue",fr:"Quarterly",ur:"https://www.prnewswire.com/"},
+  {ck:"Exploit alerts",fr:"Daily (passive)",ur:"https://rekt.news"}
+];
+
+// ── RENDER: Flywheel ──
+let activeFW = -1;
+const fwg = document.getElementById('fwg');
+const fwd = document.getElementById('fwd');
+FW.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'fw-step';
+  el.style.borderLeft = '3px solid ' + s.cl;
+  el.innerHTML = '<div class="fw-icon">' + s.ic + '</div><div class="fw-label">' + s.lb + '</div><div class="fw-sub" style="color:' + s.cl + '">' + s.su + '</div>';
+  el.onclick = () => {
+    document.querySelectorAll('.fw-step').forEach(x => x.style.borderColor = x.style.borderLeftColor);
+    if (activeFW === i) { activeFW = -1; fwd.classList.remove('active'); return; }
+    activeFW = i;
+    fwd.className = 'fw-detail active';
+    fwd.innerHTML = '<div style="font-size:13px;font-weight:700;color:' + s.cl + ';margin-bottom:4px">Step ' + (i+1) + ': ' + s.lb + '</div>' + s.dt;
+  };
+  fwg.appendChild(el);
+});
+
+// ── RENDER: Stats ──
+const csg = document.getElementById('cs');
+CS.forEach(s => {
+  csg.innerHTML += '<div class="stat-card" style="border-left-color:' + s.c + '"><div class="sc-label">' + s.l.toUpperCase() + '</div><div class="sc-value" style="color:' + s.c + '">' + s.v + '</div><div class="sc-note">' + s.s + '</div><div class="sc-source">' + s.sr + '</div></div>';
+});
+
+// ── RENDER: Stacked bar chart ──
+const sch = document.getElementById('sch');
+D.forEach(d => {
+  let h = '';
+  [{k:'o',cl:'var(--text-faint)'},{k:'f',cl:'var(--green)'},{k:'u',cl:'#ff007a'},{k:'c',cl:'var(--orange)'}].forEach(sg => {
+    const ht = (d[sg.k] / 100) * 200;
+    const op = sg.k === 'c' ? 'cc' : '55';
+    const lb = sg.k === 'c' && d.c > 10 ? '<span class="bar-seg-label">' + d.c + '%</span>' : '';
+    const rd = sg.k === 'o' ? 'border-radius:3px 3px 0 0;' : sg.k === 'c' ? 'border-radius:0 0 3px 3px;' : '';
+    // Resolve CSS var for opacity concat
+    let color = sg.cl;
+    if (color.startsWith('var(')) {
+      const style = getComputedStyle(document.documentElement);
+      color = style.getPropertyValue(color.replace('var(','').replace(')','').trim()).trim();
+    }
+    h += '<div class="bar-seg" style="height:' + ht + 'px;background:' + color + op + ';' + rd + '">' + lb + '</div>';
+  });
+  sch.innerHTML += '<div class="bar-col"><div class="bar-stack">' + h + '</div><div class="bar-period">' + d.p + '</div></div>';
+});
+
+// ── RENDER: Revenue charts ──
+const rcg = document.getElementById('rcg');
+[{f:'r',cl:'var(--yellow)',lb:'veCRV REVENUE ($M)',u:'$',sx:'M'},
+ {f:'v',cl:'var(--teal)',lb:'TRADING VOLUME ($B)',u:'$',sx:'B'},
+ {f:'t',cl:'var(--purple)',lb:'TVL ($B)',u:'$',sx:'B'}].forEach(cfg => {
+  const mx = Math.max(...R.map(d => d[cfg.f]));
+  const style = getComputedStyle(document.documentElement);
+  let color = cfg.cl;
+  if (color.startsWith('var(')) {
+    color = style.getPropertyValue(color.replace('var(','').replace(')','').trim()).trim();
+  }
+  let h = '';
+  R.forEach(d => {
+    const ht = (d[cfg.f] / mx) * 90;
+    h += '<div class="rev-col"><div class="rev-val" style="color:' + color + '">' + cfg.u + d[cfg.f] + cfg.sx + '</div><div class="rev-bar" style="height:' + ht + 'px;background:linear-gradient(to top,' + color + 'cc,' + color + '44)"></div><div class="rev-label">' + d.q + '</div></div>';
+  });
+  rcg.innerHTML += '<div><div class="rev-section-label">' + cfg.lb + '</div><div class="rev-chart">' + h + '</div></div>';
+});
+
+// ── RENDER: Scenarios ──
+const scn = document.getElementById('scn');
+SC.forEach(s => {
+  scn.innerHTML += '<div class="scenario-row" style="border-left:3px solid ' + s.c + '"><div style="font-size:11px;font-weight:700;color:' + s.c + '">' + s.l + '</div><div style="font-family:var(--mono);font-size:12px;color:var(--text)">' + s.tg + '</div><div><span class="badge" style="background:' + s.c + '18;color:' + s.c + ';border-color:' + s.c + '30">' + s.m + '</span></div><div style="font-size:10px;color:var(--text-dim)">' + s.b + '</div></div>';
+});
+
+// ── RENDER: Reflexive steps ──
+const rfx = document.getElementById('rfx');
+RF.forEach((s, i) => {
+  const last = i === RF.length - 1;
+  rfx.innerHTML += '<div class="reflex-step' + (last ? ' highlight' : '') + '"><span class="reflex-num">' + (i+1) + '.</span><span style="font-size:11px;color:' + (last ? 'var(--purple)' : 'var(--text-mid)') + ';font-weight:' + (last ? 700 : 400) + '">' + s + '</span></div>';
+});
+
+// ── RENDER: Kill switches ──
+const kss = document.getElementById('kss');
+KS.forEach(sw => {
+  const style = getComputedStyle(document.documentElement);
+  let color = sw.c;
+  if (color.startsWith('var(')) {
+    color = style.getPropertyValue(color.replace('var(','').replace(')','').trim()).trim();
+  }
+  kss.innerHTML += '<div class="ks-card" style="border-left:3px solid ' + sw.c + '"><div class="ks-header"><div class="ks-header-left"><span class="ks-icon">' + sw.ic + '</span><span class="ks-label">' + sw.lb + '</span></div><span class="badge" style="background:' + color + '18;color:' + sw.c + ';border-color:' + color + '30">' + sw.st + '</span></div><div class="ks-body"><div><div class="ks-sub-label" style="color:var(--red)">TRIGGER</div><div class="ks-sub-text">' + sw.tr + '</div></div><div><div class="ks-sub-label" style="color:var(--green)">ACTION</div><div class="ks-sub-text">' + sw.ac + '</div></div></div><div class="ks-meta"><span><span class="meta-key">METRIC:</span> ' + sw.mt + '</span><span><span class="meta-key">SOURCE:</span> <a href="' + sw.ur + '" target="_blank" style="font-size:10px">' + sw.so + '</a></span><span><span class="meta-key">CURRENT:</span> <span style="color:' + sw.c + '">' + sw.cu + '</span></span></div></div>';
+});
+
+// ── RENDER: Checklist ──
+const chl = document.getElementById('chl');
+CL.forEach(c => {
+  chl.innerHTML += '<div class="cl-item"><div class="cl-box" onclick="this.classList.toggle(\'checked\')"></div><div><div style="font-size:11px;color:var(--text)">' + c.ck + '</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">' + c.fr + ' · <a href="' + c.ur + '" target="_blank" style="font-size:9px">' + c.ur.replace('https://','').replace('www.','').split('/').slice(0,2).join('/') + '</a></div></div></div>';
+});
 </script>
-</div><!-- .trt -->
-</main>
-</div><!-- .site-layout -->
-<script src="assets/nav.js" data-root="./"></script>
-</body></html>
+</body>
+</html>

@@ -12,13 +12,8 @@
       "pages": [
         { "id": "core",      "title": "Core Thesis",          "file": "thesis/core.html",         "badge": "TODO",    "badgeColor": "dim" },
         { "id": "liquidity", "title": "Liquidity Framework",  "file": "thesis/liquidity.html",    "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "btc-gold",  "title": "BTC:Gold Parity",      "file": "thesis/btc-gold.html",     "badge": "TODO",    "badgeColor": "dim" }
-      ]
-    },
-    {
-      "label": "Alts",
-      "pages": [
-        { "id": "toll-road", "title": "CRV/CVX Toll Road",    "file": "toll_road_thesis_v2.html", "badge": "LIVE",    "badgeColor": "green" }
+        { "id": "btc-gold",  "title": "BTC:Gold Parity",      "file": "thesis/btc-gold.html",     "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "toll-road", "title": "Toll Road (CRV/CVX)",  "file": "toll_road_thesis_v2.html",  "badge": "LIVE",    "badgeColor": "green" }
       ]
     },
     {
