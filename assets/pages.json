@@ -1,36 +1,42 @@
 {
   "sections": [
     {
+      "label": "Home",
+      "pages": [
+        { "id": "dashboard", "title": "Dashboard",             "file": "index.html",                "badge": null }
+      ]
+    },
+    {
       "label": "Monitor",
       "pages": [
-        { "id": "tracker",   "title": "Invalidation Tracker", "file": "tracker.html",            "badge": "WATCH",   "badgeColor": "yellow" },
-        { "id": "catalysts", "title": "Geo Catalysts",        "file": "catalysts.html",           "badge": null }
+        { "id": "tracker",   "title": "Invalidation Tracker",  "file": "tracker.html",              "badge": "WATCH",   "badgeColor": "yellow" },
+        { "id": "catalysts", "title": "Geo Catalysts",         "file": "catalysts.html",             "badge": null }
       ]
     },
     {
       "label": "Thesis",
       "pages": [
-        { "id": "core",      "title": "Core Thesis",          "file": "thesis/core.html",         "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "liquidity", "title": "Liquidity Framework",  "file": "thesis/liquidity.html",    "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "btc-gold",  "title": "BTC:Gold Parity",      "file": "thesis/btc-gold.html",     "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "toll-road", "title": "Toll Road (CRV/CVX)",  "file": "toll_road_thesis_v2.html",  "badge": "LIVE",    "badgeColor": "green" }
+        { "id": "tollroad",  "title": "Toll Road (CRV/CVX)",  "file": "toll_road_thesis_v2.html",   "badge": "LIVE",    "badgeColor": "green" },
+        { "id": "core",      "title": "Core Thesis",           "file": "thesis/core.html",           "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "liquidity", "title": "Liquidity Framework",   "file": "thesis/liquidity.html",      "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "btc-gold",  "title": "BTC:Gold Parity",       "file": "thesis/btc-gold.html",       "badge": "TODO",    "badgeColor": "dim" }
       ]
     },
     {
       "label": "Portfolio",
       "pages": [
-        { "id": "positions", "title": "My Positions",         "file": "portfolio/positions.html", "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "exits",     "title": "Exit Plan",            "file": "portfolio/exits.html",     "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "family",    "title": "Family Accounts",      "file": "portfolio/family.html",    "badge": "TODO",    "badgeColor": "dim" }
+        { "id": "positions", "title": "My Positions",          "file": "positions.html",             "badge": "LIVE",    "badgeColor": "green" },
+        { "id": "exits",     "title": "Exit Plan",             "file": "portfolio/exits.html",       "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "family",    "title": "Family Accounts",       "file": "portfolio/family.html",      "badge": "TODO",    "badgeColor": "dim" }
       ]
     },
     {
       "label": "Research",
       "pages": [
-        { "id": "structure", "title": "Market Structure",     "file": "research/structure.html",  "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "sentiment", "title": "Sentiment",            "file": "research/sentiment.html",  "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "nuclear",   "title": "Nuclear Thesis",       "file": "research/nuclear.html",    "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "wealth-transfer", "title": "Wealth Transfer","file": "research/wealth-transfer.html", "badge": "TODO", "badgeColor": "dim" }
+        { "id": "structure", "title": "Market Structure",      "file": "research/structure.html",    "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "sentiment", "title": "Sentiment",             "file": "research/sentiment.html",    "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "nuclear",   "title": "Nuclear Thesis",        "file": "research/nuclear.html",      "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "wealth-transfer", "title": "Wealth Transfer", "file": "research/wealth-transfer.html", "badge": "TODO", "badgeColor": "dim" }
       ]
     }
   ]

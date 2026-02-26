@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Positions — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Fallback tokens (for standalone preview without site CSS) ── */
+    :root {
+      --bg:         #0d1117;
+      --bg2:        #111827;
+      --card:       #161f2e;
+      --border:     #1e2d45;
+      --border-hi:  #2d4060;
+      --text:       #e2e8f0;
+      --text-mid:   #8b9ab0;
+      --text-dim:   #3d5068;
+      --text-faint: #1e2d3d;
+      --green:      #4ade80;
+      --yellow:     #fbbf24;
+      --orange:     #f97316;
+      --red:        #f87171;
+      --blue:       #38bdf8;
+      --purple:     #a78bfa;
+      --teal:       #2dd4bf;
+      --mono:       'Space Mono', monospace;
+      --sans:       'DM Sans', sans-serif;
+      --radius:     10px;
+      --radius-sm:  6px;
+    }
+    /* Standalone fallbacks */
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); margin: 0; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-decoration: none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Page Layout ── */
+    .dash-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 44px 48px;
+    }
+
+    /* ── Page Header ── */
+    .dash-header { margin-bottom: 36px; }
+    .dash-eyebrow {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .dash-title {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .dash-subtitle {
+      margin-top: 10px;
+      color: var(--text-mid);
+      font-size: 14px;
+      line-height: 1.75;
+      max-width: 620px;
+    }
+    .dash-stamp {
+      margin-top: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+
+    /* ── Stack ── */
+    .stack { display: flex; flex-direction: column; gap: 14px; }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .card-eyebrow {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+    .badge.green  { color: var(--green);  border-color: rgba(74,222,128,0.3);   background: rgba(74,222,128,0.07); }
+    .badge.yellow { color: var(--yellow); border-color: rgba(251,191,36,0.3);   background: rgba(251,191,36,0.07); }
+    .badge.orange { color: var(--orange); border-color: rgba(249,115,22,0.3);   background: rgba(249,115,22,0.07); }
+    .badge.red    { color: var(--red);    border-color: rgba(248,113,113,0.3);  background: rgba(248,113,113,0.07); }
+    .badge.blue   { color: var(--blue);   border-color: rgba(56,189,248,0.3);   background: rgba(56,189,248,0.07); }
+    .badge.purple { color: var(--purple); border-color: rgba(167,139,250,0.3);  background: rgba(167,139,250,0.07); }
+    .badge.dim    { color: var(--text-dim); border-color: var(--border);        background: transparent; }
+    .badge.teal   { color: var(--teal);  border-color: rgba(45,212,191,0.3);   background: rgba(45,212,191,0.07); }
+
+    /* ── Summary Row ── */
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .sum-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .sum-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .sum-value {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .sum-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+
+    /* ── Health Cards ── */
+    .health-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .health-card {
+      background: var(--bg2);
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .health-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .health-top h3 { font-size: 16px; font-weight: 700; }
+    .health-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+    .health-line .v {
+      font-family: var(--mono);
+      color: var(--text);
+      font-size: 13px;
+    }
+    .bar-track {
+      margin-top: 14px;
+      background: var(--bg);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .bar-fill { height: 100%; border-radius: 4px; }
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Positions Table ── */
+    .ptable { width: 100%; border-collapse: collapse; }
+    .ptable th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .ptable th.l { text-align: left; }
+    .ptable th.r { text-align: right; }
+    .ptable th.c { text-align: center; }
+    .ptable td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    .ptable td.r { text-align: right; }
+    .ptable td.c { text-align: center; }
+    .ptable tr:last-child td { border-bottom: none; }
+    .ptable .m { font-family: var(--mono); font-size: 13px; }
+    .ptable .asset {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ptable .icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .ptable .debt-row { background: rgba(248,113,113,0.03); }
+
+    /* ── Tier Stacks ── */
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tier-section { margin-bottom: 28px; }
+    .tier-section:last-child { margin-bottom: 0; }
+    .tier-heading {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .tstack {
+      display: flex;
+      flex-direction: column;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .trow {
+      display: grid;
+      grid-template-columns: 90px 150px 60px 1fr;
+      align-items: center;
+      padding: 12px 18px;
+      font-size: 12px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .trow:last-child { border-bottom: none; }
+    .trow .rng { font-family: var(--mono); color: var(--text); font-size: 12px; }
+    .trow .pct { font-family: var(--mono); font-size: 13px; font-weight: 700; }
+    .trow .dsc { color: var(--text-mid); line-height: 1.5; }
+    .trow.warn { background: rgba(248,113,113,0.04); }
+    .trow.core { background: rgba(56,189,248,0.04); }
+
+    /* Alt tier rows — wider first column for TIER 0 */
+    .tstack.alt .trow {
+      grid-template-columns: 100px 140px 70px 1fr;
+    }
+
+    /* ── Confirm Grid ── */
+    .cgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: var(--bg2);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .ccell {
+      text-align: center;
+      padding: 18px 14px;
+    }
+    .ccell + .ccell { border-left: 1px solid var(--border); }
+    .ccell .cl { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+    .ccell .cv {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dim);
+    }
+    .ccell .ct {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── MoM Table ── */
+    .mtable { width: 100%; border-collapse: collapse; }
+    .mtable th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mtable th.r { text-align: right; }
+    .mtable td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .mtable td.r { text-align: right; }
+    .mtable .m { font-family: var(--mono); font-size: 12px; }
+    .mtable .next td { opacity: 0.35; }
+    .mtable .future td { opacity: 0.15; }
+
+    /* ── Decisions ── */
+    .dec-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .dec-item:last-child { border-bottom: none; }
+    .dec-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--yellow);
+      background: rgba(251,191,36,0.08);
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Note & Footer ── */
+    .snote {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .snote strong { color: var(--text-mid); }
+    .page-foot {
+      text-align: center;
+      padding: 32px 0 8px;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-faint);
+      letter-spacing: 1.5px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .dash-wrap { padding: 24px 20px; }
+      .summary-row { grid-template-columns: 1fr 1fr; }
+      .health-grid { grid-template-columns: 1fr; }
+      .trow { grid-template-columns: 80px 120px 50px 1fr; padding: 10px 12px; font-size: 11px; }
+      .tstack.alt .trow { grid-template-columns: 90px 110px 55px 1fr; }
+      .cgrid { grid-template-columns: 1fr; }
+      .ccell + .ccell { border-left: none; border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- When deployed in site, site-layout + nav wrap this. Standalone: just the dashboard. -->
+<div class="site-layout" style="display:flex; min-height:100vh;">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main style="flex:1;">
+    <div class="dash-wrap">
+
+      <!-- ── HEADER ── -->
+      <header class="dash-header">
+        <div class="dash-eyebrow">PORTFOLIO</div>
+        <h1 class="dash-title">My Positions</h1>
+        <p class="dash-subtitle">Current holdings, health monitoring, and exit tier proximity. Updated manually — the single source of truth for what I own and when I sell.</p>
+        <div class="dash-stamp">LAST UPDATED: <span style="color:var(--yellow);">2026-02-24</span> · SNAPSHOT PRICES</div>
+      </header>
+
+      <div class="stack">
+
+        <!-- ═══════════ 1 · PORTFOLIO SUMMARY ═══════════ -->
+        <div class="summary-row">
+          <div class="sum-card">
+            <div class="sum-label">Total Value</div>
+            <div class="sum-value">$19,920</div>
+            <div class="sum-sub">gross across all positions</div>
+          </div>
+          <div class="sum-card">
+            <div class="sum-label">Total Debt</div>
+            <div class="sum-value" style="color:var(--red);">−$10,065</div>
+            <div class="sum-sub">FRAX loans outstanding</div>
+          </div>
+          <div class="sum-card">
+            <div class="sum-label">Net Equity</div>
+            <div class="sum-value" style="color:var(--blue);">$9,858</div>
+            <div class="sum-sub">value minus debt</div>
+          </div>
+          <div class="sum-card">
+            <div class="sum-label">vs $40K Input</div>
+            <div class="sum-value" style="color:var(--red);">−75.4%</div>
+            <div class="sum-sub">total P&amp;L from starting capital</div>
+          </div>
+        </div>
+
+        <!-- ═══════════ 2 · HEALTH MONITOR ═══════════ -->
+        <div class="card" style="border-color:var(--border-hi);">
+          <div class="card-eyebrow" style="color:var(--orange);">⚠ FRAXLEND HEALTH MONITOR</div>
+          <p class="snote">Health Rate = Collateral ÷ Loan. Below 1.0 = liquidation. Below 1.2 = danger. <strong>Loan repayment is Tier 0.</strong></p>
+          <div class="health-grid">
+            <!-- CVX -->
+            <div class="health-card">
+              <div class="health-top">
+                <h3>CVX Loan</h3>
+                <span class="badge green">HEALTH 1.65</span>
+              </div>
+              <div class="health-line"><span>Collateral</span><span class="v">5,466 CVX · $9,412</span></div>
+              <div class="health-line"><span>Borrowed</span><span class="v" style="color:var(--red);">4,302 FRAX · $4,268</span></div>
+              <div class="health-line"><span>Liq. price (est.)</span><span class="v" style="color:var(--orange);">~$0.78</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:65%; background:var(--green);"></div></div>
+              <div class="bar-labels"><span>LIQ 1.0</span><span style="color:var(--orange);">DANGER 1.2</span><span style="color:var(--green);">SAFE 1.5+</span></div>
+            </div>
+            <!-- CRV -->
+            <div class="health-card" style="border-color:rgba(251,191,36,0.25);">
+              <div class="health-top">
+                <h3>CRV Loan</h3>
+                <span class="badge yellow">HEALTH 1.34</span>
+              </div>
+              <div class="health-line"><span>Collateral</span><span class="v">47,638 CRV · $10,371</span></div>
+              <div class="health-line"><span>Borrowed</span><span class="v" style="color:var(--red);">5,844 FRAX · $5,797</span></div>
+              <div class="health-line"><span>Liq. price (est.)</span><span class="v" style="color:var(--orange);">~$0.16</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:34%; background:var(--yellow);"></div></div>
+              <div class="bar-labels"><span>LIQ 1.0</span><span style="color:var(--orange);">DANGER 1.2</span><span style="color:var(--green);">SAFE 1.5+</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════ 3 · POSITIONS TABLE ═══════════ -->
+        <div class="card">
+          <div class="card-eyebrow">current positions</div>
+          <div style="overflow-x:auto;">
+            <table class="ptable">
+              <thead>
+                <tr>
+                  <th class="l">Asset</th>
+                  <th class="r">Qty</th>
+                  <th class="r">Price</th>
+                  <th class="r">Value</th>
+                  <th class="r">%</th>
+                  <th class="c">Role</th>
+                  <th class="c">Lev.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="asset"><div class="icon" style="background:rgba(249,115,22,0.12);color:var(--orange);">₿</div> BTC</div></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">—</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">—</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">$0</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">0%</span></td>
+                  <td class="c"><span class="badge dim">NONE</span></td>
+                  <td class="c"><span class="badge dim">—</span></td>
+                </tr>
+                <tr>
+                  <td><div class="asset"><div class="icon" style="background:rgba(167,139,250,0.12);color:var(--purple);">◆</div> ETH</div></td>
+                  <td class="r"><span class="m">0.075</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td class="r"><span class="m">~$137</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">~1%</span></td>
+                  <td class="c"><span class="badge dim">DUST</span></td>
+                  <td class="c"><span class="badge dim">1×</span></td>
+                </tr>
+                <tr>
+                  <td><div class="asset"><div class="icon" style="background:rgba(251,191,36,0.12);color:var(--yellow);">◈</div> CRV</div></td>
+                  <td class="r"><span class="m">47,638</span></td>
+                  <td class="r"><span class="m">$0.218</span></td>
+                  <td class="r"><span class="m">$10,371</span></td>
+                  <td class="r"><span class="m">52%</span></td>
+                  <td class="c"><span class="badge purple">LEVER</span></td>
+                  <td class="c"><span class="badge yellow">~1.8×</span></td>
+                </tr>
+                <tr>
+                  <td><div class="asset"><div class="icon" style="background:rgba(45,212,191,0.12);color:var(--teal);">◉</div> CVX</div></td>
+                  <td class="r"><span class="m">5,466</span></td>
+                  <td class="r"><span class="m">$1.72</span></td>
+                  <td class="r"><span class="m">$9,412</span></td>
+                  <td class="r"><span class="m">47%</span></td>
+                  <td class="c"><span class="badge purple">LEVER</span></td>
+                  <td class="c"><span class="badge yellow">~2.2×</span></td>
+                </tr>
+                <tr class="debt-row">
+                  <td><div class="asset"><div class="icon" style="background:rgba(248,113,113,0.1);color:var(--red);">○</div><span style="color:var(--red);">FRAX Debt</span></div></td>
+                  <td class="r"><span class="m" style="color:var(--red);">−10,146</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">$1.00</span></td>
+                  <td class="r"><span class="m" style="color:var(--red);">−$10,065</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">—</span></td>
+                  <td class="c"><span class="badge red">DEBT</span></td>
+                  <td class="c">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="snote" style="margin-top:14px;margin-bottom:0;">
+            <strong>Note:</strong> BTC row is a placeholder — no BTC held. Target allocation (2026 trade): BTC 40%, ETH 30%, CRV 20%, CVX 10%. Currently 100% Curve ecosystem + leverage.
+          </p>
+        </div>
+
+        <!-- ═══════════ 4 · EXIT TIERS — BTC ═══════════ -->
+        <div class="card">
+          <div class="card-eyebrow">exit tiers — btc</div>
+          <div class="tags">
+            <span class="badge blue">Phase A: 2026 Trade</span>
+            <span class="badge purple">Phase B: Debt Thesis</span>
+            <span class="badge dim">2-of-3 Confirmation</span>
+          </div>
+
+          <div class="tier-section">
+            <div class="tier-heading" style="color:var(--blue);">Phase A — The Liquidity Play</div>
+            <div class="tstack">
+              <div class="trow">
+                <span class="badge green" style="width:fit-content;">TIER 1</span>
+                <span class="rng">$120K – $130K</span>
+                <span class="pct" style="color:var(--green);">25%</span>
+                <span class="dsc">First liquidity event — lock in base recovery</span>
+              </div>
+              <div class="trow">
+                <span class="badge yellow" style="width:fit-content;">TIER 2</span>
+                <span class="rng">$150K – $170K</span>
+                <span class="pct" style="color:var(--yellow);">35%</span>
+                <span class="dsc">Thesis confirmed — take majority off</span>
+              </div>
+              <div class="trow">
+                <span class="badge orange" style="width:fit-content;">TIER 3</span>
+                <span class="rng">$200K+</span>
+                <span class="pct" style="color:var(--orange);">40%</span>
+                <span class="dsc">Euphoria zone — sell remaining trade capital</span>
+              </div>
+              <div class="trow warn">
+                <span class="badge red" style="width:fit-content;">TIME ⏰</span>
+                <span class="rng" style="color:var(--red);">Dec 31 2026</span>
+                <span class="pct" style="color:var(--red);">100%</span>
+                <span class="dsc">Sell everything remaining — time stop, no exceptions</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tier-section">
+            <div class="tier-heading" style="color:var(--purple);">Phase B — The Debt Thesis</div>
+            <div class="tstack">
+              <div class="trow">
+                <span class="badge green" style="width:fit-content;">TIER 1</span>
+                <span class="rng">$200K – $280K</span>
+                <span class="pct" style="color:var(--green);">10%</span>
+                <span class="dsc">MVRV >5 · LTH declining 3+ wks · RSI >75</span>
+              </div>
+              <div class="trow">
+                <span class="badge yellow" style="width:fit-content;">TIER 2</span>
+                <span class="rng">$280K – $500K</span>
+                <span class="pct" style="color:var(--yellow);">15%</span>
+                <span class="dsc">MVRV >6 · Pi Cycle near cross · Puell >3</span>
+              </div>
+              <div class="trow">
+                <span class="badge orange" style="width:fit-content;">TIER 3</span>
+                <span class="rng">$500K – $762K</span>
+                <span class="pct" style="color:var(--orange);">15%</span>
+                <span class="dsc">MVRV >7 · Pi Cycle crossed · Greed >90</span>
+              </div>
+              <div class="trow">
+                <span class="badge red" style="width:fit-content;">TIER 4</span>
+                <span class="rng">$762K+</span>
+                <span class="pct" style="color:var(--red);">10%</span>
+                <span class="dsc">Full multi-metric top confirmation</span>
+              </div>
+              <div class="trow core">
+                <span class="badge blue" style="width:fit-content;">CORE 💎</span>
+                <span class="rng" style="color:var(--blue);">Forever</span>
+                <span class="pct" style="color:var(--blue);">50%</span>
+                <span class="dsc">Generational hold — never sell</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-of-3 -->
+          <div style="margin-top:8px;">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-bottom:10px;text-transform:uppercase;">2-of-3 Confirmation System</div>
+            <div class="cgrid">
+              <div class="ccell">
+                <div class="cl">MVRV Z-Score</div>
+                <div class="cv">—</div>
+                <div class="ct">trigger: >5</div>
+              </div>
+              <div class="ccell">
+                <div class="cl">Monthly RSI</div>
+                <div class="cv">—</div>
+                <div class="ct">trigger: >75</div>
+              </div>
+              <div class="ccell">
+                <div class="cl">LTH Supply %</div>
+                <div class="cv">—</div>
+                <div class="ct">trigger: declining 3+ wks</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════ 5 · EXIT TIERS — CRV ═══════════ -->
+        <div class="card">
+          <div class="card-eyebrow">exit tiers — crv</div>
+          <div class="tags">
+            <span class="badge yellow">47,638 CRV</span>
+            <span class="badge dim">ATH $15.37 · Range $3–$5</span>
+            <span class="badge purple">Leveraged via Fraxlend</span>
+          </div>
+          <div class="tstack alt">
+            <div class="trow warn">
+              <span class="badge red" style="width:fit-content;">TIER 0 🔑</span>
+              <span class="rng">$0.40 – $0.50</span>
+              <span class="pct" style="color:var(--red);">REPAY</span>
+              <span class="dsc">Repay $5,797 FRAX — eliminate liquidation risk · ~2× current</span>
+            </div>
+            <div class="trow">
+              <span class="badge green" style="width:fit-content;">TIER 1</span>
+              <span class="rng">$1.00 – $2.00</span>
+              <span class="pct" style="color:var(--green);">25%</span>
+              <span class="dsc">DeFi recovery confirmed — take real money off · 5–9×</span>
+            </div>
+            <div class="trow">
+              <span class="badge yellow" style="width:fit-content;">TIER 2</span>
+              <span class="rng">$3.00 – $5.00</span>
+              <span class="pct" style="color:var(--yellow);">30%</span>
+              <span class="dsc">Prior cycle range — serious profit · 14–23×</span>
+            </div>
+            <div class="trow">
+              <span class="badge orange" style="width:fit-content;">TIER 3</span>
+              <span class="rng">$5.00 – $10.00</span>
+              <span class="pct" style="color:var(--orange);">30%</span>
+              <span class="dsc">Approaching ATH — euphoria · 23–45×</span>
+            </div>
+            <div class="trow core">
+              <span class="badge blue" style="width:fit-content;">CORE 💎</span>
+              <span class="rng" style="color:var(--blue);">Hold</span>
+              <span class="pct" style="color:var(--blue);">15%</span>
+              <span class="dsc">Curve infrastructure conviction — rides or dies</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════ 6 · EXIT TIERS — CVX ═══════════ -->
+        <div class="card">
+          <div class="card-eyebrow">exit tiers — cvx</div>
+          <div class="tags">
+            <span class="badge teal">5,466 CVX</span>
+            <span class="badge dim">ATH $62.69 · Range $20–$25</span>
+            <span class="badge purple">Leveraged via Fraxlend</span>
+          </div>
+          <div class="tstack alt">
+            <div class="trow warn">
+              <span class="badge red" style="width:fit-content;">TIER 0 🔑</span>
+              <span class="rng">$2.50 – $3.00</span>
+              <span class="pct" style="color:var(--red);">REPAY</span>
+              <span class="dsc">Repay $4,268 FRAX — remove leverage gun · ~1.5× current</span>
+            </div>
+            <div class="trow">
+              <span class="badge green" style="width:fit-content;">TIER 1</span>
+              <span class="rng">$5.00 – $8.00</span>
+              <span class="pct" style="color:var(--green);">30%</span>
+              <span class="dsc">Curve Wars recovery — real value return · 3–5×</span>
+            </div>
+            <div class="trow">
+              <span class="badge yellow" style="width:fit-content;">TIER 2</span>
+              <span class="rng">$10.00 – $20.00</span>
+              <span class="pct" style="color:var(--yellow);">35%</span>
+              <span class="dsc">Prior cycle range highs · 6–12×</span>
+            </div>
+            <div class="trow">
+              <span class="badge orange" style="width:fit-content;">TIER 3</span>
+              <span class="rng">$25.00+</span>
+              <span class="pct" style="color:var(--orange);">25%</span>
+              <span class="dsc">Blowoff — near or above ATH · 15×+</span>
+            </div>
+            <div class="trow core">
+              <span class="badge blue" style="width:fit-content;">CORE 💎</span>
+              <span class="rng" style="color:var(--blue);">Hold</span>
+              <span class="pct" style="color:var(--blue);">10%</span>
+              <span class="dsc">Smallest conviction — smallest core</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════ 7 · MONTH-OVER-MONTH ═══════════ -->
+        <div class="card">
+          <div class="card-eyebrow">month-over-month tracking</div>
+          <p class="snote">Snapshot on the 1st. Net equity (value − debt) vs $40K starting capital.</p>
+          <div style="overflow-x:auto;">
+            <table class="mtable">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th class="r">Net Equity</th>
+                  <th class="r">MoM Δ</th>
+                  <th class="r">vs $40K</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="m">Feb 2026</span></td>
+                  <td class="r"><span class="m">$9,858</span></td>
+                  <td class="r"><span class="m" style="color:var(--text-dim);">—</span></td>
+                  <td class="r"><span class="m" style="color:var(--red);">−75.4%</span></td>
+                  <td style="color:var(--text-mid);">Baseline. 100% Curve ecosystem.</td>
+                </tr>
+                <tr class="next">
+                  <td><span class="m">Mar 2026</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td>—</td>
+                </tr>
+                <tr class="future">
+                  <td><span class="m">Apr 2026</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td class="r"><span class="m">—</span></td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══════════ 8 · DECISIONS NEEDED ═══════════ -->
+        <div class="card" style="border-style:dashed;border-color:var(--border-hi);">
+          <div class="card-eyebrow" style="color:var(--yellow);">🔧 DECISIONS NEEDED</div>
+          <div class="dec-item">
+            <div class="dec-num">1</div>
+            <div><strong style="color:var(--text);">Where does exit money go?</strong> — 401k loan payback? Tax reserves? Family accounts? Real estate? Need buckets + target amounts.</div>
+          </div>
+          <div class="dec-item">
+            <div class="dec-num">2</div>
+            <div><strong style="color:var(--text);">Phase A vs Phase B capital split</strong> — What % of future BTC is "2026 trade" vs "generational hold"? 70/30? 60/40? 50/50?</div>
+          </div>
+          <div class="dec-item">
+            <div class="dec-num">3</div>
+            <div><strong style="color:var(--text);">ETH exit framework</strong> — Currently dust. If building a real position, needs its own tier structure.</div>
+          </div>
+          <div class="dec-item">
+            <div class="dec-num">4</div>
+            <div><strong style="color:var(--text);">CRV/CVX health rate action plan</strong> — At what health rate do you add collateral vs. partially repay? Written rule, not a feeling.</div>
+          </div>
+        </div>
+
+        <div class="page-foot">A THESIS WITHOUT INVALIDATION CONDITIONS IS A RELIGION · AN EXIT PLAN WITHOUT RULES IS A HOPE</div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/nav.js" data-root="./"></script>
+</body>
+</html>
