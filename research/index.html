@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
+      <div class="page-eyebrow">Research</div>
+      <h1 class="page-title">Research</h1>
+      <p class="page-subtitle">Supporting research, data sources, and satellite theses organized by topic. Each section cites primary sources.</p>
+
+      <div class="stack" style="margin-top:24px;">
+
+        <!-- ── MARKET STRUCTURE ── -->
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Market Structure</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#f59e0b;color:#000;">P1</span>
+          </div>
+          <div class="plan-body">
+            BTC price memory, swing failure patterns, higher-timeframe analysis, and CRV/CVX structure. Key levels, underdamped harmonic oscillator model.<br/><br/>
+            <strong>Sources:</strong> TradingView (weekly/monthly charts), Credibull (EW counts), Bluntz (alt counts)
+          </div>
+        </div>
+
+        <!-- ── SENTIMENT & ON-CHAIN ── -->
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Sentiment & On-Chain</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#f59e0b;color:#000;">P1</span>
+          </div>
+          <div class="plan-body">
+            The 2-of-3 confirmation system: MVRV Z-Score, Monthly RSI, Long-Term Holder Supply changes. Plus NUPL, SOPR, exchange net flows, stablecoin supply ratio, Fear &amp; Greed index. Green/yellow/red for each metric &mdash; require 2-of-3 core metrics confirming before major action.<br/><br/>
+            <strong>Sources:</strong> <a href="https://glassnode.com" target="_blank">Glassnode</a>, <a href="https://cryptoquant.com" target="_blank">CryptoQuant</a>, <a href="https://coinglass.com" target="_blank">Coinglass</a>, <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank">alternative.me</a>
+          </div>
+        </div>
+
+        <!-- ── NUCLEAR THESIS ── -->
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Nuclear Thesis (Satellite)</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#555568;color:#e2e2e8;">P2</span>
+          </div>
+          <div class="plan-body">
+            US public support rising from 51% to 72% (2015-2025). TAM: nuclear $245B vs oil &amp; gas $6.33T. Vehicles: URA, NLR (ETFs), SMR, OKLO (SMR pure plays), CCJ, SRUUF (uranium). Nuclear is the only scalable clean baseload power. AI data center demand accelerating adoption. Bipartisan consensus forming.<br/><br/>
+            <strong>Sources:</strong> <em>rr_nuclear_dashboard.jsx</em> (opinion charts, market sizing)
+          </div>
+        </div>
+
+        <!-- ── WEALTH TRANSFER ── -->
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Wealth Transfer</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#555568;color:#e2e2e8;">P2</span>
+          </div>
+          <div class="plan-body">
+            $124T transferring from Baby Boomers to Gen X/Millennials/Gen Z over 25 years. Generational crypto ownership: Gen Z 42-52% vs Boomers 8-11%. Unprecedented sell pressure in traditional markets + potential BTC demand ($6-12T estimated inflow). Also: ETF adoption data, institutional validation timeline, IBIT flow tracking.
+          </div>
+        </div>
+
+        <!-- ── DATA SOURCES & TOOLS ── -->
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Data Sources & Tools</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#555568;color:#e2e2e8;">P2</span>
+          </div>
+          <div class="plan-body">
+            <strong>Fed / Macro:</strong> <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">FRED WALCL</a>, <a href="https://fred.stlouisfed.org/series/PCEPILFE" target="_blank">FRED Core PCE</a>, <a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank">FRED RRP</a>, <a href="https://fred.stlouisfed.org/series/SOFR" target="_blank">FRED SOFR</a>, <a href="https://www.cbo.gov" target="_blank">CBO projections</a>, <a href="https://home.treasury.gov" target="_blank">Treasury.gov</a><br/><br/>
+            <strong>On-Chain:</strong> <a href="https://glassnode.com" target="_blank">Glassnode</a>, <a href="https://cryptoquant.com" target="_blank">CryptoQuant</a>, <a href="https://coinglass.com" target="_blank">Coinglass</a>, <a href="https://debank.com" target="_blank">DeBank</a>, <a href="https://etherscan.io" target="_blank">Etherscan</a>, <a href="https://dune.com" target="_blank">Dune Analytics</a>, <a href="https://defillama.com" target="_blank">DeFiLlama</a><br/><br/>
+            <strong>Charts & Analysis:</strong> <a href="https://tradingview.com" target="_blank">TradingView</a>, <a href="https://www.theblock.co" target="_blank">The Block</a>, <a href="https://messari.io" target="_blank">Messari</a>, <a href="https://www.realvision.com" target="_blank">Real Vision</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="../assets/nav.js" data-root="../"></script>
+</body>
+</html>

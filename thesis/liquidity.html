@@ -13,18 +13,48 @@
   <nav class="site-nav" id="site-nav"></nav>
   <main class="site-main">
     <div class="page-wrap">
+      <div class="page-eyebrow">Thesis</div>
+      <h1 class="page-title">Liquidity Framework</h1>
+      <p class="page-subtitle">RRP drain mechanics, SOFR trigger system, M2 correlation, BTC:Debt regression, and the 90-day lag model.</p>
 
-      <header class="page-header">
-        <div class="page-eyebrow">LIQUIDITY FRAMEWORK</div>
-        <h1 class="page-title">Liquidity Framework</h1>
-        <p class="page-subtitle">RRP drain mechanics, SOFR trigger system, M2 correlation, and the 90-day lag model.</p>
-      </header>
+      <div class="stack" style="margin-top:24px;">
 
-      <div class="stack">
-        <div class="card">
-          <div class="card-eyebrow">TODO</div>
-          <p style="color: var(--text-dim); font-size: 14px;">RRP monitor, Fed balance sheet tracker, M2 overlay. Content to be built from thesis research.</p>
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">Mechanism Chain</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#ef4444;color:#fff;">P0</span>
+          </div>
+          <div class="plan-body">
+            <strong>The trigger sequence:</strong> RRP drainage &rarr; SOFR spike &rarr; Fed injection &rarr; check WALCL 4 Thursdays &rarr; if all rising = sustained QE &rarr; M2 follows in 30-45 days &rarr; BTC follows in 90 days.<br/><br/>
+            <strong>Current status:</strong> RRP at $28B (functionally zero &mdash; precondition met). SOFR spread ~2bp (calm, but no buffer). WALCL ~$6.87T (flat, reinvestment mode). Core PCE ~2.8% (Fed has moderate room).<br/><br/>
+            <strong>Source files:</strong> <em>liquidity_thesis_v01.docx</em>, <em>fed_balance_sheet_tracker.jsx</em>, <em>rrp_monitor.jsx</em>, <em>fed_wave_tracker_v2.jsx</em>
+          </div>
         </div>
+
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">BTC:Debt Correlation</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#f59e0b;color:#000;">P1</span>
+          </div>
+          <div class="plan-body">
+            <strong>The math:</strong> Interactive chart overlay of BTC price vs national debt on log-log scale. Regression equation R&sup2; = 0.913. Fair value band derived from model. Historical deviation analysis &mdash; when BTC was over/undervalued relative to debt-implied price.<br/><br/>
+            <strong>Key insight:</strong> Debt grows at 7.28% CAGR with R&sup2; = 0.996 fit. This is not policy &mdash; it is compound interest on existing debt. The correlation strengthens over time as BTC matures.<br/><br/>
+            <strong>Source files:</strong> <em>bitcoin_debt_analysis.docx</em>, <em>btc-risk-analysis-v2.jsx</em> (chart components)
+          </div>
+        </div>
+
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <div class="plan-label">BTC:M2 Supply</div>
+            <span style="font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;background:#f59e0b;color:#000;">P1</span>
+          </div>
+          <div class="plan-body">
+            <strong>The correlation:</strong> BTC vs global M2 chart with r = 0.94. The 70-107 day lag window (centered at 90 days). When the Fed balance sheet expands sustainably, start the 90-day countdown. M2 component breakdown.<br/><br/>
+            <strong>Alert ladder:</strong> Normal &rarr; mild &rarr; stress &rarr; trigger &rarr; crisis, with specific SOFR spread thresholds at each level.<br/><br/>
+            <strong>Source files:</strong> <em>fed_balance_sheet_tracker.jsx</em>, <em>fed_wave_tracker_v2.jsx</em>, <em>liquidity_thesis_v01.docx</em>
+          </div>
+        </div>
+
       </div>
 
     </div>
