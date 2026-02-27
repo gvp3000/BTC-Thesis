@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro Tracker — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    /* ── JOURNAL ENTRIES ── */
+    .journal-entry {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .journal-entry:hover {
+      border-color: var(--border-hi);
+    }
+
+    .entry-header {
+      padding: 18px 24px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .entry-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+    .entry-source {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(56,189,248,0.08);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .entry-tag {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .entry-tag.bullish  { color: var(--green);  background: rgba(74,222,128,0.08); }
+    .entry-tag.bearish  { color: var(--red);    background: rgba(248,113,113,0.08); }
+    .entry-tag.neutral  { color: var(--yellow); background: rgba(251,191,36,0.08); }
+    .entry-tag.thesis   { color: var(--purple); background: rgba(167,139,250,0.08); }
+
+    .entry-headline {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      letter-spacing: -0.3px;
+    }
+
+    .entry-summary {
+      color: var(--text-mid);
+      font-size: 13px;
+      line-height: 1.7;
+      margin-top: 2px;
+    }
+
+    .entry-expand-hint {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+    .journal-entry:hover .entry-expand-hint {
+      color: var(--text-mid);
+    }
+    .expand-arrow {
+      display: inline-block;
+      transition: transform 0.2s;
+      font-size: 9px;
+    }
+    .journal-entry.open .expand-arrow {
+      transform: rotate(90deg);
+    }
+
+    /* ── EXPANDED DETAIL ── */
+    .entry-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .journal-entry.open .entry-detail {
+      max-height: 3000px;
+    }
+
+    .detail-inner {
+      padding: 0 24px 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 0;
+      padding-top: 18px;
+    }
+
+    .detail-section {
+      margin-bottom: 18px;
+    }
+    .detail-section:last-child { margin-bottom: 0; }
+
+    .detail-section-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .detail-section p,
+    .detail-section li {
+      color: var(--text-mid);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .detail-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .detail-section ul li {
+      padding-left: 16px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+    .detail-section ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .detail-quote {
+      border-left: 2px solid var(--purple);
+      padding: 8px 14px;
+      margin: 10px 0;
+      background: rgba(167,139,250,0.04);
+      border-radius: 0 6px 6px 0;
+    }
+    .detail-quote p {
+      color: var(--text);
+      font-size: 13px;
+      font-style: italic;
+      line-height: 1.7;
+    }
+    .detail-quote .quote-attr {
+      font-style: normal;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    .thesis-link {
+      background: rgba(167,139,250,0.06);
+      border: 1px solid rgba(167,139,250,0.15);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-top: 10px;
+    }
+    .thesis-link-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--purple);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .thesis-link p {
+      color: var(--text-mid);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .thesis-link strong {
+      color: var(--text);
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover {
+      color: var(--text-mid);
+      border-color: var(--border-hi);
+    }
+    .filter-btn.active {
+      color: var(--blue);
+      border-color: rgba(56,189,248,0.4);
+      background: rgba(56,189,248,0.07);
+    }
+
+    .entry-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <!-- ── PAGE HEADER ── -->
+      <header class="page-header">
+        <div class="page-eyebrow">Trading</div>
+        <h1 class="page-title">Macro Tracker</h1>
+        <p class="page-subtitle">
+          Journal entries from Forward Guidance, macro research, and market observations.
+          Each entry is tagged by thesis relevance and expandable for deep notes.
+        </p>
+      </header>
+
+      <!-- ── FILTER BAR ── -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="podcast">Podcast</button>
+        <button class="filter-btn" data-filter="fed">Fed</button>
+        <button class="filter-btn" data-filter="data">Data</button>
+        <button class="filter-btn" data-filter="observation">Observation</button>
+        <span class="entry-count" id="entry-count"></span>
+      </div>
+
+      <!-- ── JOURNAL ENTRIES ── -->
+      <div class="stack" id="journal-entries">
+
+        <!-- ═══════════════════════════════════════════════
+             ENTRY — Raoul Pal x Alex Gurevich — Jan 29
+             ═══════════════════════════════════════════════ -->
+        <article class="journal-entry" data-type="podcast" id="entry-2026-01-29">
+          <div class="entry-header" onclick="toggleEntry(this)">
+            <div class="entry-meta">
+              <span class="entry-date">29 Jan 2026</span>
+              <span class="entry-source">Raoul Pal — The Journeyman</span>
+              <span class="entry-tag bullish">Bullish</span>
+              <span class="entry-tag thesis">Thesis-Aligned</span>
+            </div>
+            <div class="entry-headline">
+              Why Market Crashes Create the Best Opportunities — Raoul Pal &amp; Alex Gurevich
+            </div>
+            <div class="entry-summary">
+              Raoul Pal interviews Alex Gurevich (CIO, HonTe Investments) about his updated book
+              "The Next Perfect Trade." Deep discussion of crisis management discipline, the
+              "concurrent necessity" framework for constructing trades that can't lose both sides,
+              and why AI-driven deflation makes UBI and massive fiscal expansion politically inevitable.
+              Gurevich argues the Fed can always print faster than AI deflates — meaning your
+              debasement thesis isn't invalidated by deflation, it's <em>accelerated</em> by it.
+            </div>
+            <div class="entry-expand-hint">
+              <span class="expand-arrow">&#9654;</span> Click to expand full notes
+            </div>
+          </div>
+
+          <div class="entry-detail">
+            <div class="detail-inner">
+
+              <!-- KEY POINTS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Key Points</div>
+                <ul>
+                  <li>
+                    <strong>"Concurrent necessity" — the Perfect Trade framework.</strong>
+                    Gurevich's core concept: construct two paired trades where if one fails, the
+                    other <em>must</em> succeed. This evolved from classic risk parity into something
+                    more powerful — not just uncorrelated positions, but positions linked by causal
+                    necessity. His 2002 example: long equities + long treasuries. If the economy
+                    recovered, stocks win. If it didn't, rates go to zero and bonds win. His 2014
+                    trade: long USD + long treasuries — if the Fed tightened, dollar wins; if they
+                    didn't, bonds win at zero rates. The key insight is finding the macro fork where
+                    both paths lead to profit on at least one leg.
+                  </li>
+                  <li>
+                    <strong>Crisis management: get psychologically neutral first.</strong>
+                    Both Raoul and Gurevich stress that the first move in a crisis is clearing your
+                    mind, not your book. Raoul would close every position (winners and losers) and
+                    go walk in Hyde Park. Gurevich's approach: get to "psychological neutrality" —
+                    ask yourself "if this morning was the first morning of my career and I was just
+                    given cash, how would I deploy it today?" The point isn't necessarily getting
+                    flat; it's breaking your attachment to existing positions so you can see the new
+                    opportunity the crisis has created.
+                  </li>
+                  <li>
+                    <strong>Soros principle: government intervention changes the fundamentals.</strong>
+                    Gurevich invokes the Soros framework — when governments intervene in markets
+                    (QE, stimulus, bailouts), they don't just affect prices, they change the underlying
+                    fundamentals of the economy. This is why "the crisis creates the opportunity" —
+                    the policy response to a crash often creates a bigger and more predictable trade
+                    than the crash itself. The 2020 COVID response is the clearest example: the crash
+                    was chaotic, but the $5T fiscal + monetary response was a one-way bet.
+                  </li>
+                  <li>
+                    <strong>Post-2020 and post-2022 were "easiest money ever made."</strong>
+                    Gurevich describes the post-COVID period as having produced extraordinary trading
+                    opportunities precisely because the government response was so massive and
+                    predictable. Similarly, the 2022 crypto crash created obvious deployment zones
+                    for anyone willing to buy when the crowd was panicking. The pattern: maximum fear
+                    + guaranteed government response = maximum opportunity.
+                  </li>
+                  <li>
+                    <strong>AI deflation makes UBI and fiscal expansion politically inevitable.</strong>
+                    Core thesis-alignment moment: Gurevich argues that if AI displaces labor at scale
+                    (which the exponential charts suggest is happening by 2026-2030), 70% of the
+                    population won't have marketable skills. In a democracy, that's politically
+                    unsustainable — the result is some form of universal basic income or fiscal
+                    transfer. "We already know the playbook — it was COVID. It's going to happen
+                    again." This isn't a prediction; it's a political inevitability in a democracy
+                    where the majority loses economic agency.
+                  </li>
+                  <li>
+                    <strong>"No matter how fast AI drops costs, the Fed can print faster."</strong>
+                    Gurevich's critical insight: AI deflation in goods and services doesn't kill the
+                    debasement thesis. The Fed's ability to expand the money supply is unlimited and
+                    faster than any deflationary technology. The distinction is between CPI deflation
+                    (goods get cheaper) and asset inflation (money printing inflates financial assets).
+                    Both can happen simultaneously — and in that world, BTC benefits from the asset
+                    inflation side while the real economy experiences deflation.
+                  </li>
+                  <li>
+                    <strong>CapEx boom as the macro bridge.</strong>
+                    Raoul notes Taiwan semiconductor exports to the US are 5 standard deviations above
+                    normal — a lead indicator of the massive AI CapEx cycle still coming. This CapEx
+                    spending is the "final demand" holding the economy together as AI starts displacing
+                    labor. Data centers create construction jobs, energy demand, and infrastructure
+                    spend that temporarily mask the displacement effect. But once the build-out is
+                    done, the displacement accelerates.
+                  </li>
+                  <li>
+                    <strong>Energy paradox: oil declining despite surging AI demand.</strong>
+                    Gurevich flags the puzzle: data center energy demand is spiking but oil prices are
+                    falling. His explanation involves OPEC dynamics and the expectation that nuclear
+                    and alternative energy will capture AI's incremental demand. This creates a
+                    divergence trade — long nuclear/energy infrastructure, potentially short
+                    traditional oil if AI demand routes through new energy sources.
+                  </li>
+                  <li>
+                    <strong>Exponential forecasting failure is permanent.</strong>
+                    Both agree that humans are constitutionally incapable of forecasting exponential
+                    growth. Even people who intellectually accept the AI trajectory "don't really in
+                    their bones accept where the charts lead." Gurevich: "No human being alive is
+                    capable of fully accepting where these charts lead. We all say we do, but we
+                    don't." This means markets will chronically underprice AI disruption — creating
+                    persistent mispricing for those who can hold the position.
+                  </li>
+                </ul>
+              </div>
+
+              <!-- NOTABLE QUOTES -->
+              <div class="detail-section">
+                <div class="detail-section-label">Notable Quotes &amp; Framing</div>
+
+                <div class="detail-quote">
+                  <p>
+                    "No matter how fast AI grows dropping the cost, the Fed can print the money faster."
+                  </p>
+                  <div class="quote-attr">— Gurevich, on why AI deflation doesn't kill the debasement thesis</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "If 70% of the population do not have marketable skills or assets to trade
+                    their labor for a life considered respectable by society — it's not a socially
+                    stable situation, not in a democracy."
+                  </p>
+                  <div class="quote-attr">— Gurevich, on the political inevitability of UBI</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "Good, bad, or ugly — this trade is in the money, this trade is out of the
+                    money. Forget how I got here. If today is my first day and I have this cash,
+                    how do I deploy it?"
+                  </p>
+                  <div class="quote-attr">— Gurevich, on psychological neutrality during crises</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "No human being alive is capable of really fully accepting where these charts
+                    lead. We all can say we accept it. But we don't really, in our bones."
+                  </p>
+                  <div class="quote-attr">— Gurevich, on why markets chronically underprice exponential change</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "We already know the playbook — it was COVID. It's going to happen again.
+                    It's going to happen much bigger."
+                  </p>
+                  <div class="quote-attr">— Gurevich, on fiscal response to AI-driven job displacement</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "When things were going wrong and none of my views were working, I would
+                    purposely close every position — winners and losers — and go for a long walk
+                    in Hyde Park."
+                  </p>
+                  <div class="quote-attr">— Raoul Pal, on clearing biases during drawdowns</div>
+                </div>
+              </div>
+
+              <!-- MARKET OPINIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Market Opinions &amp; Positioning</div>
+                <ul>
+                  <li>
+                    <strong>Gurevich on the "perfect trade" setup now:</strong> The current macro
+                    environment — AI disruption accelerating, government debt expanding, rate
+                    uncertainty — creates multiple "concurrent necessity" setups. If AI succeeds
+                    in displacing labor, governments must respond with fiscal expansion (bullish
+                    for hard assets). If AI disappoints, the economy weakens and rates fall
+                    (bullish for duration assets). Both paths require some form of monetary response.
+                  </li>
+                  <li>
+                    <strong>Raoul on CapEx as lead indicator:</strong> Taiwan semi exports as a 5σ
+                    event signal the CapEx boom is still in its early innings. This spending
+                    sustains economic activity in the near term but builds the infrastructure
+                    that enables displacement in the medium term. The macro bridge buys time
+                    — but the destination is the same.
+                  </li>
+                  <li>
+                    <strong>Both on the post-crisis playbook:</strong> Every major crisis since 2008
+                    has followed the same pattern — crash → government response → massive opportunity
+                    for those who deployed during maximum fear. Gurevich frames the 2022 crypto crash
+                    as another iteration: the crowd panicked, the opportunity was obvious in hindsight.
+                    The discipline is deploying capital when it feels worst.
+                  </li>
+                  <li>
+                    <strong>Gurevich on energy:</strong> Oil prices declining despite surging AI energy
+                    demand is a puzzle with implications for the nuclear thesis. If AI routes its
+                    incremental energy demand through nuclear rather than fossil fuels, the energy
+                    rotation thesis (your URA/CCJ/SMR/OKLO positions) gets a structural tailwind
+                    independent of policy.
+                  </li>
+                  <li>
+                    <strong>Winner-takes-all AI dynamics:</strong> Discussion of whether 2-3 AI
+                    companies capture most of the value or whether it distributes. Gurevich leans
+                    toward concentration — the data center infrastructure creates natural monopolies.
+                    Implications for the MAG7 CapEx thesis and whether the beneficiaries narrow
+                    over time.
+                  </li>
+                </ul>
+              </div>
+
+              <!-- THESIS CONNECTIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Connections to Your Thesis</div>
+
+                <div class="thesis-link">
+                  <div class="thesis-link-label">Core Thesis — Debasement Survives Deflation</div>
+                  <p>
+                    <strong>Gurevich just gave you the strongest theoretical backing for why AI
+                    doesn't invalidate the debt/BTC thesis.</strong> Your model shows BTC correlates
+                    with debt growth (R² = 0.913). The bear case has always been "AI deflation will
+                    reduce the need for stimulus." Gurevich's counter: the Fed can always print faster
+                    than AI deflates. And the political mechanism is clear — AI displacement creates
+                    the democratic pressure that <em>forces</em> the printing. This isn't a hope; it's
+                    a structural inevitability in a system where displaced voters demand relief.
+                    The K-shaped economy pressure you've identified is the <em>same mechanism</em>
+                    Gurevich is describing, just at an earlier stage.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Crisis Deployment — Your Barbell Instinct Is Right</div>
+                  <p>
+                    <strong>"Crashes create the best opportunities" is exactly your
+                    deploy-now-plus-crash-reserve framework.</strong> Gurevich's career was built on
+                    deploying capital during maximum fear — 2002, 2008, 2020, 2022. His "concurrent
+                    necessity" framework maps to your barbell: base position now (because the thesis
+                    is already in motion) + reserved capital for the vol spike (because the crisis
+                    creates even better entry points). The discipline is having the plan written down
+                    <em>before</em> the crisis hits, because during the crash you won't be thinking
+                    clearly. Your SOFR deployment ladder is this plan.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Psychological Neutrality — Apply to CRV Position</div>
+                  <p>
+                    <strong>Gurevich's "first morning" test is directly applicable to your
+                    leveraged CRV/CVX position.</strong> Ask yourself: "If today was the first day
+                    and someone handed me my current capital, would I choose to be leveraged long
+                    CRV at 1.34 health ratio in a vol-suppressed environment where Quinn says
+                    everyone is levered to the gills?" If the answer is no, the position needs
+                    restructuring regardless of where you entered. The psychological neutrality
+                    framework strips away sunk cost bias and lets you evaluate the position on its
+                    current merits — not on the hope of recovery.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">2026 Catalyst Stack — AI Displacement as Political Trigger</div>
+                  <p>
+                    <strong>Gurevich provides the missing link between AI CapEx and your midterm
+                    pressure thesis.</strong> Your catalyst stack assumes political pressure forces
+                    monetary expansion before the 2026 midterms. Gurevich extends this: if AI
+                    displacement accelerates (and the exponential charts say it will), the political
+                    pressure becomes even more acute. Displaced workers vote. The "COVID playbook"
+                    — direct fiscal transfers — becomes the template again. This means your catalyst
+                    isn't a one-time event; it's the beginning of a recurring cycle of displacement
+                    → fiscal response → debasement that extends through your entire Phase B timeline
+                    to 2030+.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Watch — "Concurrent Necessity" for Your Portfolio</div>
+                  <p>
+                    <strong>Apply Gurevich's framework to stress-test your positioning.</strong>
+                    What's the paired trade? If the Fed pivots (your primary catalyst), BTC and
+                    risk assets rally — that's the long side. But what if the Fed <em>doesn't</em>
+                    pivot? What makes money in that scenario? Currently your portfolio has no
+                    hedge for the "catalyst doesn't fire" outcome. Consider whether a duration
+                    position (long bonds), cash reserve, or explicit put protection creates the
+                    concurrent necessity where you profit on at least one leg regardless of which
+                    path materializes.
+                  </p>
+                </div>
+              </div>
+
+              <!-- TIMESTAMPS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Episode Timestamps</div>
+                <ul style="font-family: var(--mono); font-size: 11px; line-height: 2;">
+                  <li>00:00 — Subscribe &amp; Show Introduction</li>
+                  <li>00:52 — Introducing Alex Gurevich (HonTe Investments)</li>
+                  <li>03:22 — Books Overview ("The Next Perfect Trade" 2nd edition)</li>
+                  <li>04:53 — 2014 Opportunity &amp; 2002 Trade Setup</li>
+                  <li>05:57 — Risk Parity Explained → "Concurrent Necessity"</li>
+                  <li>08:15 — Macro Conditions &amp; Perfect Trades</li>
+                  <li>10:41 — 2014 Dollar &amp; Treasury Trade</li>
+                  <li>12:20 — Trade Management &amp; Discipline</li>
+                  <li>14:21 — Silver Trade Lessons &amp; Book Updates</li>
+                  <li>16:02 — Learning from Mistakes</li>
+                  <li>16:42 — Soros, Macro Insight &amp; Crisis Cycles</li>
+                  <li>18:12 — Crisis Management &amp; Portfolio Strategy</li>
+                  <li>21:13 — Opportunity in Market Chaos</li>
+                  <li>21:54 — First Rule in Crisis (Psychological Neutrality)</li>
+                  <li>23:04 — Portfolio Adjustments &amp; Bias Clearing</li>
+                  <li>24:49 — Post-2020 Market Changes</li>
+                  <li>25:13 — Post-2022 Opportunities</li>
+                  <li>26:21 — Liquidity, Stimulus &amp; Tail Risks</li>
+                  <li>27:29 — Rethinking Treasuries &amp; Inflation</li>
+                  <li>28:54 — AI &amp; Economic Impacts</li>
+                  <li>32:10 — Deflation &amp; AI Transition (UBI inevitability)</li>
+                  <li>34:21 — AI, GDP &amp; Productivity</li>
+                  <li>37:12 — Productivity vs Economic Output</li>
+                  <li>39:45 — CapEx &amp; AI Infrastructure (Taiwan semi 5σ)</li>
+                  <li>40:50 — Energy Constraints &amp; Oil Policy</li>
+                  <li>43:05 — Data Center Risks &amp; Tech Obsolescence</li>
+                  <li>44:08 — AI Competition &amp; Winner-Takes-All</li>
+                  <li>46:04 — Government &amp; AI Control</li>
+                  <li>47:08 — Exponentials &amp; Singularity</li>
+                  <li>49:11 — AGI &amp; Technology Breakthroughs</li>
+                  <li>51:23 — Robotics &amp; Society Preparedness</li>
+                  <li>52:00 — Current Macro Trade Opportunities</li>
+                  <li>53:13 — Currency &amp; Equity Positioning</li>
+                  <li>54:29 — Book Release Announcement</li>
+                  <li>56:00 — Closing Thoughts</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══════════════════════════════════════════════
+             ENTRY — Forward Guidance Weekly Roundup Feb 26
+             ═══════════════════════════════════════════════ -->
+        <article class="journal-entry" data-type="podcast" id="entry-2026-02-26">
+          <div class="entry-header" onclick="toggleEntry(this)">
+            <div class="entry-meta">
+              <span class="entry-date">26 Feb 2026</span>
+              <span class="entry-source">Forward Guidance</span>
+              <span class="entry-tag bullish">Bullish</span>
+              <span class="entry-tag thesis">Thesis-Aligned</span>
+            </div>
+            <div class="entry-headline">
+              AI Reratings &amp; Growth Reacceleration Add Fuel to the Real Asset Rotation
+            </div>
+            <div class="entry-summary">
+              Tyler, Quinn, and Felix dissect how AI CapEx is permanently rerating software multiples
+              downward while funneling capital into semis, energy, and real assets. Manufacturing PMIs
+              break above 50 for the first time in years. Bessant engineers USD/JPY weakness. NVIDIA
+              earnings strong but the "Dutch disease" of AI crowding out other sectors is the real story.
+              The rotation from software to real assets accelerates — and currency debasement is already
+              visible when you price MAG7 in foreign currencies.
+            </div>
+            <div class="entry-expand-hint">
+              <span class="expand-arrow">&#9654;</span> Click to expand full notes
+            </div>
+          </div>
+
+          <div class="entry-detail">
+            <div class="detail-inner">
+
+              <!-- KEY POINTS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Key Points</div>
+                <ul>
+                  <li>
+                    <strong>AI CapEx is replacing buybacks as the dominant Mag7 capital allocation.</strong>
+                    The old playbook — generate free cash flow, buy back shares, boost EPS — is dead for mega-cap
+                    tech. They're now pouring hundreds of billions into AI infrastructure. This fundamentally
+                    changes how these companies return value to shareholders and where the capital flows in the
+                    broader economy. Quinn notes the narrative flipped in weeks from "run it hot, print into
+                    oblivion" to concerns about growth cracks from AI disruption.
+                  </li>
+                  <li>
+                    <strong>NVIDIA earnings strong, but "Dutch disease" is the real takeaway.</strong>
+                    NVDA beat expectations, but the hosts focus on the second-order effect: when one sector
+                    (AI/semis) booms so aggressively it draws all capital and talent, other sectors starve.
+                    Software companies are getting crushed not because their businesses are failing today, but
+                    because the market is repricing what their business models are worth in a world where
+                    Claude Code and similar tools can replicate what a 30x P/E software company does.
+                  </li>
+                  <li>
+                    <strong>"IGV is the new TLT" — software multiples permanently rerated.</strong>
+                    Quinn's key call: the iShares Software ETF (IGV) is going to behave like TLT did after
+                    2021 — retail keeps buying the dip while it just bleeds. Goldman's prime book shows hedge
+                    fund software exposure collapsed from 16% to under 3% of net exposure, while semis sprinted
+                    higher. Semis have outperformed IGV by ~150%. The multiple compression is structural, not
+                    cyclical — AI disruption threatens the software moat itself.
+                  </li>
+                  <li>
+                    <strong>Manufacturing reacceleration is confirmed across multiple indicators.</strong>
+                    Chicago Fed National Activity Index turning positive. PMIs broke above 50 for the first
+                    time in years. ISM new orders rising. Atlanta Fed GDPNow revised upward. Auger Infinity's
+                    US Timely Growth Index breaking to new highs. Tyler notes this same setup emerged last
+                    year ("Golden Age of America" narrative) but Liberation Day tariffs destroyed it — now
+                    it's finally returning.
+                  </li>
+                  <li>
+                    <strong>Currency debasement is already visible in cross-currency returns.</strong>
+                    When you plot NASDAQ/MAG7 in foreign currencies, a significant amount of their "performance"
+                    is dollar debasement. Bessant engineered a sharp drop in USD/JPY in the last two weeks — a
+                    deliberate weakening of the dollar that barely made headlines. Capital is rotating globally
+                    out of US tech into Latin America, emerging Asia, metals, and real assets. The hosts
+                    emphasize that stripping out currency effects reveals the real rotation already underway.
+                  </li>
+                  <li>
+                    <strong>Volatility regime is suppressed by design.</strong>
+                    Discussion of vol control — the current regime is keeping realized volatility artificially
+                    low, which encourages risk-taking and masks underlying stress. Quinn notes everyone is
+                    "levered to the gills, no one owns cash." But unlike prior cycles, instead of correcting
+                    with monetary restrictiveness, policy is enabling it.
+                  </li>
+                  <li>
+                    <strong>Housing starts and homebuilders showing life.</strong>
+                    Construction activity picking up. Homebuilder stocks outperforming. Housing starts data
+                    suggesting the real economy is reaccelerating at the same time financial assets are
+                    repricing around AI disruption — a divergence worth monitoring.
+                  </li>
+                </ul>
+              </div>
+
+              <!-- NOTABLE QUOTES -->
+              <div class="detail-section">
+                <div class="detail-section-label">Notable Quotes &amp; Framing</div>
+
+                <div class="detail-quote">
+                  <p>
+                    "There is a lot of people out there whose last experience with AI was using ChatGPT in 2023
+                    and it hallucinated everything and they thought it was a waste of time. Now everybody's like,
+                    oh my god, what the hell — is this CO 2.0 in terms of how it changes the world?"
+                  </p>
+                  <div class="quote-attr">— Quinn, on the Citrini piece breaking the AI skepticism narrative</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "You don't really know how these software companies are going to get disrupted over the next
+                    couple years by Claude or Claude Code or what have you. But I think we've just seen a
+                    fundamental rerating of the multiple."
+                  </p>
+                  <div class="quote-attr">— Quinn, on permanent software compression</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "IGV is the new TLT — retail keeps buying the dip while it just underperforms. I don't know
+                    if we're going much lower, but I think we've seen a fundamental rerating and I don't know
+                    if we'll go back."
+                  </p>
+                  <div class="quote-attr">— Quinn, comparing software ETF to post-2021 bonds</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "Are we the horses? Are humans the horses?"
+                  </p>
+                  <div class="quote-attr">— Show discussion, referencing the industrial revolution analogy for AI displacement</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "Three months ago all you could hear was people saying 'run it hot, they're going to print
+                    into oblivion even when the economy is booming' — and that's true, but the narratives are
+                    flipping so fast."
+                  </p>
+                  <div class="quote-attr">— Quinn, on the rapid narrative rotation from fiscal dominance to AI disruption fear</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "Everybody's levered to the gills. No one owns cash. But instead of actually correcting
+                    anything with monetary restrictiveness — they're sort of just enabling it."
+                  </p>
+                  <div class="quote-attr">— Quinn, on the vol suppression regime</div>
+                </div>
+
+                <div class="detail-quote">
+                  <p>
+                    "If you plot NASDAQ and MAG7 in other foreign currencies, there's a ton of debasement
+                    in their performance."
+                  </p>
+                  <div class="quote-attr">— Show discussion, on real vs nominal tech returns</div>
+                </div>
+              </div>
+
+              <!-- MARKET OPINIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Market Opinions &amp; Positioning</div>
+                <ul>
+                  <li>
+                    <strong>Quinn on capital rotation:</strong> The real trade is long real assets (energy,
+                    metals, commodities) vs short software. Goldman's prime data confirms the institutional
+                    move is already happening. Software has been cut from 16% to &lt;3% of hedge fund net
+                    exposure while semis sprint higher. He thinks walking away from this trade for 6 months
+                    would be profitable but "stressful as hell."
+                  </li>
+                  <li>
+                    <strong>Tyler on manufacturing reacceleration:</strong> Multiple soft data indicators
+                    converging — PMIs above 50, Chicago Fed NACI turning positive, Atlanta GDPNow up. This
+                    is the "Golden Age" narrative from early 2025 revived after Liberation Day derailed it.
+                    Real economy strengthening even as financial markets reprice AI disruption risk.
+                  </li>
+                  <li>
+                    <strong>Felix on currency manipulation:</strong> Bessant engineering USD/JPY weakness
+                    barely made headlines but is a major signal. Government-level currency games are
+                    distorting asset returns. When you remove currency impacts, the US exceptionalism
+                    narrative looks far weaker.
+                  </li>
+                  <li>
+                    <strong>Quinn on passive indexing risk:</strong> Raises the question of whether software's
+                    huge weighting in passive indexes creates a forced-buying dynamic that disguises how bad
+                    the active rotation really is. If passive rebalancing is buying what active managers are
+                    dumping, the day that dynamic breaks could be violent.
+                  </li>
+                  <li>
+                    <strong>Inflation backdrop:</strong> Quinn believes inflation is "kind of done going down"
+                    — doesn't know when it comes back but thinks the disinflationary trend has stalled. This
+                    sits in the background of all the reacceleration data.
+                  </li>
+                </ul>
+              </div>
+
+              <!-- THESIS CONNECTIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Connections to Your Thesis</div>
+
+                <div class="thesis-link">
+                  <div class="thesis-link-label">AI CapEx Catalyst — $750B Spending Wave</div>
+                  <p>
+                    <strong>This episode confirms your AI CapEx catalyst is firing.</strong>
+                    Your thesis identifies ~$750B in AI CapEx as a major macro stimulus driver for 2026.
+                    The FG hosts are describing exactly this: Mag7 replacing buybacks with infrastructure
+                    spending, creating a "Dutch disease" effect that benefits semis, energy, and real assets
+                    while crushing software valuations. The capital is flowing — now track where it lands
+                    in the real economy (construction, power grid, data centers) and whether it shows up
+                    in your WALCL/M2 indicators.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Dollar Debasement — Already in Motion</div>
+                  <p>
+                    <strong>Currency debasement is visible before the Fed even pivots.</strong>
+                    Your core thesis centers on BTC as a dollar debasement hedge, with the Fed pivot as
+                    the primary catalyst. But this episode reveals debasement is already happening through
+                    the currency channel — Bessant engineering USD/JPY weakness, MAG7 returns inflated by
+                    dollar depreciation, capital fleeing US assets for real assets globally. If debasement
+                    is proceeding through fiscal/currency policy before the Fed even acts, your thesis
+                    timeline may have an earlier ignition point than the FOMC pivot.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Economic Reacceleration — Double-Edged Sword</div>
+                  <p>
+                    <strong>Manufacturing reacceleration complicates the Fed easing timeline.</strong>
+                    PMIs above 50, Chicago Fed NACI positive, Atlanta GDPNow rising — the real economy is
+                    strengthening. This is good for your K-shaped economy thesis (the bottom half may
+                    finally get stimulus) but potentially delays Fed rate cuts or QE restart. If the economy
+                    reaccelerates AND inflation stalls (Quinn says disinflation is "done going down"),
+                    the Fed has less cover to ease. Monitor whether this pushes your catalyst stack timing
+                    from H1 to H2 2026. Your 3.5% Core PCE kill switch remains the key boundary.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Vol Suppression — Leverage Tail Risk</div>
+                  <p>
+                    <strong>"Levered to the gills, no one owns cash" — sound familiar?</strong>
+                    Quinn's description of the current regime — everyone leveraged, no cash, vol artificially
+                    suppressed, policy enabling rather than correcting — maps directly to the conditions that
+                    precede the kind of deleveraging events described in the Feb 5-6 crypto crash analysis.
+                    Your CRV health ratio at 1.34 sits inside this exact environment. When vol suppression
+                    breaks, it breaks fast. This reinforces your Tier 0 loan repayment priority.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Watch — Narrative Rotation Speed</div>
+                  <p>
+                    <strong>Narrative cycles are compressing — stay systematic.</strong>
+                    Quinn flags that the dominant narrative flipped from "run it hot, print forever" to
+                    "AI disruption growth scare" in just 3 months. This is why your weekly workflow and
+                    systematic frameworks matter more than conviction. The thesis hasn't changed — the noise
+                    around it rotates faster than ever. Stay anchored to the mechanism chain (WALCL → M2
+                    → BTC with 56-day lag), not the narrative du jour.
+                  </p>
+                </div>
+              </div>
+
+              <!-- TIMESTAMPS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Episode Timestamps</div>
+                <ul style="font-family: var(--mono); font-size: 11px; line-height: 2;">
+                  <li>00:00 — Intro</li>
+                  <li>03:29 — AI Boom or Apocalypse (Citrini piece, Claude Code disruption)</li>
+                  <li>11:10 — NVDA Earnings &amp; Dutch Disease</li>
+                  <li>15:30 — Software Rerating &amp; CapEx Winners/Losers (IGV = new TLT)</li>
+                  <li>26:06 — Are We the Horses?</li>
+                  <li>29:44 — Ads (Coinbase, Arkham)</li>
+                  <li>31:25 — Signs of Economic Reacceleration (PMIs, Chicago Fed, GDPNow)</li>
+                  <li>40:36 — Currencies &amp; Vol Control (Bessant/USD/JPY, debasement in FX)</li>
+                  <li>45:12 — Gold, AI, Space, Hockey</li>
+                  <li>48:33 — Housing Market &amp; Homebuilders</li>
+                  <li>52:49 — Boomer Roasting</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+        <!-- ═══════════════════════════════════════════════
+             ENTRY — Forward Guidance DAS Panel
+             ═══════════════════════════════════════════════ -->
+        <article class="journal-entry" data-type="podcast" id="entry-2026-03-26">
+          <div class="entry-header" onclick="toggleEntry(this)">
+            <div class="entry-meta">
+              <span class="entry-date">26 Mar 2026</span>
+              <span class="entry-source">Forward Guidance</span>
+              <span class="entry-tag bullish">Bullish</span>
+              <span class="entry-tag thesis">Thesis-Aligned</span>
+            </div>
+            <div class="entry-headline">
+              ETF-Palooza Meets Tokenization: Seyffart &amp; Park at DAS on the Institutional Wave
+            </div>
+            <div class="entry-summary">
+              Bloomberg's James Seyffart and Bitwise's Jeff Park joined a DAS panel on the convergence of
+              ETFs, tokenization, and institutional adoption. Seyffart sees 100+ crypto ETP launches in 2026
+              but warns of inevitable liquidations. Park frames BTC as the institutional lead asset.
+              Tokenized RWAs positioned as a structural growth vector alongside the ETF absorption thesis.
+            </div>
+            <div class="entry-expand-hint">
+              <span class="expand-arrow">&#9654;</span> Click to expand full notes
+            </div>
+          </div>
+
+          <div class="entry-detail">
+            <div class="detail-inner">
+
+              <!-- KEY POINTS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Key Points</div>
+                <ul>
+                  <li>
+                    <strong>ETF saturation is real but bullish for BTC.</strong>
+                    Seyffart confirmed 126+ crypto ETP filings pending with the SEC. The generic listing standards
+                    from October 2025 eliminated the 19(b) process, compressing approval timelines from 240 days
+                    to weeks. Over 100 products expected to launch in 2026 across spot, index, smart beta, and
+                    equity-linked strategies. But Seyffart warns many weaker products will liquidate by end of 2027
+                    — issuers are throwing product at the wall.
+                  </li>
+                  <li>
+                    <strong>ETF demand is structural, not speculative.</strong>
+                    Bitcoin ETFs have absorbed more than 100% of new BTC issuance since launching in 2024. IBIT alone
+                    attracted ~$25B in net inflows. As supply moves into ETFs, corporate treasuries, and family offices,
+                    BTC's volatility profile changes — these holders don't trade on momentum. The supply that enters
+                    ETFs largely stops moving.
+                  </li>
+                  <li>
+                    <strong>Tokenization as the next institutional on-ramp.</strong>
+                    Panel discussed how tokenized RWAs bring liquidity to previously illiquid assets — similar to what
+                    ETFs did for equities. Private credit, treasuries, and data are early frontrunners. Tokenized assets
+                    grew to ~$36B in 2025 but represent only 0.01% of global equity and bond market cap. Grayscale
+                    projects 1,000x growth potential by 2030.
+                  </li>
+                  <li>
+                    <strong>Leshner on institutional timeline.</strong>
+                    Robert Leshner noted $500T+ in global assets will eventually migrate from legacy ledgers to
+                    on-chain infrastructure. Current stage described as the earliest innings of a multi-decade
+                    transition. Compound and other DeFi protocols positioning as institutional-grade infrastructure.
+                  </li>
+                  <li>
+                    <strong>Stablecoin legislation accelerates everything.</strong>
+                    GENIUS Act (passed July 2025) creates the first U.S. regulatory framework for payment stablecoins.
+                    Final implementing regulations expected by July 2026. Stablecoin supply projected to exceed $1T by
+                    2026, tripling from current levels. Banks including JPMorgan, Visa, and Mastercard already engaging.
+                  </li>
+                  <li>
+                    <strong>Bitwise filing prediction market ETFs.</strong>
+                    Seyffart disclosed Bitwise's Feb 17 filing for "PredictionShares" — ETFs tracking 2026 midterm
+                    outcomes and 2028 presidential election results. Signals growing institutional appetite for
+                    crypto-adjacent products and political risk markets.
+                  </li>
+                </ul>
+              </div>
+
+              <!-- MARKET OPINIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Market Opinions &amp; Positioning</div>
+                <ul>
+                  <li>
+                    <strong>Seyffart on ETF consolidation:</strong> Expects the shakeout to hit hardest among
+                    altcoin ETFs with limited AUM. BTC and ETH products have durable institutional demand;
+                    meme coin ETFs (BONK, TRUMP, MELANIA filings) will likely be among the first casualties.
+                  </li>
+                  <li>
+                    <strong>Park on BTC front-running alts:</strong> Jeff Park has consistently argued that BTC
+                    is the institutional lead asset this cycle. The ETF wrapper makes BTC the default
+                    institutional allocation before any alt rotation. He's framed the post-2025 narrative as
+                    a "purification trade" rather than a debasement trade — capital seeking assets that
+                    benefit from fiscal and monetary policy distortion.
+                  </li>
+                  <li>
+                    <strong>Consensus on regulatory tailwinds:</strong> Panel unanimous that the CLARITY Act
+                    (expected Senate vote early 2026), GENIUS Act implementation, and SEC generic listing
+                    standards together create the most favorable regulatory environment crypto has ever had.
+                  </li>
+                </ul>
+
+                <div class="detail-quote">
+                  <p>
+                    "The bigger story in 2026 isn't where Bitcoin trades; it's that a growing share of the
+                    supply simply stops moving, and the market is still adjusting to what that means."
+                  </p>
+                  <div class="quote-attr">— Cory Klippsten, CEO Swan.com (related DAS commentary)</div>
+                </div>
+              </div>
+
+              <!-- THESIS CONNECTIONS -->
+              <div class="detail-section">
+                <div class="detail-section-label">Connections to Your Thesis</div>
+
+                <div class="thesis-link">
+                  <div class="thesis-link-label">Wealth Transfer / Institutional Adoption</div>
+                  <p>
+                    <strong>ETFs as the institutional bridge confirms your wealth transfer thesis.</strong>
+                    Your research shows 42-52% of younger generations own crypto vs 8-11% of Boomers.
+                    ETFs are the mechanism that lets institutional capital (managed by Boomers) flow into
+                    BTC without those managers needing to hold crypto directly. IBIT's $25B in flows is
+                    the first wave. This DAS panel suggests the second wave — tokenized assets and expanded
+                    ETF products — will compound this effect through 2026-2027.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">2026 Catalyst Stack — Regulatory Clarity</div>
+                  <p>
+                    <strong>Regulatory catalysts are firing faster than expected.</strong>
+                    CLARITY Act, GENIUS Act, SEC generic listings — all three landed within your 2026
+                    window. This removes the "regulatory uncertainty" headwind that historically capped
+                    institutional allocation. Combined with your Fed pivot catalyst and midterm pressure
+                    thesis, the setup is increasingly favorable for sustained inflows through H2 2026.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Mechanism Chain — Supply Absorption</div>
+                  <p>
+                    <strong>ETF supply absorption accelerates your WALCL → M2 → BTC lag.</strong>
+                    If ETFs absorb 100%+ of new BTC issuance while the Fed pivots to expansion (your
+                    primary catalyst), the supply/demand imbalance intensifies. The mechanism chain doesn't
+                    just need liquidity to flow into BTC — it needs available supply. ETF lockup of supply
+                    means less available BTC when the liquidity wave arrives.
+                  </p>
+                </div>
+
+                <div class="thesis-link" style="margin-top: 10px;">
+                  <div class="thesis-link-label">Watch — Fidelity Caution</div>
+                  <p>
+                    <strong>Monitor Fidelity's "year off" thesis as potential invalidation signal.</strong>
+                    Fidelity's Global Macro Director has warned BTC may have completed its 4-year halving
+                    cycle, with 2026 potentially being a consolidation year. If the traditional 4-year cycle
+                    thesis holds, it suggests the ETF structural demand story may not be enough to overcome
+                    cyclical exhaustion. Track whether ETF inflows sustain through Q2 2026 as a confirming
+                    or invalidating signal for your timeline.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <!-- ── END ENTRIES ── -->
+
+      <!-- ── EMPTY STATE (shown when filtered to zero) ── -->
+      <div class="placeholder" id="empty-state" style="display:none;">
+        <div class="placeholder-icon">&#128196;</div>
+        <div class="placeholder-title">No entries match this filter</div>
+        <div class="placeholder-desc">Try a different filter or add a new journal entry.</div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/nav.js" data-root="../"></script>
+<script>
+  // ── Toggle expand/collapse ──
+  function toggleEntry(headerEl) {
+    const entry = headerEl.closest('.journal-entry');
+    entry.classList.toggle('open');
+  }
+
+  // ── Filtering ──
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      const entries = document.querySelectorAll('.journal-entry');
+      let visible = 0;
+
+      entries.forEach(entry => {
+        if (filter === 'all' || entry.dataset.type === filter) {
+          entry.style.display = '';
+          visible++;
+        } else {
+          entry.style.display = 'none';
+        }
+      });
+
+      document.getElementById('empty-state').style.display = visible === 0 ? '' : 'none';
+      updateCount();
+    });
+  });
+
+  function updateCount() {
+    const total = document.querySelectorAll('.journal-entry').length;
+    const visible = document.querySelectorAll('.journal-entry:not([style*="display: none"])').length;
+    document.getElementById('entry-count').textContent =
+      visible === total ? total + ' entries' : visible + ' of ' + total;
+  }
+  updateCount();
+</script>
+</body>
+</html>
