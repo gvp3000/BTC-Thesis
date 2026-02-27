@@ -20,7 +20,7 @@
     {
       "label": "Portfolio",
       "pages": [
-        { "id": "positions", "title": "My Positions",         "file": "portfolio/positions.html", "badge": "TODO",    "badgeColor": "dim" },
+        { "id": "positions", "title": "My Positions",         "file": "positions.html",           "badge": "TODO",    "badgeColor": "dim" },
         { "id": "exits",     "title": "Exit Plan",            "file": "portfolio/exits.html",     "badge": "TODO",    "badgeColor": "dim" },
         { "id": "family",    "title": "Family Accounts",      "file": "portfolio/family.html",    "badge": "TODO",    "badgeColor": "dim" }
       ]

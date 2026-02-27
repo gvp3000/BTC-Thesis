@@ -335,10 +335,176 @@ a:hover { text-decoration: underline; }
 .bq-sub { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
 .bq-badge { font-family: var(--mono); font-size: 8px; font-weight: 700; padding: 3px 7px; border-radius: 3px; border: 1px solid; flex-shrink: 0; margin-top: 1px; }
 
+/* ═══════════════════════════════════════════════════════════════
+   TEMPLATE-CONVENTION CLASSES
+   The template (_template.html), nav.js, and all content pages
+   use these class names. Added Feb 2026 to resolve the naming
+   mismatch with the shorthand classes above.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── SITE LAYOUT (template convention) ── */
+.site-layout { display: flex; min-height: 100vh; }
+.site-nav {
+  width: var(--nav-w);
+  min-width: var(--nav-w);
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.site-main {
+  margin-left: var(--nav-w);
+  flex: 1;
+  min-height: 100vh;
+}
+.page-wrap {
+  padding: 36px 44px;
+  max-width: 1120px;
+  animation: pageFadeIn 0.18s ease;
+}
+
+/* ── PAGE HEADER (template convention) ── */
+.page-header { margin-bottom: 28px; }
+.page-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.page-subtitle {
+  color: var(--text-mid);
+  font-size: 13.5px;
+  line-height: 1.7;
+  max-width: 680px;
+}
+
+/* ── GRID & STACK (template convention) ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.stack  { display: flex; flex-direction: column; gap: 14px; }
+
+/* ── CARD EYEBROW (template convention) ── */
+.card-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* ── BADGE (template convention) ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.badge.green  { color: var(--green);  border-color: rgba(74,222,128,0.3);  background: rgba(74,222,128,0.1); }
+.badge.yellow { color: var(--yellow); border-color: rgba(251,191,36,0.3);  background: rgba(251,191,36,0.1); }
+.badge.orange { color: var(--orange); border-color: rgba(249,115,22,0.3);  background: rgba(249,115,22,0.1); }
+.badge.red    { color: var(--red);    border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.1); }
+.badge.blue   { color: var(--blue);   border-color: rgba(56,189,248,0.3);  background: rgba(56,189,248,0.1); }
+.badge.purple { color: var(--purple); border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.1); }
+.badge.dim    { color: var(--text-dim); border-color: var(--border); background: rgba(255,255,255,0.03); }
+
+/* ═══════════════════════════════════════════════════════════════
+   NAV.JS OUTPUT CLASSES
+   nav.js builds the sidebar dynamically and outputs these
+   class names. Must match exactly.
+   ═══════════════════════════════════════════════════════════════ */
+.nav-logo-eyebrow {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.nav-logo-title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+}
+.nav-logo-title span { color: var(--blue); }
+
+.nav-section-label {
+  padding: 14px 20px 4px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 20px 7px 28px;
+  font-size: 13px;
+  color: var(--text-dim);
+  border-left: 2px solid transparent;
+  transition: all .12s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-link:hover {
+  color: var(--text-mid);
+  background: rgba(255,255,255,0.03);
+  text-decoration: none;
+}
+.nav-link.active {
+  color: var(--blue);
+  border-left-color: var(--blue);
+  background: rgba(56,189,248,0.07);
+}
+.nav-link.active .nav-dot { background: var(--blue); }
+
+.nav-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--border-hi);
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.nav-badge.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.nav-badge.green  { background: rgba(74,222,128,0.15);  color: var(--green); }
+.nav-badge.dim    { background: rgba(255,255,255,0.05); color: var(--text-dim); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .nav { position: relative; width: 100%; height: auto; }
-  .main { margin-left: 0; }
-  .wrap { padding: 20px 16px; }
-  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+  .nav, .site-nav { position: relative; width: 100%; height: auto; }
+  .main, .site-main { margin-left: 0; }
+  .wrap, .page-wrap { padding: 20px 16px; }
+  .g2, .g3, .g4, .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
 }
