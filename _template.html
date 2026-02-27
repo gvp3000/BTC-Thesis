@@ -1,0 +1,82 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  BTC THESIS — NEW PAGE TEMPLATE                            ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  CHECKLIST:                                                ║
+  ║  □ 1. Copy this file to correct location                   ║
+  ║  □ 2. Set CSS path + nav.js path + data-root per table     ║
+  ║  □ 3. Update <title>                                       ║
+  ║  □ 4. Add entry to assets/pages.json                       ║
+  ║  □ 5. Replace placeholder content                          ║
+  ║  □ 6. Test nav renders + active page highlights            ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  PATH REFERENCE:                                           ║
+  ║                                                            ║
+  ║  LOCATION        CSS href              nav.js src          ║
+  ║  ─────────────   ──────────────────    ──────────────────  ║
+  ║  Root /          assets/style.css      assets/nav.js       ║
+  ║                  data-root="./"        data-root="./"      ║
+  ║                                                            ║
+  ║  Subfolder /x/   ../assets/style.css   ../assets/nav.js    ║
+  ║                  data-root="../"       data-root="../"      ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAGE TITLE — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- PATH: from root → assets/style.css | from subfolder → ../assets/style.css -->
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="site-layout">
+
+  <!-- Nav: auto-built from pages.json. data-root tells nav.js how deep we are -->
+  <nav class="site-nav" id="site-nav"></nav>
+
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <!-- ── PAGE HEADER ── -->
+      <header class="page-header">
+        <div class="page-eyebrow">SECTION NAME</div>
+        <h1 class="page-title">Page Title</h1>
+        <p class="page-subtitle">One or two sentences describing what this page tracks or contains.</p>
+      </header>
+
+      <!-- ── YOUR CONTENT GOES HERE ── -->
+      <div class="stack">
+
+        <div class="card">
+          <div class="card-eyebrow">section label</div>
+          <p style="color: var(--text-mid); font-size: 14px;">Content here.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-eyebrow">left column</div>
+          </div>
+          <div class="card">
+            <div class="card-eyebrow">right column</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ── END CONTENT ── -->
+
+    </div>
+  </main>
+</div>
+
+<!-- PATH: from root → assets/nav.js data-root="./" | from subfolder → ../assets/nav.js data-root="../" -->
+<script src="../assets/nav.js" data-root="../"></script>
+<!-- Page-specific JS below (optional) -->
+<script>
+  // Your page-specific JavaScript here
+</script>
+</body>
+</html>

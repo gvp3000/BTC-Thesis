@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stablecoin Infrastructure Thesis — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    /* ── THESIS-SPECIFIC STYLES ── */
+    .thesis-callout {
+      border-left: 3px solid var(--blue);
+      padding: 14px 20px;
+      background: rgba(56,189,248,0.03);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 16px 0;
+    }
+    .thesis-callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+    .thesis-callout strong { color: var(--blue); }
+
+    .conviction-box {
+      border: 1px solid rgba(74,222,128,0.25);
+      background: rgba(74,222,128,0.03);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .conviction-box .label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .warning-box {
+      border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(248,113,113,0.03);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .warning-box .label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .data-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td {
+      padding: 10px 12px;
+      color: var(--text-mid);
+      border-bottom: 1px solid rgba(30,45,69,0.4);
+      line-height: 1.5;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table .highlight { color: var(--text); font-weight: 700; }
+    .data-table .green { color: var(--green); }
+    .data-table .blue { color: var(--blue); }
+    .data-table .row-accent { background: rgba(56,189,248,0.04); }
+    .data-table .row-bull { background: rgba(74,222,128,0.04); }
+
+    .source-tag {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      display: block;
+      margin-top: 6px;
+    }
+
+    .section-break {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 32px 0;
+    }
+
+    .prose { color: var(--text-mid); font-size: 14px; line-height: 1.85; }
+    .prose strong { color: var(--text); }
+
+    .catalyst-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 16px 0;
+    }
+    .catalyst-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(30,45,69,0.4);
+    }
+    .catalyst-item:last-child { border-bottom: none; }
+    .catalyst-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      padding-top: 2px;
+    }
+    .catalyst-name {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .catalyst-desc {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .catalyst-status {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 1px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-left: 8px;
+    }
+    .status-done { color: var(--green); background: rgba(74,222,128,0.1); }
+    .status-active { color: var(--yellow); background: rgba(251,191,36,0.1); }
+    .status-upcoming { color: var(--blue); background: rgba(56,189,248,0.1); }
+
+    .updated-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <header class="page-header">
+        <div class="page-eyebrow">Thesis</div>
+        <h1 class="page-title">Stablecoin Infrastructure</h1>
+        <p class="page-subtitle">
+          The case for CRV and CVX as leveraged bets on stablecoin adoption.
+          Backed by on-chain revenue data, analyst projections, and regulatory catalysts.
+        </p>
+        <div class="updated-tag">Last updated: 26 Mar 2026</div>
+      </header>
+
+
+      <!-- ═══════════════════════════════════════════════════
+           SECTION 1: THE ARGUMENT IN 60 SECONDS
+           ═══════════════════════════════════════════════════ -->
+      <div class="stack">
+
+        <div class="conviction-box">
+          <div class="label">Core Thesis</div>
+          <p class="prose">
+            <strong>Curve Finance is the plumbing of the stablecoin economy.</strong> Every major DeFi protocol — Aave, Compound, Morpho, Spark, Maple — depends on Curve for stablecoin liquidity. They don't compete with Curve; they route through it. As stablecoin supply scales from $310B toward $1T+ (driven by legislation that has already passed), Curve's fee revenue compounds through two independent multipliers: growing supply and growing market share. CRV sits 97% below its all-time high. This is not a speculative moonshot — it's a mispriced infrastructure asset at the center of a structural growth trend that credible analysts are projecting with hard data.
+          </p>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 2: THE STABLECOIN DATA
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">The Stablecoin Landscape — Current State</div>
+          <div class="grid-4" style="margin-bottom:18px;">
+            <div class="stat-block">
+              <div class="stat-label">Stablecoin Supply</div>
+              <div class="stat-value" style="color:var(--text); font-size:17px;">~$310B</div>
+              <div class="stat-note">6× from $50B in early 2020</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">2025 Transaction Vol</div>
+              <div class="stat-value" style="color:var(--text); font-size:17px;">$33T</div>
+              <div class="stat-note">+72% YoY</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">B2B Payments</div>
+              <div class="stat-value" style="color:var(--text); font-size:17px;">$6B/mo</div>
+              <div class="stat-note">From &lt;$100M/mo in 2023</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">2026 Projection</div>
+              <div class="stat-value" style="color:var(--green); font-size:17px;">&gt;$1T</div>
+              <div class="stat-note">21Shares, JPMorgan consensus</div>
+            </div>
+          </div>
+          <p class="prose">
+            Stablecoins did $33 trillion in transaction volume in 2025 — rivaling Visa. Monthly peak volume hit $970B in August 2025. USDT processes ~$100B daily. B2B payments surged 60× in two years. Visa's stablecoin card spend grew 460% YoY. 54% of non-users surveyed by EY-Parthenon expect to adopt stablecoins within 6-12 months. This isn't speculative — it's on-chain, auditable, and growing.
+          </p>
+          <span class="source-tag">Sources: Artemis Analytics, Visa Onchain Analytics, EY-Parthenon, CoinDesk Research (Feb 2026)</span>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 3: WHAT DRIVES $1T
+             ═══════════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">What drives $1T — already in motion</div>
+          <p class="prose" style="margin-bottom:16px;">
+            The $1T projection isn't aspirational. It's built on legislation and infrastructure that already exists:
+          </p>
+          <div class="catalyst-timeline">
+            <div class="catalyst-item">
+              <div class="catalyst-date">Jul 2025</div>
+              <div>
+                <div class="catalyst-name">GENIUS Act passed <span class="catalyst-status status-done">DONE</span></div>
+                <div class="catalyst-desc">First U.S. regulatory framework for payment stablecoins. Banks can now legally issue and custody stablecoins. Reserve requirements standardized. This is the unlock.</div>
+              </div>
+            </div>
+            <div class="catalyst-item">
+              <div class="catalyst-date">Oct 2025</div>
+              <div>
+                <div class="catalyst-name">SEC generic listing standards <span class="catalyst-status status-done">DONE</span></div>
+                <div class="catalyst-desc">Eliminated 19(b) process. Crypto ETF approval compressed from 240 days to weeks. 126+ filings pending. Institutional wrappers proliferating.</div>
+              </div>
+            </div>
+            <div class="catalyst-item">
+              <div class="catalyst-date">Q1 2026</div>
+              <div>
+                <div class="catalyst-name">CLARITY Act — Senate vote <span class="catalyst-status status-active">ACTIVE</span></div>
+                <div class="catalyst-desc">Digital Asset Market Clarity Act defines SEC/CFTC jurisdiction. Creates legal framework for DeFi protocol tokens. Passed House with bipartisan support. Senate vote expected early 2026.</div>
+              </div>
+            </div>
+            <div class="catalyst-item">
+              <div class="catalyst-date">~May 2026</div>
+              <div>
+                <div class="catalyst-name">Warsh Fed Chair confirmation <span class="catalyst-status status-upcoming">UPCOMING</span></div>
+                <div class="catalyst-desc">Kevin Warsh nomination expected to move through Senate Banking Committee. Market begins pricing new monetary regime on first speech. Potentially more accommodative stance than Powell on balance sheet.</div>
+              </div>
+            </div>
+            <div class="catalyst-item">
+              <div class="catalyst-date">Jul 2026</div>
+              <div>
+                <div class="catalyst-name">GENIUS Act final implementing regs <span class="catalyst-status status-upcoming">UPCOMING</span></div>
+                <div class="catalyst-desc">Regulators publish final rules. Banks (JPMorgan, Visa, Mastercard, PayPal already engaged) can begin issuing stablecoins under standardized compliance framework. This is the institutional floodgate.</div>
+              </div>
+            </div>
+            <div class="catalyst-item">
+              <div class="catalyst-date">Nov 2026</div>
+              <div>
+                <div class="catalyst-name">Midterm elections <span class="catalyst-status status-upcoming">UPCOMING</span></div>
+                <div class="catalyst-desc">Historical pattern: presidents engineer loose conditions 12-18 months before midterms. The political incentive window for stimulus is NOW through Oct 2026.</div>
+              </div>
+            </div>
+          </div>
+          <div class="thesis-callout">
+            <p>
+              <strong>The deployment window:</strong> These catalysts are dated. The market will front-run each by 2-4 weeks. For GENIUS Act implementation in July 2026, positioning should be complete by Q2 at the latest. Things look bleak now. That's what peak fear looks like when you're standing in front of structural tailwinds.
+            </p>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 4: CURVE'S POSITION
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">Curve's Position — The Plumbing</div>
+          <div class="grid-2" style="margin-bottom:16px;">
+            <div class="stat-block">
+              <div class="stat-label">ETH DEX Fee Share</div>
+              <div class="stat-value" style="color:var(--green); font-size:17px;">44%</div>
+              <div class="stat-note">From 1.6% one year prior</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">2025 Trading Volume</div>
+              <div class="stat-value" style="font-size:17px;">$122.3B</div>
+              <div class="stat-note">Up from $119.3B in 2024</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">2025 veCRV Revenue</div>
+              <div class="stat-value" style="font-size:17px;">$13.6M</div>
+              <div class="stat-note">Q3 alone: $7.3M (2× from Q2)</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">Revenue Trend</div>
+              <div class="stat-value" style="color:var(--green); font-size:17px;">~10×</div>
+              <div class="stat-note">From 2023 low to Dec 2025 high</div>
+            </div>
+          </div>
+
+          <p class="prose">
+            Curve went from 1.6% of Ethereum DEX fees to 44% in a single year. That's the most dramatic fee-share shift in DeFi history. Revenue nearly 10× from 2023 lows. Pools above $1M TVL grew 41% YoY — institutional capital, not retail. Active users up 152% (Q4 2025 vs Q4 2024). Aave and Compound together handle 89% of all stablecoin lending — and both depend on Curve's liquidity pools for stablecoin pricing and exchange.
+          </p>
+          <span class="source-tag">Sources: DefiLlama, PR Newswire/Curve Finance (Dec 2025, Nov 2025), CryptoReporter (Jan 2026)</span>
+
+          <div class="thesis-callout" style="margin-top:18px;">
+            <p>
+              <strong>The dependency chain:</strong> Aave ($40B TVL, $178M quarterly fees) routes stablecoin liquidity through Curve. When Spark needs USDS liquidity, it builds a pool on Curve — the PYUSD/USDS pool exceeded $90M TVL immediately. Compound, Morpho, Maple — all route through Curve. Curve isn't competing with these protocols. It's the shared infrastructure underneath them. CVX controls the governance of that infrastructure via aggregated veCRV voting power. This is the "toll road" thesis: every stablecoin swap on Ethereum pays Curve.
+            </p>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 5: THE COMPOUNDING ARGUMENT
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card" style="border-color:rgba(56,189,248,0.3);">
+          <div class="card-eyebrow" style="color:var(--blue);">The Repricing Logic — Why Growth is Non-Linear</div>
+
+          <p class="prose" style="margin-bottom:16px;">
+            CRV's repricing potential comes from <strong>two independent growth multipliers compounding on each other.</strong> This is the structural argument for why 20-50× expansion isn't fantasy — it's math applied to trends that credible institutions are projecting.
+          </p>
+
+          <p class="prose" style="margin-bottom:16px;">
+            <strong>Multiplier 1: Stablecoin supply growth.</strong> Supply goes from $310B → $1T. That's a 3.2× increase in the base that generates Curve's volume and fees. This projection comes from 21Shares, JPMorgan, and Visa — not crypto Twitter.
+          </p>
+          <p class="prose" style="margin-bottom:16px;">
+            <strong>Multiplier 2: Fee share growth.</strong> Curve's Ethereum DEX fee share went from 1.6% to 44% in one year. If Curve maintains or grows share as stablecoins scale (likely — its StableSwap algorithm is purpose-built for this), fee share provides an additional multiplier on top of supply growth.
+          </p>
+          <p class="prose" style="margin-bottom:4px;">
+            <strong>These multiply, they don't add.</strong> If stablecoin supply 3×'s and Curve's volume share grows even modestly, the revenue growth is geometric, not linear. The token price should reprice to reflect the new revenue reality — and it hasn't even begun to do that yet.
+          </p>
+
+          <table class="data-table" style="margin-top:20px;">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Stablecoin Supply</th>
+                <th>Est. Curve Volume</th>
+                <th>veCRV Revenue</th>
+                <th>Multiple from Today</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="highlight">Current (2025)</td>
+                <td>$310B</td>
+                <td>~$122B/yr</td>
+                <td>$13.6M/yr</td>
+                <td>1×</td>
+              </tr>
+              <tr class="row-accent">
+                <td class="highlight">Base: Supply 2×</td>
+                <td>$620B</td>
+                <td>~$250B/yr</td>
+                <td>~$28M/yr</td>
+                <td class="blue">~2×</td>
+              </tr>
+              <tr class="row-accent">
+                <td class="highlight">Bull: Supply 3× + share hold</td>
+                <td>$1T</td>
+                <td>~$400B/yr</td>
+                <td>~$45M/yr</td>
+                <td class="blue">~3.3×</td>
+              </tr>
+              <tr class="row-bull">
+                <td class="highlight">Bull+: Supply 3× + FX expansion</td>
+                <td>$1T+</td>
+                <td>~$600B/yr</td>
+                <td>~$65M/yr</td>
+                <td class="green">~4.8×</td>
+              </tr>
+              <tr class="row-bull">
+                <td class="highlight">Max: Supply 3× + share growth + crvUSD + Yield Basis</td>
+                <td>$1T+</td>
+                <td>~$800B/yr</td>
+                <td>~$90M+/yr</td>
+                <td class="green">~6.6×</td>
+              </tr>
+            </tbody>
+          </table>
+          <span class="source-tag">Note: veCRV revenue = admin fees only. Does not include LP fees, crvUSD lending revenue, Yield Basis income, or FX product (in development). Actual protocol-level revenue capture is higher.</span>
+
+          <div class="thesis-callout" style="margin-top:20px; border-left-color:var(--green);">
+            <p>
+              <strong>Why 20-50× repricing is structurally possible:</strong> The revenue table shows 3-7× growth in protocol cash flows. But CRV is 97% below ATH. The token doesn't need revenue to 50× — it needs the market to re-rate a $0.22 token (currently priced as a dying protocol) as critical infrastructure in a $1T+ stablecoin economy. That re-rating is the gap between current sentiment (peak fear, "DeFi is dead") and the structural reality (44% fee share, institutional dependency, legislative tailwinds). Revenue growth provides the fundamental justification. Sentiment reversal provides the multiple expansion. Together, they compound.
+            </p>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 6: THIRD-PARTY VALIDATION
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">Third-Party Validation — Not Just My Speculation</div>
+          <p class="prose" style="margin-bottom:16px;">
+            The components of this thesis are independently supported by credible institutions and analysts. The point isn't that they're recommending CRV — it's that they're validating the structural trends that CRV is positioned to capture.
+          </p>
+
+          <table class="data-table">
+            <thead>
+              <tr><th>Claim</th><th>Source</th><th>What They Said</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="highlight">Stablecoin supply → $1T</td>
+                <td>21Shares, JPMorgan</td>
+                <td>JPM projects $500-600B by 2028. 21Shares projects $1T by late 2026 driven by institutional adoption and GENIUS Act.</td>
+              </tr>
+              <tr>
+                <td class="highlight">$33T annual stablecoin txns</td>
+                <td>Artemis Analytics, TRM Labs</td>
+                <td>On-chain verified. 72% YoY growth. Stablecoins now rival major card networks in throughput.</td>
+              </tr>
+              <tr>
+                <td class="highlight">DeFi as institutional infra</td>
+                <td>Forward Guidance / DAS panel</td>
+                <td>Leshner: "$500T+ in assets will migrate from legacy to on-chain ledgers." Seyffart: 126+ ETF filings pending. Institutional wrappers accelerating.</td>
+              </tr>
+              <tr>
+                <td class="highlight">Curve capturing 44% ETH DEX fees</td>
+                <td>DefiLlama, Curve PR</td>
+                <td>On-chain verified. From 1.6% to 44% in 12 months. Record revenue approaching 10× from 2023 lows.</td>
+              </tr>
+              <tr>
+                <td class="highlight">Aave/Compound depend on Curve</td>
+                <td>21Shares (Aave 2026 Outlook)</td>
+                <td>Aave 56.5% of DeFi lending debt. Stablecoin lending at 89% through Aave+Compound. Both route stablecoin liquidity through Curve pools.</td>
+              </tr>
+              <tr>
+                <td class="highlight">GENIUS Act as the unlock</td>
+                <td>DL News, Qz, Stablecoin Insider</td>
+                <td>Implementation of final regs expected July 2026. Banks including JPM, Visa, Mastercard already building stablecoin products. 226 new businesses integrated stablecoins in 2025.</td>
+              </tr>
+              <tr>
+                <td class="highlight">Regulatory tailwinds strongest ever</td>
+                <td>DAS panel consensus (Mar 2026)</td>
+                <td>CLARITY + GENIUS + SEC listing standards = most favorable regulatory environment crypto has seen. Panel unanimous.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 7: PEAK FEAR + STRUCTURAL TAILWINDS
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card" style="border-color:rgba(167,139,250,0.3);">
+          <div class="card-eyebrow" style="color:var(--purple);">The Sentiment Gap — Peak Fear vs. Structural Reality</div>
+          <p class="prose" style="margin-bottom:16px;">
+            There is a massive disconnect between current market sentiment and the structural setup. This is where the asymmetry lives.
+          </p>
+          <div class="grid-2" style="margin-bottom:16px;">
+            <div style="background:rgba(248,113,113,0.04); border:1px solid rgba(248,113,113,0.15); border-radius:var(--radius-sm); padding:14px 18px;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--red); margin-bottom:10px;">WHAT THE MARKET SEES</div>
+              <div style="color:var(--text-mid); font-size:13px; line-height:1.8;">
+                <strong style="color:var(--text);">CRV at $0.22</strong> — down 97% from ATH. "DeFi is dead." Crypto bleeding. Fidelity says year off. ETF outflows on Christmas week. Leverage positions getting squeezed. Daily noise is relentlessly bearish. CRV looks like a failed project to anyone reading headlines.
+              </div>
+            </div>
+            <div style="background:rgba(74,222,128,0.04); border:1px solid rgba(74,222,128,0.15); border-radius:var(--radius-sm); padding:14px 18px;">
+              <div style="font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--green); margin-bottom:10px;">WHAT THE DATA SHOWS</div>
+              <div style="color:var(--text-mid); font-size:13px; line-height:1.8;">
+                <strong style="color:var(--text);">44% of ETH DEX fees.</strong> Revenue near 10× from 2023 lows. 152% user growth. $1T stablecoin supply projected. Legislation passed. Banks building stablecoin products. Every major DeFi lending protocol depends on Curve. Revenue Q-over-Q nearly doubled (Q3 2025). Institutional pool TVL up 41%.
+              </div>
+            </div>
+          </div>
+          <p class="prose">
+            Every structural catalyst — stablecoin legislation, regulatory clarity, institutional adoption, DeFi protocol maturity — is either already in place or on a dated timeline through 2026. The sentiment is peak fear. The fundamentals are compounding growth. The thesis is not "hope things get better." The thesis is: <strong>the things that drive Curve's revenue are already happening, the legislation that accelerates them has already passed, and the token hasn't repriced.</strong> This gap closes. The question is timing, not direction.
+          </p>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 8: FIDELITY "YEAR OFF" MONITOR
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">Bear Case Monitor — Fidelity "Year Off" Thesis</div>
+          <p class="prose" style="margin-bottom:14px;">
+            Jurrien Timmer (Fidelity Director of Global Macro) argues BTC completed its 4-year halving cycle with the October $125K high. He places support at $65K-75K and says 2026 could be a "year off." He remains a "secular bull" — this is a timing call, not a directional reversal.
+          </p>
+          <div class="grid-2" style="margin-bottom:16px;">
+            <div>
+              <div style="font-size:11px; color:var(--text-dim); letter-spacing:1px; margin-bottom:10px;">THE CASE</div>
+              <div style="color:var(--text-mid); font-size:13px; line-height:1.7;">
+                <strong style="color:var(--text);">Pure pattern matching.</strong> Timmer overlays prior cycle analogs (2013, 2017) and shows the October high at 145 weeks fits the historical template. Bear markets last ~1 year. Therefore: winter into 2026. Support at $65-75K based on prior drawdown magnitudes.
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:var(--text-dim); letter-spacing:1px; margin-bottom:10px;">WHAT IT DOESN'T ACCOUNT FOR</div>
+              <div style="color:var(--text-mid); font-size:13px; line-height:1.7;">
+                <strong style="color:var(--text);">ETFs absorbing 100%+ of new issuance.</strong> Bitwise CIO Matt Hougan directly pushed back, arguing ETFs have reduced the boom-bust mechanics. Your 7 catalysts (QT end, RRP depletion, rate cuts, fiscal spending, midterms, Warsh, AI CapEx). The WALCL → M2 → BTC mechanism chain. Stablecoin supply as a liquidity proxy.
+              </div>
+            </div>
+          </div>
+          <div class="warning-box">
+            <div class="label">How to Monitor — Confirming or Invalidating Signals</div>
+            <div class="prose">
+              <strong>Timmer gains weight if:</strong> BTC spends 8+ consecutive weeks below the $95K cost-basis shelf with declining ETF inflows. ETF net flows turn negative for a full month. WALCL stays flat or declines through Q2 2026.
+            </div>
+            <div class="prose" style="margin-top:10px;">
+              <strong>Timmer loses weight if:</strong> ETF inflows sustain through Q2 despite price weakness. WALCL turns positive. Any of your 7 catalysts fire. Stablecoin supply continues expanding (liquidity entering the system regardless of BTC price action).
+            </div>
+            <div class="prose" style="margin-top:10px;">
+              <strong>The critical distinction:</strong> Timmer's thesis applies to BTC price action. It says nothing about stablecoin infrastructure growth. Even in a BTC "year off," Curve's fee revenue can still compound if stablecoin adoption continues. The CRV thesis has partial independence from the BTC cycle.
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 9: WHAT COULD GO WRONG
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card" style="border-color:rgba(248,113,113,0.2);">
+          <div class="card-eyebrow" style="color:var(--red);">Invalidation Conditions</div>
+          <p class="prose" style="margin-bottom:14px;">
+            A thesis without invalidation conditions is a religion. These would force a re-evaluation:
+          </p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <span style="color:var(--red); font-weight:700; flex-shrink:0;">1.</span>
+              <span class="prose"><strong>Stablecoin supply contracts or stalls below $350B for 6+ months.</strong> If the $1T thesis breaks, the revenue compounding breaks.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <span style="color:var(--red); font-weight:700; flex-shrink:0;">2.</span>
+              <span class="prose"><strong>Curve loses DEX fee share below 20% for two consecutive quarters.</strong> A new protocol capturing stablecoin liquidity would invalidate the "plumbing" thesis. Watch Uniswap v4, Maverick, and any new entrants.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <span style="color:var(--red); font-weight:700; flex-shrink:0;">3.</span>
+              <span class="prose"><strong>Smart contract exploit on Curve core contracts.</strong> Curve survived the July 2023 exploit on peripheral pools. A core StableSwap or crvUSD exploit would be existential.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <span style="color:var(--red); font-weight:700; flex-shrink:0;">4.</span>
+              <span class="prose"><strong>GENIUS Act implementation stalls or is substantially weakened.</strong> If banks can't legally issue stablecoins by late 2026, the institutional adoption curve flattens.</span>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <span style="color:var(--red); font-weight:700; flex-shrink:0;">5.</span>
+              <span class="prose"><strong>CRV health rate drops below 1.2 before loan repayment.</strong> This is position risk, not thesis risk. But liquidation kills the trade regardless of whether the thesis is correct.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../assets/nav.js" data-root="../"></script>
+</body>
+</html>
