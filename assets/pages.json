@@ -10,42 +10,51 @@
     {
       "label": "Thesis",
       "pages": [
-        { "id": "toll-road", "title": "Toll Road Thesis",     "file": "toll_road_thesis_v2.html", "badge": "LIVE",    "badgeColor": "green" },
-        { "id": "stablecoin","title": "Stablecoin Infrastructure","file": "stablecoin-infra.html",        "badge": "NEW",    "badgeColor": "green" },
-        { "id": "core",      "title": "Core Thesis",          "file": "thesis/core.html",         "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "liquidity", "title": "Liquidity Framework",  "file": "thesis/liquidity.html",    "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "btc-gold",  "title": "BTC:Gold Parity",      "file": "thesis/btc-gold.html",     "badge": "TODO",    "badgeColor": "dim" }
+        { "id": "toll-road",     "title": "Toll Road Thesis",     "file": "toll_road_thesis_v2.html", "badge": "LIVE",  "badgeColor": "green" },
+        { "id": "stablecoin",    "title": "Stablecoin Infrastructure","file": "stablecoin-infra.html", "badge": "NEW",   "badgeColor": "green" },
+        { "id": "core",          "title": "Core Thesis",          "file": "thesis/core.html",          "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "short-term",    "title": "2026 Catalyst Stack",  "file": "thesis/short-term.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "long-term",     "title": "Decade Thesis",        "file": "thesis/long-term.html",     "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "liquidity",     "title": "Liquidity Framework",  "file": "thesis/liquidity.html",     "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "btc-gold",      "title": "BTC:Gold Parity",      "file": "thesis/btc-gold.html",      "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "btc-debt",      "title": "BTC:Debt Correlation", "file": "thesis/btc-debt.html",      "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "btc-m2",        "title": "BTC:M2 Supply",        "file": "thesis/btc-m2.html",        "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "debasement",    "title": "Dollar Debasement",    "file": "thesis/debasement.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "halving",       "title": "Supply & Halvings",    "file": "thesis/halving.html",       "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "institutional", "title": "Institutional Adoption","file": "thesis/institutional.html", "badge": "TODO",  "badgeColor": "dim" }
       ]
     },
     {
       "label": "Portfolio",
       "pages": [
-        { "id": "positions", "title": "My Positions",         "file": "positions.html",           "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "exits",     "title": "Exit Plan",            "file": "portfolio/exits.html",     "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "family",    "title": "Family Accounts",      "file": "portfolio/family.html",    "badge": "TODO",    "badgeColor": "dim" }
+        { "id": "positions", "title": "My Positions",    "file": "positions.html",         "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "exits",     "title": "Exit Plan",       "file": "portfolio/exits.html",   "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "risk",      "title": "Risk Management", "file": "portfolio/risk.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "family",    "title": "Family Accounts",  "file": "portfolio/family.html",  "badge": "TODO",  "badgeColor": "dim" }
       ]
     },
     {
       "label": "Research",
       "pages": [
-        { "id": "structure", "title": "Market Structure",     "file": "research/structure.html",  "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "sentiment", "title": "Sentiment",            "file": "research/sentiment.html",  "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "nuclear",   "title": "Nuclear Thesis",       "file": "research/nuclear.html",    "badge": "TODO",    "badgeColor": "dim" },
-        { "id": "wealth-transfer", "title": "Wealth Transfer","file": "research/wealth-transfer.html", "badge": "TODO", "badgeColor": "dim" }
+        { "id": "structure",       "title": "Market Structure",  "file": "research/structure.html",       "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "sentiment",       "title": "Sentiment",         "file": "research/sentiment.html",       "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "nuclear",         "title": "Nuclear Thesis",    "file": "research/nuclear.html",         "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "wealth-transfer", "title": "Wealth Transfer",   "file": "research/wealth-transfer.html", "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "links",           "title": "Research Links",    "file": "research/links.html",           "badge": "TODO",  "badgeColor": "dim" }
       ]
     },
     {
       "label": "Trading",
       "pages": [
-        { "id": "macro",     "title": "Macro Tracker",    "file": "trading/index.html",     "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "weekly",    "title": "Weekly Review",    "file": "trading/weekly.html",     "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "trade-log", "title": "Trade Log",        "file": "trading/log.html",        "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "methods",   "title": "Methods",          "file": "trading/methods.html",    "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "elliott",   "title": "Elliott Wave",     "file": "trading/elliott.html",    "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "mkt-structure","title": "Market Structure","file": "trading/structure.html", "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "rr",        "title": "Risk / Reward",    "file": "trading/rr.html",         "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "traders",   "title": "Traders to Watch", "file": "trading/traders.html",    "badge": "TODO",  "badgeColor": "dim" },
-        { "id": "trade-research","title": "Research",      "file": "trading/research.html",  "badge": "TODO",  "badgeColor": "dim" }
+        { "id": "macro",          "title": "Macro Tracker",    "file": "trading/index.html",     "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "weekly",         "title": "Weekly Review",    "file": "trading/weekly.html",     "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "trade-log",      "title": "Trade Log",        "file": "trading/log.html",        "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "methods",        "title": "Methods",          "file": "trading/methods.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "elliott",        "title": "Elliott Wave",     "file": "trading/elliott.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "mkt-structure",  "title": "Market Structure", "file": "trading/structure.html",  "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "rr",             "title": "Risk / Reward",    "file": "trading/rr.html",         "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "traders",        "title": "Traders to Watch", "file": "trading/traders.html",    "badge": "TODO",  "badgeColor": "dim" },
+        { "id": "trade-research", "title": "Research",         "file": "trading/research.html",   "badge": "TODO",  "badgeColor": "dim" }
       ]
     }
   ]
