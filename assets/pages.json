@@ -12,6 +12,7 @@
       "pages": [
         { "id": "toll-road",     "title": "Toll Road Thesis",        "file": "toll_road_thesis_v2.html", "badge": "LIVE",  "badgeColor": "green" },
         { "id": "stablecoin",    "title": "Stablecoin Infrastructure","file": "stablecoin-infra.html",    "badge": "NEW",   "badgeColor": "green" },
+        { "id": "liquidity-mech","title": "How The Trade Works",    "file": "liquidity-mechanism.html",   "badge": "NEW",   "badgeColor": "green" },
         { "id": "core",          "title": "Core Thesis",             "file": "thesis/core.html",          "badge": "TODO",  "badgeColor": "dim" },
         { "id": "short-term",    "title": "2026 Catalyst Stack",     "file": "thesis/short-term.html",    "badge": "TODO",  "badgeColor": "dim" },
         { "id": "liquidity",     "title": "Liquidity Framework",     "file": "thesis/liquidity.html",     "badge": "TODO",  "badgeColor": "dim" },
@@ -31,7 +32,8 @@
     {
       "label": "Research",
       "pages": [
-        { "id": "research", "title": "Research & Sources", "file": "research/index.html", "badge": "TODO", "badgeColor": "dim" }
+        { "id": "research", "title": "Research & Sources", "file": "research/index.html", "badge": "TODO", "badgeColor": "dim" },
+        { "id": "assets",   "title": "Asset Research",    "file": "research/assets.html", "badge": "NEW",  "badgeColor": "green" }
       ]
     },
     {

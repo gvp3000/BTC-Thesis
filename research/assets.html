@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asset Research — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    /* ══════════════════════════════════════════════
+       ASSET RESEARCH — PAGE STYLES
+       ══════════════════════════════════════════════ */
+
+    /* ── MASTER LIST ── */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .asset-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .asset-card:hover {
+      border-color: var(--border-hi);
+      background: rgba(22, 31, 46, 0.8);
+    }
+
+    .asset-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .asset-card-ticker {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+    .asset-card-sector {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .sector-crypto   { color: var(--blue);   background: rgba(56,189,248,0.08); }
+    .sector-defi     { color: var(--purple); background: rgba(167,139,250,0.08); }
+    .sector-biotech  { color: var(--green);  background: rgba(74,222,128,0.08); }
+    .sector-energy   { color: var(--yellow); background: rgba(251,191,36,0.08); }
+    .sector-nuclear  { color: var(--orange); background: rgba(249,115,22,0.08); }
+    .sector-tech     { color: var(--teal);   background: rgba(45,212,191,0.08); }
+    .sector-equities { color: var(--text-mid); background: rgba(139,154,176,0.08); }
+    .sector-commodities { color: var(--yellow); background: rgba(251,191,36,0.08); }
+
+    .asset-card-name {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.4;
+    }
+
+    .asset-card-bottom {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+    .asset-card-thesis {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .thesis-core    { color: var(--green);  background: rgba(74,222,128,0.08); }
+    .thesis-watch   { color: var(--yellow); background: rgba(251,191,36,0.08); }
+    .thesis-speculative { color: var(--purple); background: rgba(167,139,250,0.08); }
+    .thesis-hedge   { color: var(--teal);   background: rgba(45,212,191,0.08); }
+
+    .asset-card-updated {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+    .asset-card-events {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--orange);
+    }
+
+    /* ── DETAIL VIEW ── */
+    .detail-view { display: none; }
+    .detail-view.active { display: block; }
+    .master-view.hidden { display: none; }
+
+    .detail-back {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: transparent;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .detail-back:hover {
+      color: var(--text-mid);
+      border-color: var(--border-hi);
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .detail-ticker {
+      font-family: var(--mono);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -1px;
+    }
+    .detail-name {
+      font-size: 15px;
+      color: var(--text-mid);
+    }
+    .detail-tags {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    /* ── CHART CONTAINER ── */
+    .chart-container {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 14px;
+      height: 420px;
+    }
+    .chart-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── MARKET STRUCTURE NOTES ── */
+    .structure-notes {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .structure-notes-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .structure-notes p {
+      color: var(--text-mid);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .structure-notes strong {
+      color: var(--text);
+    }
+
+    /* ── OVERVIEW ── */
+    .overview-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .overview-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .overview-card p {
+      color: var(--text-mid);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+    .overview-card strong {
+      color: var(--text);
+    }
+
+    /* ── KEY INFO / EVENTS ── */
+    .events-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .events-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .event-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .event-item:last-child { border-bottom: none; }
+
+    .event-date {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      min-width: 72px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .event-type {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .event-type.catalyst   { color: var(--green);  background: rgba(74,222,128,0.1); }
+    .event-type.risk       { color: var(--red);    background: rgba(248,113,113,0.1); }
+    .event-type.info       { color: var(--blue);   background: rgba(56,189,248,0.1); }
+    .event-type.earnings   { color: var(--yellow); background: rgba(251,191,36,0.1); }
+    .event-type.regulatory { color: var(--purple); background: rgba(167,139,250,0.1); }
+    .event-type.insider    { color: var(--orange); background: rgba(249,115,22,0.1); }
+
+    .event-text {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .event-text strong {
+      color: var(--text);
+    }
+
+    /* ── STAT ROW ── */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .stat-item {
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+    }
+    .stat-item-label {
+      font-size: 9px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .stat-item-value {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .filter-btn:hover {
+      color: var(--text-mid);
+      border-color: var(--border-hi);
+    }
+    .filter-btn.active {
+      color: var(--blue);
+      border-color: rgba(56,189,248,0.4);
+      background: rgba(56,189,248,0.07);
+    }
+    .asset-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-left: auto;
+    }
+
+    /* ── HOW TO ADD ── */
+    .howto-banner {
+      background: var(--bg2);
+      border: 1px dashed var(--border-hi);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      margin-top: 20px;
+    }
+    .howto-banner summary {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .howto-banner summary:hover { color: var(--text-mid); }
+    .howto-banner pre {
+      margin-top: 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .howto-banner .field-required { color: var(--blue); }
+    .howto-banner .field-optional { color: var(--text-dim); }
+    .howto-banner .comment { color: var(--text-dim); font-style: italic; }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <!-- ══════════════════════════════════════
+           MASTER LIST VIEW
+           ══════════════════════════════════════ -->
+      <div class="master-view" id="master-view">
+        <header class="page-header">
+          <div class="page-eyebrow">Research</div>
+          <h1 class="page-title">Asset Research</h1>
+          <p class="page-subtitle">
+            Tracked assets with live charts, market structure notes, and key events.
+            Add new assets by editing the ASSETS array at the top of this file.
+          </p>
+        </header>
+
+        <div class="filter-bar" id="filter-bar"></div>
+        <div class="asset-grid" id="asset-grid"></div>
+
+        <details class="howto-banner">
+          <summary>How to add a new asset</summary>
+          <pre><span class="comment">// Open this file → find the ASSETS array → add an object:</span>
+
+{
+  <span class="field-required">ticker:</span>   "ENA",
+  <span class="field-required">name:</span>     "Ethena",
+  <span class="field-required">sector:</span>   "defi",          <span class="comment">// crypto | defi | biotech | energy | nuclear | tech | equities | commodities</span>
+  <span class="field-required">thesis:</span>   "speculative",   <span class="comment">// core | watch | speculative | hedge</span>
+  <span class="field-required">chart:</span>    "BINANCE:ENAUSDT",  <span class="comment">// TradingView symbol</span>
+  <span class="field-required">overview:</span> "Ethena is a synthetic dollar protocol...",
+  <span class="field-optional">stats:</span>    { "Market Cap": "$1.2B", "Sector": "DeFi", "Chain": "Ethereum" },
+  <span class="field-optional">structure:</span> "Trading in a descending channel since...",
+  <span class="field-optional">events:</span>   [
+    { date: "2026-03-15", type: "catalyst", text: "**USDe integration** with Aave v4..." },
+    { date: "2026-02-28", type: "risk",     text: "**Depeg risk** if funding rates..." },
+  ],
+  <span class="field-optional">updated:</span>  "2026-03-26"
+}</pre>
+        </details>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           DETAIL VIEW (dynamically populated)
+           ══════════════════════════════════════ -->
+      <div class="detail-view" id="detail-view">
+        <button class="detail-back" onclick="showMaster()">&#8592; All Assets</button>
+        <div id="detail-content"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/nav.js" data-root="../"></script>
+<script>
+// ══════════════════════════════════════════════════════════════════
+// ASSETS — ADD NEW ASSETS HERE
+// Each object = one tracked asset. Add to this array, save, push.
+// ══════════════════════════════════════════════════════════════════
+
+const ASSETS = [
+
+  // ── EXAMPLE: Ethena ──
+  {
+    ticker:   "ENA",
+    name:     "Ethena — Synthetic Dollar Protocol",
+    sector:   "defi",
+    thesis:   "speculative",
+    chart:    "BYBIT:ENAUSDT",
+    overview: "Ethena is building a synthetic dollar (USDe) backed by delta-neutral positions on staked ETH. The protocol earns yield from perpetual futures funding rates, creating an internet-native savings instrument. USDe has grown to one of the largest decentralized stablecoins by market cap. The bull case is that Ethena becomes core DeFi infrastructure — the bear case is a sustained negative funding environment that breaks the peg mechanism.",
+    stats: {
+      "Sector": "DeFi / Stablecoins",
+      "Chain": "Ethereum",
+      "Token Utility": "Governance + sENA staking",
+      "Key Metric": "USDe supply & funding rate"
+    },
+    structure: "ENA printed a macro low near $0.20 in early 2026 after the broader DeFi selloff. Currently attempting to reclaim the $0.35-0.40 range which was prior support. Volume declining on the pullbacks — potential accumulation pattern. Key resistance at $0.55 (prior breakdown level). A weekly close above $0.55 would suggest trend reversal. Below $0.20, thesis is invalidated.",
+    events: [
+      { date: "2026-03-20", type: "catalyst",   text: "**sENA staking launch** — token lockup mechanism reduces circulating supply. Early stakers earning 15%+ APY from protocol revenue share." },
+      { date: "2026-03-10", type: "info",        text: "**USDe supply crosses $4B** — making it the 3rd largest decentralized stablecoin. Integrated across Aave, Morpho, and Pendle." },
+      { date: "2026-02-15", type: "risk",        text: "**Funding rate compression** — perpetual futures funding rates turned negative for 2 weeks in Feb. USDe yield dropped to 2%. Protocol reserves held but stress-tested the model." },
+      { date: "2026-01-28", type: "regulatory",  text: "**GENIUS Act implications** — stablecoin legislation may require reserve audits for synthetic dollars. Unclear if USDe qualifies as a 'payment stablecoin' under the Act." },
+    ],
+    updated: "2026-03-26"
+  },
+
+  // ── EXAMPLE: Regeneron ──
+  {
+    ticker:   "REGN",
+    name:     "Regeneron Pharmaceuticals",
+    sector:   "biotech",
+    thesis:   "watch",
+    chart:    "NASDAQ:REGN",
+    overview: "Regeneron is a leading biotech focused on monoclonal antibodies and gene therapy. Flagship products include Dupixent (atopic dermatitis, asthma — $13B+ revenue) and Eylea (wet AMD). The pipeline includes next-gen obesity drugs (trevogrumab + linvoseltamab combo), a potential blockbuster that could compete with Lilly/Novo. Strong cash flow generation, minimal debt, and a proven R&D machine. Not directly thesis-linked but represents high-conviction biotech exposure outside the crypto/macro trade.",
+    stats: {
+      "Market Cap": "~$80B",
+      "P/E": "~22x",
+      "Key Drug": "Dupixent ($13B+ rev)",
+      "Pipeline": "Obesity combo (Phase 2)"
+    },
+    structure: "REGN has been in a multi-month consolidation between $680-780 after the broader biotech selloff. The 200-week MA near $650 has held as rock-solid support through every correction since 2020. Accumulation zone is $650-700. The obesity pipeline catalyst could trigger a breakout above $800 — which would target $950+ based on the measured move from the consolidation range. Tight stop below $640.",
+    events: [
+      { date: "2026-04-15", type: "earnings",   text: "**Q1 2026 earnings** — watch Dupixent growth trajectory and any obesity program updates. Consensus expects $3.8B revenue." },
+      { date: "2026-03-18", type: "catalyst",    text: "**Obesity combo Phase 2 data** expected H1 2026. Trevogrumab (anti-myostatin) + linvoseltamab combo targeting muscle-preserving weight loss. Could differentiate vs GLP-1s." },
+      { date: "2026-02-22", type: "info",        text: "**Eylea HD uptake** continuing to take share from Eylea original. Biosimilar competition for original Eylea offset by HD conversion." },
+      { date: "2026-01-15", type: "insider",     text: "**CEO Schleifer** sold $12M in shares via 10b5-1 plan. Routine scheduled sale, consistent with prior pattern. Not a signal." },
+    ],
+    updated: "2026-03-26"
+  },
+
+  // ── CORE: Bitcoin ──
+  {
+    ticker:   "BTC",
+    name:     "Bitcoin",
+    sector:   "crypto",
+    thesis:   "core",
+    chart:    "BITSTAMP:BTCUSD",
+    overview: "The thesis anchor. BTC correlates to U.S. national debt growth with R² = 0.913. The 2026 trade is built on seven independent catalysts converging: QT ending, RRP depletion, rate cuts, fiscal spending, midterm pressure, Fed chair transition (Warsh), and AI CapEx (~$750B). ETF absorption now exceeds 100% of new issuance, creating a structural supply squeeze. The mechanism chain: SOFR stress → Fed injection → WALCL expansion → M2 growth → BTC response (90-day lag).",
+    stats: {
+      "Thesis": "Core — Phase A trade",
+      "Correlation": "R² 0.913 to debt",
+      "ETF Absorption": ">100% of issuance",
+      "Key Catalyst": "Fed pivot + midterms"
+    },
+    structure: "Price memory analysis shows 100% historical revisit rate of major levels ($1K through $69K). BTC behaves as an underdamped harmonic oscillator (ζ ≈ 0.30) — overshoots above fair value followed by predictable undershoots below. Current structure: consolidation after cycle ATH, building a base for the next leg. The 2-of-3 system (MVRV Z-Score, Monthly RSI, LTH Supply) determines positioning. Key: a weekly close above prior ATH with volume confirms the next impulse wave.",
+    events: [
+      { date: "2026-03-26", type: "catalyst",   text: "**DAS panel confirms ETF supply absorption.** Seyffart: 126+ ETP filings pending. Supply entering ETFs stops moving — structural demand engine." },
+      { date: "2026-03-19", type: "info",        text: "**FOMC holds rates.** QT end confirmed. Balance sheet plans signal pivot to reinvestment mode. WALCL stabilizing — watch for turn positive." },
+      { date: "2026-02-17", type: "catalyst",    text: "**Bitwise files prediction market ETFs** for 2026 midterms. Signals expanding institutional product suite around crypto." },
+      { date: "2026-01-28", type: "info",        text: "**RRP near zero (~$28B).** Precondition met. Banks have no buffer — excess reserves must flow into risk assets." },
+    ],
+    updated: "2026-03-26"
+  },
+
+  // ── CORE: Curve ──
+  {
+    ticker:   "CRV",
+    name:     "Curve Finance — DeFi Liquidity Layer",
+    sector:   "defi",
+    thesis:   "core",
+    chart:    "BINANCE:CRVUSDT",
+    overview: "Core position. Curve is the liquidity backbone of DeFi — the protocol that other protocols build on. veCRV tokenomics create a flywheel: lock CRV → earn fees + boost rewards → protocols bribe for liquidity. 70x potential from current levels to prior ATH ($7). The leveraged Fraxlend position (1.8x, health rate 1.34) means loan repayment is Tier 0 priority before any profit-taking. CRV's risk/reward is fundamentally different from BTC — this is a high-beta DeFi infrastructure bet.",
+    stats: {
+      "Position": "47,638 CRV on Fraxlend",
+      "Leverage": "~1.8x",
+      "Health Rate": "1.34 (watch < 1.2)",
+      "ATH": "$6.95 (Jan 2022)"
+    },
+    structure: "CRV has been range-bound between $0.18-0.28 for months. This is deep accumulation territory — 97% below ATH. The weekly chart shows declining sell volume and a flattening 50-week MA. A break above $0.30 with volume would signal trend change. First major resistance at $0.50, then $0.80 (200-week MA area). Below $0.15, the Fraxlend position enters danger zone. Exit strategy must be completely different from BTC — this is a 10-20x play, not a 2x play.",
+    events: [
+      { date: "2026-03-22", type: "info",        text: "**crvUSD supply growing.** Curve's stablecoin gaining traction as collateral across lending markets. Fee revenue increasing." },
+      { date: "2026-03-01", type: "risk",         text: "**Health rate at 1.34.** CRV dropping another ~25% without loan repayment approaches liquidation territory. Tier 0: repay loan." },
+      { date: "2026-02-10", type: "catalyst",     text: "**Curve v2 AMM upgrades** rolling out. Improved concentrated liquidity could attract more volume and fee revenue." },
+    ],
+    updated: "2026-03-26"
+  },
+
+  // ── CORE: Convex ──
+  {
+    ticker:   "CVX",
+    name:     "Convex Finance — Curve Yield Optimizer",
+    sector:   "defi",
+    thesis:   "core",
+    chart:    "BINANCE:CVXUSDT",
+    overview: "Convex sits on top of Curve, aggregating veCRV voting power and boosting yields for depositors. If Curve is the liquidity layer, Convex is the governance extraction layer. CVX controls a massive share of veCRV — protocols bribe Convex voters to direct Curve emissions to their pools. The 'Curve Wars' dynamic creates persistent demand for CVX. Like CRV, this is a high-beta DeFi infrastructure play with 10-20x upside to prior cycle highs.",
+    stats: {
+      "Position": "5,466 CVX on Fraxlend",
+      "Leverage": "~2.2x",
+      "Health Rate": "1.65",
+      "ATH": "$62.69 (Jan 2022)"
+    },
+    structure: "CVX trading near $1.50-2.00, roughly 97% below ATH. Lower leverage risk than CRV due to higher health rate (1.65 vs 1.34), but the position is smaller. Chart structure similar to CRV — prolonged base-building with declining volume. CVX tends to move in sympathy with CRV but with higher beta. A CRV breakout above $0.30 would likely see CVX push through $2.50. First target zone: $5-8. Major resistance at $15 (prior support turned resistance).",
+    events: [
+      { date: "2026-03-22", type: "info",        text: "**vlCVX bribes remain elevated.** Protocols still competing for Curve gauge weight, indicating underlying demand for CVX governance power." },
+      { date: "2026-03-01", type: "risk",         text: "**Leverage position.** Health rate 1.65 is safer than CRV but still leveraged. Same Tier 0 loan repayment priority applies." },
+    ],
+    updated: "2026-03-26"
+  },
+
+];
+
+
+// ══════════════════════════════════════════════════════════════════
+// RENDERING ENGINE — DO NOT EDIT BELOW UNLESS CHANGING LAYOUT
+// ══════════════════════════════════════════════════════════════════
+
+const SECTOR_CLASSES = {
+  crypto: 'sector-crypto', defi: 'sector-defi', biotech: 'sector-biotech',
+  energy: 'sector-energy', nuclear: 'sector-nuclear', tech: 'sector-tech',
+  equities: 'sector-equities', commodities: 'sector-commodities'
+};
+const THESIS_CLASSES = {
+  core: 'thesis-core', watch: 'thesis-watch',
+  speculative: 'thesis-speculative', hedge: 'thesis-hedge'
+};
+const EVENT_LABELS = {
+  catalyst: 'Catalyst', risk: 'Risk', info: 'Info',
+  earnings: 'Earnings', regulatory: 'Regulatory', insider: 'Insider'
+};
+
+// ── Build master grid ──
+function renderMaster(filter) {
+  const grid = document.getElementById('asset-grid');
+  grid.innerHTML = '';
+
+  const filtered = filter === 'all'
+    ? ASSETS
+    : ASSETS.filter(a => a.sector === filter || a.thesis === filter);
+
+  filtered.forEach((asset, idx) => {
+    const eventCount = (asset.events || []).length;
+    const card = document.createElement('div');
+    card.className = 'asset-card';
+    card.onclick = () => showDetail(asset);
+    card.innerHTML = `
+      <div class="asset-card-top">
+        <span class="asset-card-ticker">${asset.ticker}</span>
+        <span class="asset-card-sector ${SECTOR_CLASSES[asset.sector] || ''}">${asset.sector}</span>
+      </div>
+      <div class="asset-card-name">${asset.name}</div>
+      <div class="asset-card-bottom">
+        <span class="asset-card-thesis ${THESIS_CLASSES[asset.thesis] || ''}">${asset.thesis}</span>
+        ${eventCount ? `<span class="asset-card-events">${eventCount} events</span>` : ''}
+        <span class="asset-card-updated">${asset.updated || '—'}</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('asset-count').textContent = filtered.length + ' assets';
+}
+
+// ── Build filter bar ──
+function renderFilters() {
+  const bar = document.getElementById('filter-bar');
+  const sectors = [...new Set(ASSETS.map(a => a.sector))];
+  const theses = [...new Set(ASSETS.map(a => a.thesis))];
+
+  let html = '<button class="filter-btn active" data-filter="all">All</button>';
+  sectors.forEach(s => {
+    html += `<button class="filter-btn" data-filter="${s}">${s}</button>`;
+  });
+  theses.forEach(t => {
+    html += `<button class="filter-btn" data-filter="${t}">${t}</button>`;
+  });
+  html += '<span class="asset-count" id="asset-count"></span>';
+  bar.innerHTML = html;
+
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderMaster(btn.dataset.filter);
+    });
+  });
+}
+
+// ── Show detail view ──
+function showDetail(asset) {
+  document.getElementById('master-view').classList.add('hidden');
+  const dv = document.getElementById('detail-view');
+  dv.classList.add('active');
+  window.scrollTo(0, 0);
+
+  // Build stats row
+  const stats = asset.stats || {};
+  const statsHtml = Object.entries(stats).map(([k, v]) =>
+    `<div class="stat-item">
+      <div class="stat-item-label">${k}</div>
+      <div class="stat-item-value">${v}</div>
+    </div>`
+  ).join('');
+
+  // Build events
+  const events = (asset.events || []).sort((a, b) => b.date.localeCompare(a.date));
+  const eventsHtml = events.map(e => {
+    const d = new Date(e.date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const typeCls = e.type || 'info';
+    const typeLabel = EVENT_LABELS[e.type] || e.type;
+    // Simple bold markdown: **text**
+    const text = e.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    return `<div class="event-item">
+      <span class="event-date">${dateStr}</span>
+      <span class="event-type ${typeCls}">${typeLabel}</span>
+      <span class="event-text">${text}</span>
+    </div>`;
+  }).join('');
+
+  // TradingView widget URL
+  const tvSymbol = encodeURIComponent(asset.chart || asset.ticker);
+  const tvUrl = `https://s.tradingview.com/widgetembed/?frameElementId=tv_chart&symbol=${tvSymbol}&interval=W&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=0d1117&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=0&studies_overrides=%7B%7D&overrides=%7B%22paneProperties.background%22%3A%22%230d1117%22%2C%22paneProperties.backgroundType%22%3A%22solid%22%7D&enabled_features=[]&disabled_features=[]&locale=en&utm_source=localhost&utm_medium=widget_new&utm_campaign=chart`;
+
+  // Structure notes
+  const structureHtml = asset.structure
+    ? `<div class="structure-notes">
+        <div class="structure-notes-label">Market Structure Notes</div>
+        <p>${asset.structure.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+      </div>`
+    : '';
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-header">
+      <span class="detail-ticker">${asset.ticker}</span>
+      <span class="detail-name">${asset.name}</span>
+    </div>
+    <div class="detail-tags">
+      <span class="asset-card-sector ${SECTOR_CLASSES[asset.sector] || ''}">${asset.sector}</span>
+      <span class="asset-card-thesis ${THESIS_CLASSES[asset.thesis] || ''}">${asset.thesis}</span>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Updated ${asset.updated || '—'}</span>
+    </div>
+
+    ${statsHtml ? `<div class="stat-row" style="margin-bottom:14px;">${statsHtml}</div>` : ''}
+
+    <div class="stack">
+      <div class="overview-card">
+        <div class="overview-label">Overview</div>
+        <p>${asset.overview || 'No overview yet.'}</p>
+      </div>
+
+      <div class="chart-container">
+        <iframe src="${tvUrl}" allowtransparency="true"></iframe>
+      </div>
+
+      ${structureHtml}
+
+      ${eventsHtml ? `
+      <div class="events-card">
+        <div class="events-label">Key Information &amp; Events</div>
+        ${eventsHtml}
+      </div>` : ''}
+    </div>
+  `;
+}
+
+// ── Back to master ──
+function showMaster() {
+  document.getElementById('detail-view').classList.remove('active');
+  document.getElementById('master-view').classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+// ── Handle direct URL hash ──
+function checkHash() {
+  const hash = window.location.hash.replace('#', '').toUpperCase();
+  if (hash) {
+    const asset = ASSETS.find(a => a.ticker.toUpperCase() === hash);
+    if (asset) { showDetail(asset); return; }
+  }
+}
+
+// ── Init ──
+renderFilters();
+renderMaster('all');
+checkHash();
+</script>
+</body>
+</html>

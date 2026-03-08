@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How The Trade Works — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ══════════════════════════════════════════════
+       LIQUIDITY MECHANISM — PAGE STYLES
+       ══════════════════════════════════════════════ */
+
+    .updated-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    .prose { color: var(--text-mid); font-size: 14px; line-height: 1.85; }
+    .prose strong { color: var(--text); }
+
+    .section-break {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 32px 0;
+    }
+
+    /* ── Thesis Callout ── */
+    .thesis-callout {
+      border-left: 3px solid var(--blue);
+      padding: 14px 20px;
+      background: rgba(56,189,248,0.03);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 16px 0;
+    }
+    .thesis-callout p { color: var(--text); font-size: 14px; line-height: 1.75; }
+    .thesis-callout strong { color: var(--blue); }
+
+    .conviction-box {
+      border: 1px solid rgba(74,222,128,0.25);
+      background: rgba(74,222,128,0.03);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .conviction-box .label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--green);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* ── Mechanism Chain ── */
+    .chain {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding-left: 32px;
+    }
+    .chain::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: var(--border-hi);
+    }
+
+    .chain-step {
+      position: relative;
+      padding: 16px 0;
+    }
+    .chain-step:first-child { padding-top: 0; }
+    .chain-step:last-child { padding-bottom: 0; }
+
+    .chain-dot {
+      position: absolute;
+      left: -32px;
+      top: 20px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border-hi);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--text-dim);
+      z-index: 1;
+    }
+    .chain-step:first-child .chain-dot { top: 4px; }
+
+    .chain-step.done .chain-dot {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(74,222,128,0.08);
+    }
+    .chain-step.active .chain-dot {
+      border-color: var(--yellow);
+      color: var(--yellow);
+      background: rgba(251,191,36,0.08);
+      box-shadow: 0 0 8px rgba(251,191,36,0.15);
+    }
+    .chain-step.watching .chain-dot {
+      border-color: var(--text-dim);
+      color: var(--text-dim);
+    }
+
+    .chain-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .chain-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .chain-status {
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .chain-status.done { color: var(--green); background: rgba(74,222,128,0.12); }
+    .chain-status.now { color: var(--yellow); background: rgba(251,191,36,0.12); }
+    .chain-status.watching { color: var(--text-dim); background: rgba(255,255,255,0.05); }
+
+    .chain-body {
+      color: var(--text-mid);
+      font-size: 13.5px;
+      line-height: 1.8;
+    }
+    .chain-body strong { color: var(--text); }
+
+    .chain-key {
+      margin-top: 10px;
+      border-left: 2px solid var(--blue);
+      padding: 8px 14px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+      background: rgba(56,189,248,0.03);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .chain-data {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+    }
+    .chain-data a { color: var(--blue); opacity: 0.7; }
+    .chain-data a:hover { opacity: 1; }
+
+    .chain-triggers {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .chain-trigger {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .chain-trigger strong { color: var(--text); }
+    .chain-trigger .bullet {
+      color: var(--text-dim);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Deployment Levels ── */
+    .levels-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .levels-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .levels-table td {
+      padding: 14px;
+      color: var(--text-mid);
+      border-bottom: 1px solid rgba(30,45,69,0.4);
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .levels-table tr:last-child td { border-bottom: none; }
+    .levels-table .level-id {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .levels-table .level-signal {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .levels-table .level-action {
+      font-size: 12.5px;
+    }
+    .levels-table tr.level-triggered {
+      background: rgba(74,222,128,0.04);
+    }
+    .levels-table tr.level-triggered td {
+      border-bottom-color: rgba(74,222,128,0.15);
+    }
+    .levels-table tr.level-triggered .level-id {
+      color: var(--green);
+    }
+
+    /* ── 90-Day Window ── */
+    .window-timeline {
+      display: flex;
+      gap: 0;
+      margin: 20px 0;
+    }
+    .window-phase {
+      flex: 1;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .window-phase:first-child {
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+    .window-phase:last-child {
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .window-phase + .window-phase {
+      border-left: none;
+    }
+    .window-phase-week {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .window-phase-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .window-phase-desc {
+      font-size: 11px;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    /* ── Kill Switch Summary ── */
+    .ks-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(30,45,69,0.4);
+    }
+    .ks-item:last-child { border-bottom: none; }
+    .ks-item .ks-num {
+      color: var(--red);
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+      width: 20px;
+    }
+    .ks-item .ks-text {
+      font-size: 13.5px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+    .ks-item .ks-text strong { color: var(--text); }
+
+    /* ── Weekly Checklist Card ── */
+    .checklist-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .checklist-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .traffic-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .traffic-light.tl-green {
+      color: var(--green);
+      border-color: rgba(74,222,128,0.3);
+      background: rgba(74,222,128,0.08);
+    }
+    .traffic-light.tl-yellow {
+      color: var(--yellow);
+      border-color: rgba(251,191,36,0.3);
+      background: rgba(251,191,36,0.08);
+    }
+    .traffic-light.tl-red {
+      color: var(--red);
+      border-color: rgba(248,113,113,0.3);
+      background: rgba(248,113,113,0.08);
+    }
+
+    .check-row {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(30,45,69,0.3);
+      align-items: flex-start;
+    }
+    .check-row:last-child { border-bottom: none; }
+    .check-when {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      min-width: 100px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .check-what {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+    .check-what strong { color: var(--text); }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .signal-card {
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+    .signal-card-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .signal-card-body {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .signal-card-body strong { color: var(--text); }
+
+    /* ── Source Data Table ── */
+    .source-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 12px 0;
+    }
+    .source-table th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .source-table td {
+      padding: 10px 12px;
+      color: var(--text-mid);
+      border-bottom: 1px solid rgba(30,45,69,0.4);
+      line-height: 1.5;
+    }
+    .source-table tr:last-child td { border-bottom: none; }
+
+    .warning-box {
+      border: 1px solid rgba(248,113,113,0.25);
+      background: rgba(248,113,113,0.03);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+    }
+    .warning-box .label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .chain { padding-left: 28px; }
+      .chain-dot { left: -28px; width: 18px; height: 18px; font-size: 8px; }
+      .window-timeline { flex-direction: column; }
+      .window-phase + .window-phase { border-left: 1px solid var(--border); border-top: none; }
+      .window-phase:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+      .window-phase:last-child { border-radius: 0 0 var(--radius-sm) var(--radius-sm); }
+      .signal-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <header class="page-header">
+        <div class="page-eyebrow">Thesis</div>
+        <h1 class="page-title">How The Trade Works</h1>
+        <p class="page-subtitle">
+          The mechanism chain from Fed balance sheet expansion to BTC price response.
+          This is the explanatory page — how the trade fires, step by step.
+        </p>
+        <div class="updated-tag">Last updated: 8 Mar 2026 &middot; Current status: <span style="color:var(--green); font-weight:700;">L1 TRIGGERED</span></div>
+      </header>
+
+
+      <div class="stack">
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 1: THE ONE-SENTENCE THESIS
+             ═══════════════════════════════════════════════ -->
+        <div class="conviction-box">
+          <div class="label">The One-Sentence Thesis</div>
+          <p class="prose">
+            <strong>Bitcoin price correlates with the Federal Reserve balance sheet (WALCL) at R&sup2; = 0.913 on a log-log basis, with approximately a 90-day lag.</strong> When the Fed's balance sheet grows, BTC follows about 3 months later. This has held across every quantitative easing cycle in Bitcoin's existence. The entire trade is a bet that WALCL is about to start growing again.
+          </p>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 2: THE MECHANISM CHAIN
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">The Mechanism Chain — Each Step Causes The Next</div>
+
+          <div class="chain">
+
+            <!-- Step 1 -->
+            <div class="chain-step done">
+              <div class="chain-dot">1</div>
+              <div class="chain-header">
+                <span class="chain-title">The Buffer Drains</span>
+                <span class="chain-status done">Done &mdash; Feb 2026</span>
+              </div>
+              <div class="chain-body">
+                The Reverse Repo Facility (RRP) was a giant pool of excess cash at the Fed. At peak, over <strong>$2 trillion</strong>. Banks and money market funds parked cash there for safe, decent returns. As long as that pool existed, the financial system had a buffer. If something went wrong in the bond market, cash could flow out of the RRP and absorb the shock without the Fed needing to act.
+              </div>
+              <div class="chain-key">
+                The RRP being empty doesn't force the Fed to act. It means the system is <strong>vulnerable</strong>. Like draining the fire extinguisher &mdash; the building hasn't caught fire, but there's nothing to put it out if it does.
+              </div>
+              <div class="chain-data">FRED: <a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank">RRPONTSYD</a> &mdash; currently near zero</div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="chain-step active">
+              <div class="chain-dot">2</div>
+              <div class="chain-header">
+                <span class="chain-title">The System Is Fragile</span>
+                <span class="chain-status now">Now</span>
+              </div>
+              <div class="chain-body">
+                With no RRP buffer, the overnight funding market runs on fumes. Every time there's unexpected demand for cash &mdash; a large Treasury auction, quarter-end settlement, a geopolitical shock &mdash; the system strains. You don't need to predict <strong>what</strong> causes the strain. The thesis is that the system is fragile enough that <strong>something</strong> will.
+              </div>
+              <div class="chain-triggers">
+                <div class="chain-trigger">
+                  <span class="bullet">&bull;</span>
+                  <span><strong>Treasury auctions:</strong> ~$2T annual deficit means constant bond issuance, constant cash demand. Without the RRP buffer, banks feel the squeeze directly.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet">&bull;</span>
+                  <span><strong>Quarter-end settlement:</strong> Banks hoard cash at reporting dates. In a drained system, this is when things break.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet">&bull;</span>
+                  <span><strong>Geopolitical shock:</strong> Sudden flight to safety causes everyone to hoard cash simultaneously.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet">&bull;</span>
+                  <span><strong>The slow squeeze:</strong> No single event. Cumulative effect of a drained RRP and ongoing Treasury issuance. The system gets tighter week by week. Least dramatic, possibly most likely.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="chain-step watching">
+              <div class="chain-dot">3</div>
+              <div class="chain-header">
+                <span class="chain-title">SOFR Spikes</span>
+                <span class="chain-status watching">Watching</span>
+              </div>
+              <div class="chain-body">
+                SOFR (Secured Overnight Financing Rate) is the interest rate banks charge each other for overnight cash, using Treasuries as collateral. Normally trades within a few basis points of the Fed Funds rate. <strong>When SOFR spikes above Fed Funds, banks are desperate for cash and can't find it at a normal price.</strong>
+              </div>
+              <div class="chain-body" style="margin-top:8px;">
+                This is exactly what happened in <strong>September 2019</strong>. SOFR spiked from ~2.4% to 5.25% in a single day. The repo market seized up. The Fed injected $75B in emergency cash the next morning.
+              </div>
+              <div class="chain-key">
+                SOFR is the smoke detector. It doesn't matter what starts the fire. When SOFR spikes, the system is breaking.
+              </div>
+              <div class="chain-data">Source: <a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank">NY Fed SOFR</a> &mdash; compare to <a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank">FEDFUNDS</a></div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="chain-step watching">
+              <div class="chain-dot">4</div>
+              <div class="chain-header">
+                <span class="chain-title">The Fed Is Forced to Act</span>
+                <span class="chain-status watching">Watching</span>
+              </div>
+              <div class="chain-body">
+                When SOFR spikes high enough, the Fed <strong>must</strong> inject cash or the bond market locks up. First response is a band-aid &mdash; repo operation, temporary lending facility. They inject cash to stop the bleeding.
+              </div>
+              <div class="chain-key">
+                Important: the first response might be temporary. A one-time emergency injection that gets pulled back doesn't start the expansion. It's a patch, not a policy change. Watch for <strong>sustained</strong> action.
+              </div>
+              <div class="chain-data">FRED: <a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">WALCL</a> (Fed Total Assets) &mdash; updated every Thursday 4:30pm ET</div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="chain-step watching">
+              <div class="chain-dot">5</div>
+              <div class="chain-header">
+                <span class="chain-title">Expansion Confirmed</span>
+                <span class="chain-status watching">The Trigger</span>
+              </div>
+              <div class="chain-body">
+                When WALCL is rising on <strong>2+ consecutive Thursday H.4.1 releases</strong>, the expansion is confirmed. The Fed isn't patching &mdash; they're actively growing the balance sheet. This is the moment the mechanism has fired.
+              </div>
+              <div class="chain-key">
+                <strong>This is when the 90-day countdown starts.</strong> Not at the SOFR spike. Not at the emergency injection. At confirmed, sustained expansion. Two consecutive Thursdays of growth = direction has changed.
+              </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="chain-step watching">
+              <div class="chain-dot">6</div>
+              <div class="chain-header">
+                <span class="chain-title">The 90-Day Lag</span>
+                <span class="chain-status watching">Watching</span>
+              </div>
+              <div class="chain-body">
+                The lag exists because money doesn't teleport from the Fed into Bitcoin. It flows through a chain of intermediaries, each step taking time.
+              </div>
+              <div class="chain-triggers" style="margin-top:10px;">
+                <div class="chain-trigger">
+                  <span class="bullet" style="color:var(--blue);">W0&ndash;1</span>
+                  <span><strong>Fed injects cash into banking system.</strong> Banks have more reserves. This is WALCL going up. But banks don't buy Bitcoin.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet" style="color:var(--blue);">W2&ndash;6</span>
+                  <span><strong>Banks lend more freely.</strong> More reserves = looser credit. Interest rates ease. Takes weeks for lending standards to adjust.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet" style="color:var(--blue);">W4&ndash;8</span>
+                  <span><strong>Liquidity flows into financial markets.</strong> Cheaper credit = more money chasing returns. Flows first to safest assets &mdash; Treasuries, bonds, large-cap equities. S&amp;P responds before BTC.</span>
+                </div>
+                <div class="chain-trigger">
+                  <span class="bullet" style="color:var(--blue);">W8&ndash;12</span>
+                  <span><strong>Risk appetite reaches crypto.</strong> Traditional markets rally, confidence builds, investors move out the risk curve. Capital hits crypto &mdash; first BTC, then ETH, then alts.</span>
+                </div>
+              </div>
+              <div class="chain-key" style="margin-top:14px;">
+                Think of it like dropping a rock in a pond. The Fed injection is the rock. First ripple hits bonds. Second hits equities. Third reaches crypto in ~90 days. The ripples don't skip &mdash; they propagate outward in order of risk.
+              </div>
+            </div>
+
+            <!-- Step 7 -->
+            <div class="chain-step watching">
+              <div class="chain-dot">7</div>
+              <div class="chain-header">
+                <span class="chain-title">BTC Responds</span>
+                <span class="chain-status watching">Watching</span>
+              </div>
+              <div class="chain-body">
+                BTC reprices to reflect the new liquidity environment. The correlation holds because BTC is increasingly the last major stop on the risk curve &mdash; the asset people buy when they're confident, liquid, and looking for asymmetric upside.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── Historical Evidence ── -->
+        <div class="card">
+          <div class="card-eyebrow">Historical QE Evidence</div>
+          <table class="levels-table">
+            <thead>
+              <tr>
+                <th>QE Cycle</th>
+                <th>WALCL Started</th>
+                <th>BTC at Start</th>
+                <th>BTC ~90 Days</th>
+                <th>BTC Peak</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">QE2 (Nov 2010)</td>
+                <td>November 2010</td>
+                <td>$0.30</td>
+                <td>Rising</td>
+                <td style="color:var(--green);">$30 (8 months)</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">QE3 (Sep 2012)</td>
+                <td>September 2012</td>
+                <td>$12</td>
+                <td style="color:var(--green);">$130 (Jan 2013)</td>
+                <td style="color:var(--green);">$1,100 (Nov 2013)</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">QE4 (Mar 2020)</td>
+                <td>March 2020</td>
+                <td>$5,000</td>
+                <td style="color:var(--green);">$9,000 (Jun 2020)</td>
+                <td style="color:var(--green);">$69,000 (Nov 2021)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 3: DEPLOYMENT LEVELS
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card" style="border-color: rgba(56,189,248,0.3);">
+          <div class="card-eyebrow" style="color:var(--blue);">Deployment Levels &mdash; Progressive Escalation</div>
+          <p class="prose" style="margin-bottom:16px;">
+            Each level builds on the previous. Current status: <strong>L1 triggered</strong>. Monitoring for L2/L3.
+          </p>
+
+          <table class="levels-table">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Signal</th>
+                <th>What It Means</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="level-triggered">
+                <td class="level-id">L1</td>
+                <td class="level-signal">RRP &lt; $50B</td>
+                <td>System is vulnerable. No safety net.</td>
+                <td class="level-action"><strong>Start TWAP.</strong> Base position running.</td>
+              </tr>
+              <tr>
+                <td class="level-id" style="color:var(--yellow);">L2</td>
+                <td class="level-signal">SOFR &gt; Fed Funds +10bp for 3+ consecutive days</td>
+                <td>Not a one-day blip. Structural strain. The plumbing is tight and staying tight.</td>
+                <td class="level-action">Accelerate TWAP.</td>
+              </tr>
+              <tr>
+                <td class="level-id" style="color:var(--orange);">L3</td>
+                <td class="level-signal">SOFR &gt; Fed Funds +25bp on any single day</td>
+                <td>This is September 2019. The system is breaking. Fed acts within 48 hours.</td>
+                <td class="level-action"><strong>Deploy aggressively.</strong> Largest single chunk buy.</td>
+              </tr>
+              <tr>
+                <td class="level-id" style="color:var(--red);">L4</td>
+                <td class="level-signal">Fed announces emergency repo ops or new facility</td>
+                <td>Confirmed response. Cash is being injected.</td>
+                <td class="level-action">Deploy remaining capital.</td>
+              </tr>
+              <tr>
+                <td class="level-id" style="color:var(--purple);">L5</td>
+                <td class="level-signal">WALCL rising on 2+ consecutive Thursday H.4.1 releases</td>
+                <td>The balance sheet is actually growing. This is real and sustained.</td>
+                <td class="level-action"><strong>Start the 90-day countdown.</strong> Should be fully positioned.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 4: THE 90-DAY WINDOW
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">The 90-Day Window &mdash; After L5 Fires</div>
+          <p class="prose" style="margin-bottom:16px;">
+            After L5, the 90-day window is <strong>not for buying</strong> &mdash; it's for holding with conviction while nothing seems to be happening. You'll be fully deployed, WALCL is growing, but BTC might still be chopping sideways or drifting lower. The lag means the market hasn't priced it in yet.
+          </p>
+
+          <div class="window-timeline">
+            <div class="window-phase" style="background:rgba(56,189,248,0.04);">
+              <div class="window-phase-week">Week 0&ndash;1</div>
+              <div class="window-phase-title">Fed Injects</div>
+              <div class="window-phase-desc">Cash enters banking system. WALCL rising. Banks have more reserves. Nothing visible in markets yet.</div>
+            </div>
+            <div class="window-phase" style="background:rgba(56,189,248,0.03);">
+              <div class="window-phase-week">Week 2&ndash;6</div>
+              <div class="window-phase-title">Credit Loosens</div>
+              <div class="window-phase-desc">Banks lend more freely. Rates ease. Credit conditions improve. Still no crypto response.</div>
+            </div>
+            <div class="window-phase" style="background:rgba(56,189,248,0.02);">
+              <div class="window-phase-week">Week 4&ndash;8</div>
+              <div class="window-phase-title">TradFi Responds</div>
+              <div class="window-phase-desc">Bonds, then equities rally. S&amp;P moves first. You might feel impatient.</div>
+            </div>
+            <div class="window-phase" style="background:rgba(74,222,128,0.04);">
+              <div class="window-phase-week">Week 8&ndash;12</div>
+              <div class="window-phase-title">Crypto Responds</div>
+              <div class="window-phase-desc">Risk appetite reaches crypto. BTC first, ETH second, alts follow. This is the payoff.</div>
+            </div>
+          </div>
+
+          <div class="thesis-callout" style="border-left-color:var(--yellow);">
+            <p>
+              <strong style="color:var(--yellow);">Your job during these 90 days: do not panic. Do not sell.</strong> The people who get wrecked deploy before the mechanism fires and can't hold through the drawdown. Or they deploy after it fires but sell during the lag because "nothing is happening." Plan for 90 days. If it compresses to 60 due to ETF flows, you're pleasantly early rather than painfully late.
+            </p>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 5: KILL SWITCHES
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="warning-box">
+          <div class="label">Kill Switches &mdash; What Could Break This</div>
+          <div style="display:flex; flex-direction:column;">
+            <div class="ks-item">
+              <span class="ks-num">1</span>
+              <span class="ks-text"><strong>Inflation Ceiling (Core PCE &gt; 3.5% for 3+ months).</strong> The Fed can only expand if inflation allows. If inflation runs hot, the Fed is trapped &mdash; financial stress demands injection, but inflation makes sustained expansion politically impossible. This is the failure mode.</span>
+            </div>
+            <div class="ks-item">
+              <span class="ks-num">2</span>
+              <span class="ks-text"><strong>Mechanism Failure (WALCL flat or falling 4+ weeks after confirmed injection).</strong> The Fed acts but the expansion doesn't stick. Sterilized injection &mdash; band-aid, not the real thing.</span>
+            </div>
+            <div class="ks-item">
+              <span class="ks-num">3</span>
+              <span class="ks-text"><strong>Time Stop (December 31, 2026).</strong> This is a 2026 trade. If the mechanism hasn't fired by late summer, the window is closing.</span>
+            </div>
+            <div class="ks-item">
+              <span class="ks-num">4</span>
+              <span class="ks-text"><strong>Solvency.</strong> If you're forced to sell because you need the cash, the thesis is irrelevant. Never deploy money you need in the next 18 months.</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SECTION 6: WEEKLY MONITORING CHECKLIST
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="checklist-card">
+          <div class="checklist-label">Weekly Monitoring &mdash; 2 Minutes Every Thursday</div>
+
+          <div class="check-row">
+            <div class="check-when">Thu evening</div>
+            <div class="check-what">
+              <strong>Check WALCL on FRED.</strong> Is it higher than last week? Higher than 2 weeks ago?
+            </div>
+          </div>
+          <div class="check-row">
+            <div class="check-when">Thu evening</div>
+            <div class="check-what">
+              <strong>Assign traffic light.</strong>
+            </div>
+          </div>
+
+          <div class="signal-grid">
+            <div class="signal-card" style="border-color:rgba(74,222,128,0.2); background:rgba(74,222,128,0.03);">
+              <div class="signal-card-label" style="color:var(--green);">
+                <span class="traffic-light tl-green">Green</span>
+              </div>
+              <div class="signal-card-body">
+                <strong>WALCL rising 2+ weeks.</strong> Start 90-day countdown. You should be fully deployed. Hold. Don't trade. Wait for the ripple.
+              </div>
+            </div>
+            <div class="signal-card" style="border-color:rgba(251,191,36,0.2); background:rgba(251,191,36,0.03);">
+              <div class="signal-card-label" style="color:var(--yellow);">
+                <span class="traffic-light tl-yellow">Yellow</span>
+              </div>
+              <div class="signal-card-body">
+                <strong>Flat or one week up.</strong> TWAP continues at base pace. Watch SOFR for stress signals.
+              </div>
+            </div>
+            <div class="signal-card" style="border-color:rgba(248,113,113,0.2); background:rgba(248,113,113,0.03);">
+              <div class="signal-card-label" style="color:var(--red);">
+                <span class="traffic-light tl-red">Red</span>
+              </div>
+              <div class="signal-card-body">
+                <strong>WALCL declining.</strong> Thesis not active. TWAP at minimum pace. Check kill switches.
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border);">
+            <div class="check-row" style="border-bottom:none; padding-top:0;">
+              <div class="check-when">Weekly / news</div>
+              <div class="check-what">
+                <strong>SOFR check.</strong> Is SOFR persistently above Fed Funds? By how much?<br>
+                +10bp for 3+ days = <span style="color:var(--yellow); font-weight:700;">L2</span> (accelerate).
+                +25bp single day = <span style="color:var(--orange); font-weight:700;">L3</span> (deploy aggressively).
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════
+             SOURCE DATA REFERENCES
+             ═══════════════════════════════════════════════ -->
+        <hr class="section-break">
+        <div class="card">
+          <div class="card-eyebrow">Source Data References</div>
+          <table class="source-table">
+            <thead>
+              <tr>
+                <th>Data Point</th>
+                <th>Source</th>
+                <th>Frequency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">WALCL (Fed Total Assets)</td>
+                <td><a href="https://fred.stlouisfed.org/series/WALCL" target="_blank">FRED</a></td>
+                <td>Weekly (Thu 4:30pm ET)</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">RRP Balance</td>
+                <td><a href="https://fred.stlouisfed.org/series/RRPONTSYD" target="_blank">FRED</a></td>
+                <td>Daily</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">SOFR Rate</td>
+                <td><a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank">NY Fed</a></td>
+                <td>Daily</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">Fed Funds Rate</td>
+                <td><a href="https://fred.stlouisfed.org/series/FEDFUNDS" target="_blank">FRED</a></td>
+                <td>Monthly</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">TGA Balance</td>
+                <td><a href="https://fred.stlouisfed.org/series/WTREGEN" target="_blank">FRED</a></td>
+                <td>Weekly (Thu)</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text); font-weight:600;">M2 Money Supply</td>
+                <td><a href="https://fred.stlouisfed.org/series/M2SL" target="_blank">FRED</a></td>
+                <td>Monthly</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="font-family:var(--mono); font-size:9px; color:var(--text-dim); margin-top:10px;">
+            Content authored 8 Mar 2026. Based on thesis research. For personal investment research purposes only.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+<script src="assets/nav.js" data-root="./"></script>
+</body>
+</html>
