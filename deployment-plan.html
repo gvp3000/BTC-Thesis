@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deployment Plan — BTC Thesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ══════════════════════════════════════════════
+       DEPLOYMENT PLAN — PAGE STYLES
+       ══════════════════════════════════════════════ */
+
+    .updated-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    /* ── Allocation bar ── */
+    .alloc-bar {
+      display: flex;
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .alloc-bar span { display: block; }
+
+    /* ── Asset card ── */
+    .asset-card {
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      border-left: 3px solid var(--border);
+    }
+    .asset-card .asset-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .asset-card .asset-pct {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .asset-card .asset-dollar {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .asset-card .asset-note {
+      font-size: 11px;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── TWAP table ── */
+    .twap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .twap-table th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .twap-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-mid);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    .twap-table tr:last-child td { border-bottom: none; }
+    .twap-table .week-num { color: var(--text-dim); font-size: 10px; }
+    .twap-table .total-row td {
+      color: var(--text);
+      font-weight: 700;
+      border-top: 1px solid var(--border-hi);
+      border-bottom: none;
+    }
+
+    /* ── Fraxlend health indicator ── */
+    .health-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .health-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .health-dot.green { background: var(--green); box-shadow: 0 0 6px rgba(74,222,128,0.4); }
+    .health-dot.yellow { background: var(--yellow); }
+    .health-dot.red { background: var(--red); }
+
+    /* ── Alert level ── */
+    .alert-level {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 12px;
+    }
+    .alert-tag {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+    .alert-tag.yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+    .alert-tag.red { background: rgba(248,113,113,0.15); color: var(--red); }
+
+    /* ── Exit tier ── */
+    .exit-tier {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .exit-tier:last-child { border-bottom: none; }
+    .exit-tier-label {
+      min-width: 56px;
+    }
+    .exit-tier-label .tier-name {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--orange);
+    }
+    .exit-tier-label .tier-price {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .exit-tier-body {
+      flex: 1;
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .exit-tier-pct {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      background: rgba(249,115,22,0.12);
+      color: var(--orange);
+    }
+
+    /* ── Tax callout ── */
+    .callout {
+      border-left: 3px solid var(--yellow);
+      padding: 12px 16px;
+      background: rgba(251,191,36,0.04);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .callout p {
+      color: var(--text-mid);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .callout strong { color: var(--text); }
+
+    /* ── Rule box ── */
+    .rule-box {
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-top: 10px;
+    }
+    .rule-box .rule-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .rule-box .rule-text {
+      font-size: 12px;
+      color: var(--text-mid);
+      line-height: 1.6;
+    }
+    .rule-box .rule-text strong { color: var(--text); }
+
+    /* ── Section break ── */
+    .section-break {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 32px;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="site-layout">
+  <nav class="site-nav" id="site-nav"></nav>
+
+  <main class="site-main">
+    <div class="page-wrap">
+
+      <!-- ── PAGE HEADER ── -->
+      <header class="page-header">
+        <div class="page-eyebrow">Portfolio</div>
+        <h1 class="page-title">Deployment Plan</h1>
+        <p class="page-subtitle">Capital deployment schedule, allocation targets, TWAP cadence, kill switches, and tax timeline. Reference this on deploy day, then every Thursday.</p>
+        <div class="updated-tag">Updated March 14, 2026 &middot; Capital received &middot; Deployment begins</div>
+      </header>
+
+      <div class="stack">
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 1: CAPITAL SUMMARY
+             ═══════════════════════════════════════════ -->
+        <div class="stat-bar">
+          <div>
+            <div class="sb-label">Total Deploy</div>
+            <div class="sb-val" style="color: var(--text);">$60,000</div>
+          </div>
+          <div class="sb-divider"></div>
+          <div>
+            <div class="sb-label">Lump Sum (Day 0)</div>
+            <div class="sb-val" style="color: var(--green);">$30,000</div>
+          </div>
+          <div class="sb-divider"></div>
+          <div>
+            <div class="sb-label">TWAP (12 weeks)</div>
+            <div class="sb-val" style="color: var(--blue);">$30,000</div>
+          </div>
+          <div class="sb-divider"></div>
+          <div class="sb-body">
+            <strong>50/50 split.</strong> Half deployed Day 0 across all 4 assets. Remaining half spread over 12 Thursdays via TWAP. On-chain swaps (Uniswap/Curve), all 4 assets in one sitting each week.
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 2: ALLOCATION TARGETS
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Allocation — 20 / 20 / 30 / 30</div>
+
+          <!-- Visual bar -->
+          <div class="alloc-bar">
+            <span style="width: 20%; background: var(--orange);"></span>
+            <span style="width: 20%; background: var(--blue);"></span>
+            <span style="width: 30%; background: var(--purple);"></span>
+            <span style="width: 30%; background: #06b6d4;"></span>
+          </div>
+
+          <div class="grid-4" style="gap: 10px;">
+            <div class="asset-card" style="border-left-color: var(--orange);">
+              <div class="asset-name" style="color: var(--orange);">BTC</div>
+              <div class="asset-pct" style="color: var(--orange);">20%</div>
+              <div class="asset-dollar">$12,000</div>
+              <div class="asset-note">Anchor position. Institutional infrastructure, ETF flows, debt-ceiling model. Lowest risk within crypto. First to move on liquidity signal.</div>
+            </div>
+            <div class="asset-card" style="border-left-color: var(--blue);">
+              <div class="asset-name" style="color: var(--blue);">ETH</div>
+              <div class="asset-pct" style="color: var(--blue);">20%</div>
+              <div class="asset-dollar">$12,000</div>
+              <div class="asset-note">Highest beta major. DeFi recovery play. If liquidity thesis fires, ETH outperforms BTC on the way up. Stablecoin infrastructure backbone.</div>
+            </div>
+            <div class="asset-card" style="border-left-color: var(--purple);">
+              <div class="asset-name" style="color: var(--purple);">CRV</div>
+              <div class="asset-pct" style="color: var(--purple);">30%</div>
+              <div class="asset-dollar">$18,000</div>
+              <div class="asset-note">DeFi infrastructure bet. Toll road thesis — 44% fee dominance, veCRV supply lock, stablecoin routing. Maximum asymmetry if DeFi recovers.</div>
+            </div>
+            <div class="asset-card" style="border-left-color: #06b6d4;">
+              <div class="asset-name" style="color: #06b6d4;">CVX</div>
+              <div class="asset-pct" style="color: #06b6d4;">30%</div>
+              <div class="asset-dollar">$18,000</div>
+              <div class="asset-note">Leveraged Curve exposure. vlCVX locking continued through crash — conviction signal. Heavier tilt for asymmetric upside. Concentration risk accepted.</div>
+            </div>
+          </div>
+
+          <div class="rule-box" style="margin-top: 14px;">
+            <div class="rule-label">Previous allocation</div>
+            <div class="rule-text">Changed from BTC 40% / ETH 30% / CRV 20% / CVX 10% to <strong>20/20/30/30</strong>. Heavier Curve ecosystem tilt. Greg accepts concentration risk for asymmetric upside.</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 3: DAY 0 — LUMP SUM
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Day 0 — Lump Sum ($30,000)</div>
+          <p style="color: var(--text-mid); font-size: 13px; line-height: 1.7; margin-bottom: 16px;">
+            Deploy 50% across all four assets at market on deployment day. On-chain swaps via Uniswap/Curve. All four in one sitting.
+          </p>
+          <div class="grid-4" style="gap: 10px;">
+            <div class="stat-block">
+              <div class="stat-label" style="color: var(--orange);">BTC</div>
+              <div class="stat-value" style="color: var(--text); font-size: 18px;">$6,000</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label" style="color: var(--blue);">ETH</div>
+              <div class="stat-value" style="color: var(--text); font-size: 18px;">$6,000</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label" style="color: var(--purple);">CRV</div>
+              <div class="stat-value" style="color: var(--text); font-size: 18px;">$9,000</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label" style="color: #06b6d4;">CVX</div>
+              <div class="stat-value" style="color: var(--text); font-size: 18px;">$9,000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 4: TWAP SCHEDULE
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">TWAP Schedule — 12 Thursdays ($30,000)</div>
+          <p style="color: var(--text-mid); font-size: 13px; line-height: 1.7; margin-bottom: 14px;">
+            $2,500 per week. Every Thursday after WALCL check (4:30pm ET). First TWAP March 19. Last TWAP June 4.
+          </p>
+
+          <div style="overflow-x: auto;">
+            <table class="twap-table">
+              <thead>
+                <tr>
+                  <th>Wk</th>
+                  <th>Date</th>
+                  <th style="color: var(--orange);">BTC</th>
+                  <th style="color: var(--blue);">ETH</th>
+                  <th style="color: var(--purple);">CRV</th>
+                  <th style="color: #06b6d4;">CVX</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="week-num">1</td><td>Mar 19</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">2</td><td>Mar 26</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">3</td><td>Apr 2</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">4</td><td>Apr 9</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">5</td><td>Apr 16</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">6</td><td>Apr 23</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">7</td><td>Apr 30</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">8</td><td>May 7</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">9</td><td>May 14</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">10</td><td>May 21</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">11</td><td>May 28</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr><td class="week-num">12</td><td>Jun 4</td><td>$500</td><td>$500</td><td>$750</td><td>$750</td><td style="color: var(--text);">$2,500</td></tr>
+                <tr class="total-row"><td></td><td>Total</td><td>$6,000</td><td>$6,000</td><td>$9,000</td><td>$9,000</td><td style="color: var(--green);">$30,000</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
+            <div class="rule-box">
+              <div class="rule-label" style="color: var(--green);">Backstop Rule</div>
+              <div class="rule-text">All remaining TWAP capital deployed by <strong>Day 60 after WALCL turns positive</strong>. If the signal fires mid-schedule, accelerate remaining buys.</div>
+            </div>
+            <div class="rule-box">
+              <div class="rule-label" style="color: var(--blue);">Discretionary Rule</div>
+              <div class="rule-text">Reserve optionality to <strong>rotate BTC/ETH allocation into CRV/CVX</strong> if pairs weaken. Do not increase total capital deployed.</div>
+            </div>
+            <div class="rule-box">
+              <div class="rule-label" style="color: var(--purple);">Execution</div>
+              <div class="rule-text">On-chain swaps via Uniswap/Curve. All 4 assets in one sitting. Thursday after WALCL check at 4:30pm ET. Total session: ~15 minutes.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 5: KILL SWITCHES
+             ═══════════════════════════════════════════ -->
+        <div class="ks-wrap">
+          <div class="ks-header">
+            <div class="ks-title">Kill Switches — 5 Pre-Committed Decisions</div>
+            <span class="badge green">ALL GREEN</span>
+          </div>
+          <p style="color: var(--text-dim); font-size: 12px; line-height: 1.6; margin-bottom: 16px;">
+            Made now, while calm. Refer to them when you're not. A thesis without invalidation conditions is a religion, not a trade.
+          </p>
+
+          <div class="ks" style="border-color: rgba(248,113,113,0.25);">
+            <div class="ks-top">
+              <div class="ks-key" style="color: var(--red);">1</div>
+              <div class="ks-name">Mechanism</div>
+              <span class="badge green">CORNERSTONE</span>
+            </div>
+            <div class="ks-body">The most important kill switch. Tests the thesis itself.</div>
+            <div class="ks-trigger"><span>Trigger:</span> WALCL flat or falling for 4+ consecutive weeks after a confirmed Fed injection event</div>
+            <div class="ks-trigger"><span>Action:</span> Re-evaluate immediately. If sterilized (not sustained QE), likely full exit</div>
+            <div class="ks-trigger" style="color: var(--text-dim); margin-top: 4px;">Check: FRED WALCL every Thursday 4:30pm ET. Sterilized = band-aid. Sustained = thesis intact.</div>
+          </div>
+
+          <div class="ks">
+            <div class="ks-top">
+              <div class="ks-key" style="color: var(--orange);">2</div>
+              <div class="ks-name">Time</div>
+              <span class="badge dim">MONITOR</span>
+            </div>
+            <div class="ks-body">Positions must show progress within a reasonable window.</div>
+            <div class="ks-trigger"><span>Trigger:</span> BTC not at 1.5x entry 18 months after WALCL expansion begins</div>
+            <div class="ks-trigger"><span>Action:</span> Reduce position by 50%, formally reassess thesis</div>
+            <div class="ks-trigger" style="color: var(--text-dim); margin-top: 4px;">Note: Phase A has a Dec 31, 2026 time stop regardless. This kill switch applies to the broader thesis timeline.</div>
+          </div>
+
+          <div class="ks">
+            <div class="ks-top">
+              <div class="ks-key" style="color: var(--orange);">3</div>
+              <div class="ks-name">Inflation Ceiling</div>
+              <span class="badge yellow">AMBER</span>
+            </div>
+            <div class="ks-body">If inflation stays sticky, the Fed can't expand aggressively — thesis needs sustained expansion, not a band-aid.</div>
+            <div class="ks-trigger"><span>Trigger:</span> Core PCE &gt; 3.5% for 3+ consecutive months</div>
+            <div class="ks-trigger"><span>Action:</span> Reduce 50%, lower upside targets</div>
+            <div class="ks-trigger" style="color: var(--text-dim); margin-top: 4px;">Status: Core PCE at 3.0% (Dec), trending up from 2.8%. Not breached, but trending toward threshold. Next print March 13.</div>
+          </div>
+
+          <div class="ks">
+            <div class="ks-top">
+              <div class="ks-key" style="color: var(--green);">4</div>
+              <div class="ks-name">Solvency</div>
+              <span class="badge green">CLEAR</span>
+            </div>
+            <div class="ks-body">Personal solvency floor. Can you service your obligations from income regardless of crypto price?</div>
+            <div class="ks-trigger"><span>Trigger:</span> Cannot service financial obligations from income</div>
+            <div class="ks-trigger"><span>Action:</span> Sell minimum to service obligations. Preserve the rest.</div>
+          </div>
+
+          <div class="ks">
+            <div class="ks-top">
+              <div class="ks-key" style="color: var(--blue);">5</div>
+              <div class="ks-name">Black Swan</div>
+              <span class="badge dim">WATCH</span>
+            </div>
+            <div class="ks-body">Structural failures of the asset class itself or its institutional access. Not "market is down" events.</div>
+            <div class="ks-trigger"><span>Trigger:</span> BTC ETF banned/suspended, USDT depeg below $0.90, critical Bitcoin protocol vulnerability</div>
+            <div class="ks-trigger"><span>Action:</span> 100% exit immediately. No analysis, no second-guessing, no waiting for recovery.</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 6: FRAXLEND POSITIONS
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Fraxlend Positions — On-Chain Verified March 10</div>
+          <p style="color: var(--text-mid); font-size: 12px; line-height: 1.6; margin-bottom: 14px;">
+            <strong style="color: var(--text);">Decision: HOLD.</strong> Pay off from Tier 0 profits. Do NOT use deployment capital. Combined debt: ~$10,239 FRAX.
+          </p>
+
+          <div class="grid-2">
+            <!-- CRV Position -->
+            <div style="background: var(--bg2); border-radius: var(--radius-sm); padding: 16px; border-left: 3px solid var(--purple);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--purple);">CRV</span>
+                <div class="health-indicator" style="color: var(--green);">
+                  <span class="health-dot green"></span>
+                  HR 1.61
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <div class="stat-label">Collateral</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);">47,638 CRV</div>
+                </div>
+                <div>
+                  <div class="stat-label">Debt</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);">~5,936 FRAX</div>
+                </div>
+                <div>
+                  <div class="stat-label">Liquidation</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--red);">$0.166</div>
+                </div>
+                <div>
+                  <div class="stat-label">Buffer</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--green);">~38%</div>
+                </div>
+              </div>
+              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+                <div class="alert-level">
+                  <span class="alert-tag yellow">YELLOW</span>
+                  <span style="font-family: var(--mono); font-size: 12px; color: var(--text-mid);">$0.22</span>
+                </div>
+                <div class="alert-level">
+                  <span class="alert-tag red">RED</span>
+                  <span style="font-family: var(--mono); font-size: 12px; color: var(--text-mid);">$0.18</span>
+                </div>
+              </div>
+              <div style="font-family: var(--mono); font-size: 9px; color: var(--text-faint); margin-top: 6px;">0x3835...a752510</div>
+            </div>
+
+            <!-- CVX Position -->
+            <div style="background: var(--bg2); border-radius: var(--radius-sm); padding: 16px; border-left: 3px solid #06b6d4;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: #06b6d4;">CVX</span>
+                <div class="health-indicator" style="color: var(--green);">
+                  <span class="health-dot green"></span>
+                  HR 2.01
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div>
+                  <div class="stat-label">Collateral</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);">5,466 CVX</div>
+                </div>
+                <div>
+                  <div class="stat-label">Debt</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text);">~4,303 FRAX</div>
+                </div>
+                <div>
+                  <div class="stat-label">Liquidation</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--red);">$1.05</div>
+                </div>
+                <div>
+                  <div class="stat-label">Buffer</div>
+                  <div style="font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--green);">~50%</div>
+                </div>
+              </div>
+              <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+                <div class="alert-level">
+                  <span class="alert-tag yellow">YELLOW</span>
+                  <span style="font-family: var(--mono); font-size: 12px; color: var(--text-mid);">$1.40</span>
+                </div>
+                <div class="alert-level">
+                  <span class="alert-tag red">RED</span>
+                  <span style="font-family: var(--mono); font-size: 12px; color: var(--text-mid);">$1.15</span>
+                </div>
+              </div>
+              <div style="font-family: var(--mono); font-size: 9px; color: var(--text-faint); margin-top: 6px;">0xa1D1...9ED84</div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 14px; border-left-color: var(--text-dim);">
+            <p>Oracle timestamps were slightly stale at time of read. Verify visually on Fraxlend UI and cross-check with Chainlink feeds. Numbers shift as interest accrues. Set alerts via CoinGecko desktop.</p>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 7: EXIT TIERS
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Exit Framework — Phase A</div>
+          <p style="color: var(--text-mid); font-size: 13px; line-height: 1.7; margin-bottom: 14px;">
+            This is a trade, not a hold. Entry without exit is half a system.
+          </p>
+
+          <div class="exit-tier">
+            <div class="exit-tier-label">
+              <div class="tier-name">Tier 0</div>
+              <div class="tier-price">First</div>
+            </div>
+            <div class="exit-tier-body">Repay Fraxlend loans (~$10,239 FRAX). Priority before any profit-taking. Use CRV/CVX appreciation to clear debt.</div>
+            <span class="exit-tier-pct">DEBT</span>
+          </div>
+
+          <div class="exit-tier">
+            <div class="exit-tier-label">
+              <div class="tier-name">Tier 1</div>
+              <div class="tier-price">$120-130K</div>
+            </div>
+            <div class="exit-tier-body">First major BTC resistance. Sell enough to cover living expenses and tax liability.</div>
+            <span class="exit-tier-pct">25%</span>
+          </div>
+
+          <div class="exit-tier">
+            <div class="exit-tier-label">
+              <div class="tier-name">Tier 2</div>
+              <div class="tier-price">$150-170K</div>
+            </div>
+            <div class="exit-tier-body">Bernstein target zone. Sell with MVRV confirmation above 5.</div>
+            <span class="exit-tier-pct">35%</span>
+          </div>
+
+          <div class="exit-tier">
+            <div class="exit-tier-label">
+              <div class="tier-name">Tier 3</div>
+              <div class="tier-price">$200K+</div>
+            </div>
+            <div class="exit-tier-body">Euphoria zone. Sell remaining with 2-of-3 on-chain confirmation (MVRV &gt; 7, Monthly RSI &gt; 80, LTH distribution).</div>
+            <span class="exit-tier-pct">40%</span>
+          </div>
+
+          <div class="exit-tier" style="border-bottom: none;">
+            <div class="exit-tier-label">
+              <div class="tier-name" style="color: var(--red);">TIME STOP</div>
+              <div class="tier-price">Dec 31</div>
+            </div>
+            <div class="exit-tier-body" style="color: var(--red);">If not at target, exit everything regardless. This is a 2026 trade. <strong>No exceptions.</strong></div>
+            <span class="exit-tier-pct" style="background: rgba(248,113,113,0.12); color: var(--red);">100%</span>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 8: TAX TIMELINE
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Tax Timeline</div>
+
+          <div class="grid-3" style="gap: 10px; margin-bottom: 14px;">
+            <div class="stat-block">
+              <div class="stat-label">Gross Received</div>
+              <div class="stat-value" style="font-size: 18px;">$75,000</div>
+              <div class="stat-note">Retirement account rollover</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">Auto-Withheld (20%)</div>
+              <div class="stat-value" style="font-size: 18px; color: var(--red);">~$15,000</div>
+              <div class="stat-note">Withheld at distribution</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-label">Remaining Due</div>
+              <div class="stat-value" style="font-size: 18px; color: var(--yellow);">$21-25K</div>
+              <div class="stat-note">Due at filing, 2027</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <p><strong>This is a retirement account rollover, NOT a 401(k) loan.</strong> Full distribution was taken. 20% automatically withheld. Remaining tax liability (~$21-25K) is due when filing 2026 taxes in early 2027. Tax reserve was NOT set aside — the full $60K is deployed as trade capital. Greg accepted the forced-liquidation risk, eyes open.</p>
+          </div>
+
+          <div class="rule-box" style="margin-top: 10px;">
+            <div class="rule-label">Total Tax Liability Estimate</div>
+            <div class="rule-text">$36K-$40.5K total (federal 22-24% + 10% early distribution penalty). After 20% auto-withholding (~$15K), remaining ~$21-25K due at filing. Consult CPA before filing. Reference: tax_execution_reference.md.</div>
+          </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════
+             SECTION 9: ALERTS
+             ═══════════════════════════════════════════ -->
+        <div class="card">
+          <div class="card-eyebrow">Alerts to Set (CoinGecko Desktop)</div>
+          <div class="grid-2" style="gap: 10px;">
+            <div style="background: var(--bg2); border-radius: var(--radius-sm); padding: 12px 16px;">
+              <div style="font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--purple); margin-bottom: 8px;">CRV Alerts</div>
+              <div class="alert-level">
+                <span class="alert-tag yellow">YELLOW</span>
+                <span style="font-family: var(--mono); font-size: 13px; color: var(--text);">$0.22</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Warning — monitor closely</span>
+              </div>
+              <div class="alert-level">
+                <span class="alert-tag red">RED</span>
+                <span style="font-family: var(--mono); font-size: 13px; color: var(--text);">$0.18</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Danger — near liquidation</span>
+              </div>
+            </div>
+            <div style="background: var(--bg2); border-radius: var(--radius-sm); padding: 12px 16px;">
+              <div style="font-family: var(--mono); font-size: 12px; font-weight: 700; color: #06b6d4; margin-bottom: 8px;">CVX Alerts</div>
+              <div class="alert-level">
+                <span class="alert-tag yellow">YELLOW</span>
+                <span style="font-family: var(--mono); font-size: 13px; color: var(--text);">$1.40</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Warning — monitor closely</span>
+              </div>
+              <div class="alert-level">
+                <span class="alert-tag red">RED</span>
+                <span style="font-family: var(--mono); font-size: 13px; color: var(--text);">$1.15</span>
+                <span style="font-size: 11px; color: var(--text-dim);">Danger — near liquidation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- ── END CONTENT ── -->
+
+      <!-- ── FOOTER ── -->
+      <div class="page-footer">
+        Research framework only — not financial advice. Tax estimates assume 22-24% federal + 10% early distribution penalty.
+        Consult a CPA before filing. Updated March 14, 2026.
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="assets/nav.js" data-root="./"></script>
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  DEPLOY INSTRUCTIONS
+  ═══════════════════════════════════════════════════════════════
+  1. Save this file to: /BTC-Thesis/deployment-plan.html
+  2. Update assets/pages.json — add to Portfolio section
+  3. git add deployment-plan.html assets/pages.json
+  4. git commit -m "add deployment plan page"
+  5. git push origin main
+  6. Verify: https://gvp3000.github.io/BTC-Thesis/deployment-plan.html
+  ═══════════════════════════════════════════════════════════════
+-->
+</body>
+</html>

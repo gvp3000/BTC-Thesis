@@ -4,7 +4,8 @@
       "label": "Monitor",
       "pages": [
         { "id": "tracker",   "title": "Invalidation Tracker", "file": "tracker.html",            "badge": "WATCH",   "badgeColor": "yellow" },
-        { "id": "catalysts", "title": "Geo Catalysts",        "file": "catalysts.html",           "badge": null }
+        { "id": "catalysts", "title": "Geo Catalysts",        "file": "catalysts.html",           "badge": null },
+        { "id": "confluence","title": "Confluence Scorecard", "file": "confluence.html",          "badge": "NEW",   "badgeColor": "green" }
       ]
     },
     {
@@ -23,6 +24,7 @@
     {
       "label": "Portfolio",
       "pages": [
+        { "id": "deploy",    "title": "Deployment Plan",  "file": "deployment-plan.html",   "badge": "NEW",   "badgeColor": "green" },
         { "id": "positions", "title": "My Positions",    "file": "positions.html",         "badge": "TODO",  "badgeColor": "dim" },
         { "id": "exits",     "title": "Exit Plan",       "file": "portfolio/exits.html",   "badge": "TODO",  "badgeColor": "dim" },
         { "id": "risk",      "title": "Risk Management", "file": "portfolio/risk.html",    "badge": "TODO",  "badgeColor": "dim" },
